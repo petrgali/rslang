@@ -8,6 +8,12 @@
   align-items: flex-start;
   background: #F4F5F7;
   border-radius: 6px;
+  transition: 0.5s;
+}
+
+.card:hover {
+  background: #E5E5EA;
+  cursor: pointer;
 }
 
 .card .content {

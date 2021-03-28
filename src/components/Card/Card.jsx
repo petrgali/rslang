@@ -6,10 +6,13 @@ import "./Card.css";
 const Card = ({ content, link, color }) => {
   const history = useHistory()
 
-  const handleLink = () => history.push(link)
+  const handleLink = (event) => {
+    history.push(link)
+    event.stopPropagation()
+  }
 
   return (
-    <div className="card">
+    <div className="card" onClick={handleLink}>
       <div className="content">
         { content }
       </div>
