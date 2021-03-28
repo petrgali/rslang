@@ -1,0 +1,5 @@
+@import "../assets/fonts/Golos-Text/stylesheet.css";
+
+html, body {
+  font-family: 'Golos Text';
+}
