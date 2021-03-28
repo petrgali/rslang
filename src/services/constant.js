@@ -1,6 +1,6 @@
 export const API_BASE_URL = "https://enthusiast17-rslang-api.herokuapp.com/"
 export const USER = {
-    TOKEN: "token",
+    TOKEN: "acces_token",
     ID: "id",
 }
 export const ERROR = {

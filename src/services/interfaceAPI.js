@@ -40,12 +40,10 @@ const interactAPI = () => {
             let { data } = await axios(`${API_BASE_URL}words?page=${page}&group=${group}`)
             return data
         },
-        async getWordbyId(id = 0) {
+        async getWordbyId(id) {
             let { data } = await axios(`${API_BASE_URL}words/${id}`)
             return data
         },
-
-        // create new User 
         async newUser(user) {
             try {
                 let response = await axios(`${API_BASE_URL}users`, {
@@ -91,7 +89,6 @@ const interactAPI = () => {
                 }
             }
         },
-
         // USERS endpoints with JWT required 
         async getUserbyId(id = localStorage.getItem(USER.ID)) {
             try {
@@ -110,13 +107,7 @@ const interactAPI = () => {
                 }
             }
         },
-        
-        // where to save refresh token??
-        async getNewToken() {
-            
-        },
-
-        // WORDS endpoints with JWT required
+        // USERS/WORDS 
         async getUserWords() {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -172,7 +163,7 @@ const interactAPI = () => {
                 }
             }
         },
-        async updateUserWord(wordId, setting) {
+        async updateUserWordbyId(wordId, setting) {
             let id = localStorage.getItem(USER.ID)
             try {
                 let response = await axios(`${API_BASE_URL}users/${id}/words/${wordId}`, {
@@ -209,8 +200,82 @@ const interactAPI = () => {
                 }
             }
         },
-
-        // USERS/AggregatedWords
+        // USERS/Statistic
+        async getUserStat() {
+            let id = localStorage.getItem(USER.ID)
+            try {
+                let response = await axios(`${API_BASE_URL}users/${id}/statistics`, {
+                    ...getAuth,
+                })
+                return {
+                    status: response.status,
+                    payload: response.data
+                }
+            } catch ({ message }) {
+                let status = Number.parseInt(message.split(" ").pop())
+                return {
+                    status: status,
+                    payload: ERROR[status]
+                }
+            }
+        },
+        async updateUserStat(stat) {
+            let id = localStorage.getItem(USER.ID)
+            try {
+                let response = await axios(`${API_BASE_URL}users/${id}/statistics`, {
+                    ...putAuth,
+                    data: JSON.stringify(stat)
+                })
+                return {
+                    status: response.status,
+                    payload: response.data
+                }
+            } catch ({ message }) {
+                let status = Number.parseInt(message.split(" ").pop())
+                return {
+                    status: status,
+                    payload: ERROR[status]
+                }
+            }
+        },
+        //USER/Setting
+        async getUserSettings() {
+            let id = localStorage.getItem(USER.ID)
+            try {
+                let response = await axios(`${API_BASE_URL}users/${id}/settings`, {
+                    ...getAuth,
+                })
+                return {
+                    status: response.status,
+                    payload: response.data
+                }
+            } catch ({ message }) {
+                let status = Number.parseInt(message.split(" ").pop())
+                return {
+                    status: status,
+                    payload: ERROR[status]
+                }
+            }
+        },
+        async updateUserSettings(setting){
+            let id = localStorage.getItem(USER.ID)
+            try {
+                let response = await axios(`${API_BASE_URL}users/${id}/settings`, {
+                    ...putAuth,
+                    data:JSON.stringify(setting)
+                })
+                return {
+                    status: response.status,
+                    payload: response.data
+                }
+            } catch ({ message }) {
+                let status = Number.parseInt(message.split(" ").pop())
+                return {
+                    status: status,
+                    payload: ERROR[status]
+                }
+            }
+        }
     }
 }
 export default interactAPI
