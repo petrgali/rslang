@@ -1,21 +1,7 @@
+@import "../../styles/pages.css";
+
 .mini-games {
   padding: 20px 0px 0px;
   height: 100%;
   width: 100%;
-}
-
-.mini-games .title {
-  margin: 0px 0px 0px 20px;
-  font-size: 36px;
-  line-height: 43px;
-}
-
-.mini-games .subtitle {
-  margin: 0px 0px 0px 20px;
-  font-size: 28px;
-  line-height: 34px;
-}
-
-.mini-games .divider {
-  margin: 5px 0px 10px 0px;
 }

@@ -1,0 +1,15 @@
+.title {
+  margin: 0px 0px 0px 20px;
+  font-size: 36px;
+  line-height: 43px;
+}
+
+.subtitle {
+  margin: 0px 0px 0px 20px;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+.divider {
+  margin: 5px 0px 10px 0px;
+}
