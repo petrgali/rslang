@@ -17,8 +17,7 @@ const interactAPI = () => {
         method: "POST",
         headers: {
             'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            ...postNoAuth.headers,
         },
     }
     const putAuth = {
@@ -111,9 +110,10 @@ const interactAPI = () => {
                 }
             }
         },
+        
         // where to save refresh token??
         async getNewToken() {
-
+            
         },
 
         // WORDS endpoints with JWT required
@@ -135,7 +135,6 @@ const interactAPI = () => {
                 }
             }
         },
-        // ADD custom fileds to word
         async addUserWord(wordId, setting) {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -209,13 +208,9 @@ const interactAPI = () => {
                     payload: ERROR[status]
                 }
             }
-        }
+        },
 
-
-
-
-
-
+        // USERS/AggregatedWords
     }
 }
 export default interactAPI
