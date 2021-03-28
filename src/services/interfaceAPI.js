@@ -34,15 +34,33 @@ const interactAPI = () => {
             'Accept': 'application/json',
         }
     }
+    const requestAPI = async (options) => {
+        try {
+            let response = await axios(options)
+            return {
+                status: response.status,
+                payload: response.data
+            }
+        } catch ({ message }) {
+            let status = Number.parseInt(message.split(" ").pop())
+            return {
+                status: status,
+                payload: ERROR[status]
+            }
+        }
+    }
+
     return {
         // endpoints with no required registration
-        async getWords(page = 0, group = 0) {
-            let { data } = await axios(`${API_BASE_URL}words?page=${page}&group=${group}`)
-            return data
+        getWords(page = 0, group = 0) {
+            return requestAPI({
+                url: `${API_BASE_URL}words?page=${page}&group=${group}`,
+            })
         },
-        async getWordbyId(id) {
-            let { data } = await axios(`${API_BASE_URL}words/${id}`)
-            return data
+        getWordbyId(id) {
+            return requestAPI({
+                url: `${API_BASE_URL}words/${id}`,
+            })
         },
 
         /* newUser schema sample 
@@ -51,23 +69,12 @@ const interactAPI = () => {
         "email": "string",
         "password": "string"
         }*/
-        async newUser(user) {
-            try {
-                let response = await axios(`${API_BASE_URL}users`, {
-                    ...postNoAuth,
-                    data: JSON.stringify(user)
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+        newUser(user) {
+            return requestAPI({
+                ...postNoAuth,
+                url: `${API_BASE_URL}users`,
+                data: JSON.stringify(user)
+            })
         },
 
         /* signin schema sample
@@ -76,66 +83,36 @@ const interactAPI = () => {
         "password": "string"
         }*/
         async signin(user) {
-            try {
-                let response = await axios(`${API_BASE_URL}signin`, {
-                    ...postNoAuth,
-                    data: JSON.stringify(user)
-                })
+            let response = await requestAPI({
+                ...postNoAuth,
+                url: `${API_BASE_URL}signin`,
+                data: JSON.stringify(user),
+            })
+            if (response.status === 200) {
                 setStorage({
                     name: USER.TOKEN,
-                    payload: response.data.token
+                    payload: response.payload.token
                 }, {
                     name: USER.ID,
-                    payload: response.data.userId
+                    payload: response.payload.userId
                 })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
+                return { status: response.status }
             }
+            return { status: response.status, payload: response.payload }
         },
         // USERS JWT required 
-        async getUserbyId(id = localStorage.getItem(USER.ID)) {
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}`, {
-                    ...getAuth,
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+        getUserbyId(id = localStorage.getItem(USER.ID)) {
+            return requestAPI({
+                url: `${API_BASE_URL}users/${id}`,
+                ...getAuth,
+            })
         },
         // USERS/WORDS JWT required
-        async getUserWords() {
-            let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/words`, {
-                    ...getAuth,
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+        getUserWords(id = localStorage.getItem(USER.ID)) {
+            return requestAPI({
+                url: `${API_BASE_URL}users/${id}/words`,
+                ...getAuth,
+            })
         },
 
         /*word setting schema sample 
@@ -143,170 +120,82 @@ const interactAPI = () => {
         "difficulty": "string", (hard, deleted)
         "optional": {}          (isLearning: bool)
         }*/
-        async addUserWord(wordId, setting) {
+        addUserWord(wordId, setting) {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/words/${wordId}`, {
-                    ...postAuth,
-                    data: JSON.stringify(setting)
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...postAuth,
+                url: `${API_BASE_URL}users/${id}/words/${wordId}`,
+                data: JSON.stringify(setting)
+            })
         },
-        async getUserWordbyId(wordId) {
+        getUserWordbyId(wordId) {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/words/${wordId}`, {
-                    ...getAuth,
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...getAuth,
+                url: `${API_BASE_URL}users/${id}/words/${wordId}`,
+            })
         },
         /*word setting schema sample 
         {
         "difficulty": "string", (hard, deleted)
         "optional": {}          (isLearning: bool)
         }*/
-        async updateUserWordbyId(wordId, setting) {
+        updateUserWordbyId(wordId, setting) {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/words/${wordId}`, {
-                    ...putAuth,
-                    data: JSON.stringify(setting)
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...putAuth,
+                url: `${API_BASE_URL}users/${id}/words/${wordId}`,
+                data: JSON.stringify(setting)
+            })
         },
-        async deleteUserWordbyId(wordId) {
+        deleteUserWordbyId(wordId) {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/words/${wordId}`, {
-                    ...deleteAuth,
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...deleteAuth,
+                url: `${API_BASE_URL}users/${id}/words/${wordId}`,
+            })
         },
         // USERS/Statistic JWT required
-        async getUserStat() {
+        getUserStat() {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/statistics`, {
-                    ...getAuth,
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...getAuth,
+                url: `${API_BASE_URL}users/${id}/statistics`,
+            })
         },
         /* user stat schema sample
         {
         "learnedWords": 0,
         "optional": {}
         }*/
-        async updateUserStat(stat) {
+        updateUserStat(stat) {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/statistics`, {
-                    ...putAuth,
-                    data: JSON.stringify(stat)
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...putAuth,
+                url: `${API_BASE_URL}users/${id}/statistics`,
+                data: JSON.stringify(stat),
+            })
         },
         //USER/Setting JWT required
-        async getUserSettings() {
+        getUserSettings() {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/settings`, {
-                    ...getAuth,
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...getAuth,
+                url: `${API_BASE_URL}users/${id}/settings`,
+            })
         },
         /* user settings schema sample
         {
         "wordsPerDay": 0,
         "optional": {}
         }*/
-        async updateUserSettings(setting) {
+        updateUserSettings(setting) {
             let id = localStorage.getItem(USER.ID)
-            try {
-                let response = await axios(`${API_BASE_URL}users/${id}/settings`, {
-                    ...putAuth,
-                    data: JSON.stringify(setting)
-                })
-                return {
-                    status: response.status,
-                    payload: response.data
-                }
-            } catch ({ message }) {
-                let status = Number.parseInt(message.split(" ").pop())
-                return {
-                    status: status,
-                    payload: ERROR[status]
-                }
-            }
+            return requestAPI({
+                ...putAuth,
+                url:`${API_BASE_URL}users/${id}/settings`,
+                data: JSON.stringify(setting),
+            })
         }
     }
 }
