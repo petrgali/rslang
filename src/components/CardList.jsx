@@ -12,7 +12,7 @@ const CardList = ({ cards }) => {
               <Card
                 content={col.content}
                 color={col.color}
-                link={col.link}
+                action={col.action}
               />
             </Col>
           ))}

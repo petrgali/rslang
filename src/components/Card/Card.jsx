@@ -1,13 +1,10 @@
 import React from "react";
-import { useHistory } from "react-router";
 import { Icon, IconButton } from "rsuite";
 import "./Card.css";
 
-const Card = ({ content, link, color }) => {
-  const history = useHistory()
-
+const Card = ({ content, action, color }) => {
   const handleLink = (event) => {
-    history.push(link)
+    action()
     event.stopPropagation()
   }
 
