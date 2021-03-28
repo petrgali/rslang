@@ -44,6 +44,13 @@ const interactAPI = () => {
             let { data } = await axios(`${API_BASE_URL}words/${id}`)
             return data
         },
+
+        /* newUser schema sample 
+        {
+        "name": "string",
+        "email": "string",
+        "password": "string"
+        }*/
         async newUser(user) {
             try {
                 let response = await axios(`${API_BASE_URL}users`, {
@@ -63,7 +70,11 @@ const interactAPI = () => {
             }
         },
 
-        // get JWT token to access to locked endpoints - email, password - are required
+        /* signin schema sample
+        {
+        "email": "string",
+        "password": "string"
+        }*/
         async signin(user) {
             try {
                 let response = await axios(`${API_BASE_URL}signin`, {
@@ -89,7 +100,7 @@ const interactAPI = () => {
                 }
             }
         },
-        // USERS endpoints with JWT required 
+        // USERS JWT required 
         async getUserbyId(id = localStorage.getItem(USER.ID)) {
             try {
                 let response = await axios(`${API_BASE_URL}users/${id}`, {
@@ -107,7 +118,7 @@ const interactAPI = () => {
                 }
             }
         },
-        // USERS/WORDS 
+        // USERS/WORDS JWT required
         async getUserWords() {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -126,6 +137,12 @@ const interactAPI = () => {
                 }
             }
         },
+
+        /*word setting schema sample 
+        {
+        "difficulty": "string", (hard, deleted)
+        "optional": {}          (isLearning: bool)
+        }*/
         async addUserWord(wordId, setting) {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -163,6 +180,11 @@ const interactAPI = () => {
                 }
             }
         },
+        /*word setting schema sample 
+        {
+        "difficulty": "string", (hard, deleted)
+        "optional": {}          (isLearning: bool)
+        }*/
         async updateUserWordbyId(wordId, setting) {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -200,7 +222,7 @@ const interactAPI = () => {
                 }
             }
         },
-        // USERS/Statistic
+        // USERS/Statistic JWT required
         async getUserStat() {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -219,6 +241,11 @@ const interactAPI = () => {
                 }
             }
         },
+        /* user stat schema sample
+        {
+        "learnedWords": 0,
+        "optional": {}
+        }*/
         async updateUserStat(stat) {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -238,7 +265,7 @@ const interactAPI = () => {
                 }
             }
         },
-        //USER/Setting
+        //USER/Setting JWT required
         async getUserSettings() {
             let id = localStorage.getItem(USER.ID)
             try {
@@ -257,12 +284,17 @@ const interactAPI = () => {
                 }
             }
         },
-        async updateUserSettings(setting){
+        /* user settings schema sample
+        {
+        "wordsPerDay": 0,
+        "optional": {}
+        }*/
+        async updateUserSettings(setting) {
             let id = localStorage.getItem(USER.ID)
             try {
                 let response = await axios(`${API_BASE_URL}users/${id}/settings`, {
                     ...putAuth,
-                    data:JSON.stringify(setting)
+                    data: JSON.stringify(setting)
                 })
                 return {
                     status: response.status,
