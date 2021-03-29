@@ -3,6 +3,10 @@ export const USER = {
     TOKEN: "access_token",
     ID: "id",
 }
+export const wordStatus = {
+    hard: "hard",
+    deleted: "deleted"
+}
 export const ERROR = {
     400: "Bad request",
     401: "Access token is missing or invalid",

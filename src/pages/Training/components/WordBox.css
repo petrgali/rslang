@@ -3,8 +3,8 @@
     margin: auto;
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    text-align: justify;
+    margin-top: 30px;
+    text-align: center;
 }
 
 .image-container {
@@ -30,13 +30,43 @@
 
 .en-word {
     text-align: center;
+    font-size: x-large;
+    font-weight: 500;
 }
 
-.en-desc {}
+.en-pron {
+    color: black;
+    font-size: medium;
+    margin-left: 5px;
+}
 
-@media screen and (min-width: 620px) {
+.en-translate {
+    font-size: medium;
+    margin-left: 5px;
+}
+
+.play-icon {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.buttons {
+    width: 150px;
+    margin: 5px auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.buttons svg {
+    cursor: pointer;
+}
+
+@media screen and (min-width: 750px) {
     .wordbox {
         flex-direction: row;
+        justify-content: space-between;
+        text-align: justify;
         width: 70%;
     }
     .word-image {
@@ -45,7 +75,8 @@
         vertical-align: baseline;
     }
     .word-cover {
-        margin-left: 20px;
+        margin: 0 20px 0 20px;
+        width: 70%;
     }
     .en-word {
         text-align: left;

@@ -192,6 +192,17 @@ const interactAPI = {
             url: `${API_BASE_URL}users/${id}/settings`,
             data: JSON.stringify(setting),
         })
+    },
+    // USER/AggregatedWords
+    getTrainingAggregatedWords: (group = 0, page = 0, words = 20) => {
+        let id = localStorage.getItem(USER.ID)
+        let filter = `{ "$or": [{ "userWord.difficulty": "hard" }, { "userWord": null }] }`
+        // let filter = `{"$or": [{"$and":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.difficulty": "deleted"}]}]},{"userWord": null}]}`
+        return requestAPI({
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
+            ...getAuth,
+
+        })
     }
 }
 export default interactAPI
