@@ -1,0 +1,53 @@
+.wordbox {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    text-align: justify;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.word-image {
+    box-shadow: 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12), 0px 8px 10px -7px rgba(0, 0, 0, 0.2);
+    border-radius: 40px;
+    max-width: 400px;
+}
+
+.word-cover {
+    display: "flex";
+    flex-direction: column;
+}
+
+.word-loader {
+    margin: auto;
+}
+
+.en-word {
+    text-align: center;
+}
+
+.en-desc {}
+
+@media screen and (min-width: 620px) {
+    .wordbox {
+        flex-direction: row;
+        width: 70%;
+    }
+    .word-image {
+        max-width: 250px;
+        margin: auto;
+        vertical-align: baseline;
+    }
+    .word-cover {
+        margin-left: 20px;
+    }
+    .en-word {
+        text-align: left;
+    }
+}
