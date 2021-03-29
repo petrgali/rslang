@@ -13,3 +13,11 @@
 .divider {
   margin: 5px 0px 10px 0px !important;
 }
+
+.about-game {
+  margin: 0px;
+  padding: 0px 10px;
+  font-size: 22px;
+  text-align: center;
+  font-weight: 500;
+}
