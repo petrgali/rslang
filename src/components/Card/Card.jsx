@@ -2,9 +2,9 @@ import React from "react";
 import { Icon, IconButton } from "rsuite";
 import "./Card.css";
 
-const Card = ({ content, action, color }) => {
+const Card = ({ number, content, action, color }) => {
   const handleLink = (event) => {
-    action()
+    action(number)
     event.stopPropagation()
   }
 

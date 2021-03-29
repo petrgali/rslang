@@ -1,6 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router";
 import { Icon } from "rsuite";
+import { AUDIOCALL_ROUTE, OWN_GAME_ROUTE, SAVANNAH_ROUTE, SPRINT_ROUTE } from "../navigation/CONSTANT";
 import CardList from './CardList';
 
 const MiniGamesNav = () => {
@@ -16,7 +17,7 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#F44336",
-        action: () => history.push("/mini-games/savannah"),
+        action: () => history.push(SAVANNAH_ROUTE),
       },
       {
         content: (
@@ -26,7 +27,7 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#FF9800",
-        action: () => history.push("/mini-games/audiocall"),
+        action: () => history.push(AUDIOCALL_ROUTE),
       },
       {
         content: (
@@ -36,7 +37,7 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#FFCA28",
-        action: () => history.push("/mini-games/sprint"),
+        action: () => history.push(SPRINT_ROUTE),
       },
       {
         content: (
@@ -46,7 +47,7 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#4CAF50",
-        action: () => history.push("/mini-games/own-game"),
+        action: () => history.push(OWN_GAME_ROUTE),
       },
     ]
   ]
