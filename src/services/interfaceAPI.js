@@ -49,6 +49,7 @@ const requestAPI = async (options) => {
         }
     }
 }
+
 const interactAPI = {
     // endpoints with no required registration
     getWords: (page = 0, group = 0) => {
@@ -110,6 +111,13 @@ const interactAPI = {
             ...getAuth,
             url: `${API_BASE_URL}users/${id}/words`,
         })
+    },
+
+    getHardOrIsLearningOrRegularWords: (group = 0, page = 0, id = localStorage.getItem(USER.ID)) => {
+      return requestAPI({
+        ...getAuth,
+        url: `${API_BASE_URL}users/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={"$or":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.optional.isLearning": true}]},{"userWord":null}]}`,
+      })
     },
     /*word setting schema sample 
     {
@@ -194,4 +202,5 @@ const interactAPI = {
         })
     }
 }
-export default interactAPI
+
+export default Object.freeze(interactAPI)

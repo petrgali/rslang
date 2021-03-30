@@ -6,5 +6,6 @@ html, body, #root {
 }
 
 #root {
+  position: relative;
   font-family: 'Golos Text';
 }

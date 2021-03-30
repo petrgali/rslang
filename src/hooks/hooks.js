@@ -46,6 +46,7 @@ const useGameEngine = ({ type, group }) => {
       .then((data) => {
         setWords([...words, ...data.payload[0].paginatedResults])
       })
+      .catch(() => setIsGameOver(true))
       setPage(page + 1)
     }
   }, [wordIndex])
@@ -56,9 +57,10 @@ const useGameEngine = ({ type, group }) => {
       color: element.word === words[wordIndex].word ? "green" : "red"
     })))
     setTimeout(() => {
-      setGuessWords(generateGuessWords(words, wordIndex + 1, 4))
       setWordIndex(wordIndex + 1)
+      setGuessWords(generateGuessWords(words, wordIndex + 1, 4))
     }, 1000)
+    return words[wordIndex].word === word.word
   }
   
   const history = {
@@ -66,7 +68,7 @@ const useGameEngine = ({ type, group }) => {
     incorrectGuesses: [],
   }
 
-  return [{ word: words[wordIndex], words: guessWords }, { guess, history, isGameOver, isLoading, stopGame: () => setIsGameOver(true) }]
+  return [{ word: words[wordIndex], words: guessWords }, { guess, history, isGameOver, isLoading, forceGameOver: () => setIsGameOver(true) }]
 }
 
 export default useGameEngine

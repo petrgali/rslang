@@ -4,4 +4,54 @@
   padding: 20px 0px 0px;
   height: 100%;
   width: 100%;
+  background: white;
+}
+
+.savannah .lives {
+  margin: 0px 0px 0px 20px;
+  height: 28px;
+  display: flex;
+  column-gap: 10px;
+}
+
+.savannah .full-screen-btn {
+  margin: 0px 0px 0px 20px !important;
+}
+
+.savannah .content, .savannah .game {
+  height: calc(100% - 200px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.savannah .game {
+  align-items: center;
+}
+
+.savannah .word {
+  position: absolute;
+  top: 180px;
+  font-size: 24px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.savannah .btns {
+  padding: 0px 20px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  column-gap: 20px;
+  row-gap: 20px;
+  flex-wrap: wrap;
+  background: white;
+  z-index: 3;
+}
+
+.savannah .game-icon {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
