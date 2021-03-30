@@ -1,0 +1,12 @@
+.options-list {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.options-item{
+    display: flex;
+    width: 70%;
+    justify-content: space-between;
+    margin: 10px auto;
+}

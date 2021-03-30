@@ -1,9 +1,8 @@
 .wordbox {
     width: 90%;
-    margin: auto;
+    margin: 30px auto;
     display: flex;
     flex-direction: column;
-    margin-top: 30px;
     text-align: center;
 }
 
