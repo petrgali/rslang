@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Divider, Icon, IconButton } from "rsuite";
+import GameLoading from "../../components/GameLoading";
+import GameResult from "../../components/GameResult/GameResult";
 import useGameEngine from "../../hooks/hooks";
 import { miniGamesData } from "../../navigation/CONSTANT";
 import "./Savannah.css";
@@ -7,10 +9,13 @@ import "./Savannah.css";
 let interval
 
 const Savannah = ({ match }) => {
-  const [{word, words}, { guess, forceGameOver, isLoading, isGameOver }] = useGameEngine({
+  const [{word, words}, {
+    guess, forceGameOver, isLoading, isGameOver, history,
+  }] = useGameEngine({
     type: "Savannah", group: match.params.level - 1
   })
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isGameLoading, setIsGameLoading] = useState(false)
   const [top, setTop] = useState(150)
   const [lives, setLives] = useState([...Array(5)])
   const savannaRef = useRef()
@@ -30,7 +35,7 @@ const Savannah = ({ match }) => {
       } else {
         setTop(top + 1)
       }
-    }, 10)
+    }, 5)
     return () => clearInterval(interval)
   }, [isPlaying, isGameOver, top])
 
@@ -51,7 +56,7 @@ const Savannah = ({ match }) => {
   return (
     <div ref={savannaRef} className="savannah">
       <h1 className="title">{ miniGamesData["savannah"].name }</h1>
-      {!isPlaying && (
+      {!isPlaying ? (
         <>
           <h2 className="subtitle">Об игре</h2>
           <Divider className="divider" />
@@ -65,14 +70,19 @@ const Savannah = ({ match }) => {
               appearance="primary"
               icon={<Icon icon="play-circle" />}
               size="lg"
-              onClick={() => setIsPlaying(true)}
+              onClick={() => {
+                setIsGameLoading(true)
+                setTimeout(() => {
+                  setIsGameLoading(false)
+                  setIsPlaying(true)
+                }, 3000)
+              }}
               loading={isLoading}>
               Начать мини-игру
             </IconButton>
           </div>
         </>
-      )}
-      {isPlaying && (
+      ) : (
         <>
           {!isGameOver && (
             <>
@@ -109,15 +119,19 @@ const Savannah = ({ match }) => {
                 </div>
               </div>
               <div className="game-icon">
-                <Icon icon="globe" size="5x"/>
+                <Icon icon="globe" size={(
+                  history.correctGuessWords.length <= 10 ? "3x" : history.correctGuessWords.length <= 20 ? "4x" : "5x"
+                )}/>
               </div>
             </>
           )}
-
           {isGameOver && (
-            <h2>Game Over</h2>
+            <GameResult history={history} />
           )}
         </>
+      )}
+      {isGameLoading && (
+        <GameLoading />
       )}
     </div>
   )
