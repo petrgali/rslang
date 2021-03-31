@@ -29,6 +29,10 @@ const useGameEngine = ({ type, group }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
   const [guessWords, setGuessWords] = useState([])
+  const [history, setHistory] = useState({
+    correctGuessWords: [],
+    incorrectGuessWords: [],
+  })
 
   useEffect(() => {
     setIsLoading(true)
@@ -47,9 +51,9 @@ const useGameEngine = ({ type, group }) => {
       interfaceAPI.getHardOrIsLearningOrRegularWords(group, page + 1)
       .then((data) => {
         setWords([...words, ...data.payload[0].paginatedResults])
+        setPage(page + 1)
       })
-      .catch(() => setIsGameOver(true))
-      setPage(page + 1)
+      .catch(() => { })
     }
   }, [wordIndex])
 
@@ -66,15 +70,36 @@ const useGameEngine = ({ type, group }) => {
         setGuessWords(generateGuessWords(words, wordIndex + 1, 4))
       }, 1000)
     }
+    if (words[wordIndex].word === word.word) {
+      setHistory({ ...history, correctGuessWords: [...history.correctGuessWords, words[wordIndex]]})
+    } else {
+      setHistory({ ...history, incorrectGuessWords: [...history.incorrectGuessWords, words[wordIndex]]})
+    }
     return words[wordIndex].word === word.word
   }
-  
-  const history = {
-    correctGuesses: [],
-    incorrectGuesses: [],
+
+  const forceRestart = () => {
+    setPage(-1)
+    setPage(0)
+    setWords([])
+    setGuessWords([])
+    setWordIndex(0)
+    setHistory({ correctGuessWords: [], incorrectGuessWords: [] })
+    setIsGameOver(false)
+    setIsLoading(false)
   }
 
-  return [{ word: words[wordIndex], words: guessWords }, { guess, history, isGameOver, isLoading, forceGameOver: () => setIsGameOver(true) }]
+  return [{
+    word: words[wordIndex],
+    words: guessWords
+  }, {
+    guess,
+    history,
+    isGameOver,
+    isLoading,
+    forceGameOver: () => setIsGameOver(true),
+    forceRestart,
+  }]
 }
 
 export default useGameEngine
