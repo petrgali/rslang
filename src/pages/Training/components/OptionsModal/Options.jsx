@@ -1,11 +1,10 @@
 import { useState } from "react"
-import { Button, Modal, Toggle } from "rsuite"
-import "./OptionsModal.css"
+import ModalBox from "./Modal"
+import "./Options.css"
 
 const Options = ({ showControl, showTranslate, toggleControl, toggleTranslate }) => {
     const [modalOpen, updateModal] = useState(false)
     const handleModal = () => updateModal(!modalOpen)
-
     return (
         <>
             <div className="options-box">
@@ -16,39 +15,14 @@ const Options = ({ showControl, showTranslate, toggleControl, toggleTranslate })
                     </svg>
                 </div>
             </div>
-                <Modal
-                    show={modalOpen}
-                    onHide={handleModal}
-                    size={"xs"} >
-                    <Modal.Header closeButton={false}>
-                        <Modal.Title>
-                            Настройки Учебника
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="options-list">
-                            <div className="options-item">
-                                показывать перевод
-                                <Toggle
-                                    checked={showTranslate}
-                                    onChange={toggleTranslate}
-                                />
-                            </div>
-                            <div className="options-item">
-                                показывать управление
-                                <Toggle
-                                    checked={showControl}
-                                    onChange={toggleControl}
-                                />
-                            </div>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={() => updateModal(!modalOpen)} appearance="subtle">
-                            закрыть
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+            <ModalBox
+                handleModal={handleModal}
+                modalOpen={modalOpen}
+                showTranslate={showTranslate}
+                showControl={showControl}
+                toggleControl={toggleControl}
+                toggleTranslate={toggleTranslate}
+            />
         </>
     )
 }
