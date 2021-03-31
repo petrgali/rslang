@@ -37,7 +37,9 @@ const useGameEngine = ({ type, group }) => {
         setWords([...words, ...data.payload[0].paginatedResults])
         setGuessWords(generateGuessWords(data.payload[0].paginatedResults, wordIndex, 4))
         setIsLoading(false)
+        return data
       })
+      .catch(() => { })
   }, [])
 
   useEffect(() => {
@@ -56,10 +58,14 @@ const useGameEngine = ({ type, group }) => {
       ...element,
       color: element.word === words[wordIndex].word ? "green" : "red"
     })))
-    setTimeout(() => {
-      setWordIndex(wordIndex + 1)
-      setGuessWords(generateGuessWords(words, wordIndex + 1, 4))
-    }, 1000)
+    if (wordIndex + 1 >= words.length) {
+      setIsGameOver(true)
+    } else {
+      setTimeout(() => {
+        setWordIndex(wordIndex + 1)
+        setGuessWords(generateGuessWords(words, wordIndex + 1, 4))
+      }, 1000)
+    }
     return words[wordIndex].word === word.word
   }
   
