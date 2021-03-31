@@ -1,6 +1,6 @@
 import { Icon } from "rsuite"
 import { API_BASE_URL } from "../../../../services/constant"
-import playSound from "../../../../utils/playMultipleSounds"
+import Sound from "../../../../utils/playMultipleSounds"
 import 'rsuite/dist/styles/rsuite-default.css'
 import "./WordBox.css"
 
@@ -25,7 +25,7 @@ function WordBox({ word, buttons, showTranslate }) {
                         className="play-icon"
                         icon="volume-up"
                         size="2x"
-                        onClick={() => playSound(
+                        onClick={() => Sound.play(
                             API_BASE_URL,
                             [word.audio, word.audioMeaning, word.audioExample]
                         )}

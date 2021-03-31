@@ -6,6 +6,7 @@ import Options from "./components/OptionsModal/Options"
 import PageToggler from "./components/PageToggler"
 import { wordStatus, trainingOptions } from "./constant"
 import { USER } from "../../services/constant"
+import Sound from "../../utils/playMultipleSounds"
 
 const api = interactAPI
 
@@ -60,6 +61,7 @@ const Training = ({ group }) => {
         localStorage.setItem(trainingOptions.showTranslate, showTranslate)
     }, [showTranslate])
     useEffect(() => {
+        Sound.stop()
         updateLoadedState(false)
         requestData()
         // eslint-disable-next-line
