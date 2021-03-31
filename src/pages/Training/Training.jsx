@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { Loader } from "rsuite"
-import { wordStatus, trainingOptions } from "./constant"
 import interactAPI from "../../services/interfaceAPI"
 import WordsList from "./components/WordsList"
-import Options from "./components/OptionsModal"
+import Options from "./components/OptionsModal/OptionsModal"
 import PageToggler from "./components/PageToggler"
+import { wordStatus, trainingOptions } from "./constant"
+import { USER } from "../../services/constant"
 
 const api = interactAPI
 
@@ -12,13 +13,13 @@ const Training = ({ group }) => {
     const [data, updateData] = useState()
     const [isLoaded, updateLoadedState] = useState(false)
     const [isEmpty, updateEmptyState] = useState(true)
-    const [activePage, updateActivePage] = useState(1)
+    const [activePage, updateActivePage] = useState(+localStorage.getItem(USER.LAST_VISITED))
     const [showControl, updateControl] = useState(localStorage.getItem(trainingOptions.showControls) === "true")
     const [showTranslate, updateTranslate] = useState(localStorage.getItem(trainingOptions.showTranslate) === "true")
 
-
     const handlePageUpdate = (num) => {
         updateActivePage(num)
+        localStorage.setItem(USER.LAST_VISITED, num)
     }
     const handleRawData = (rawData) => {
         let filteredData = rawData.filter(obj => !obj.userWord || obj.userWord.difficulty !== wordStatus.deleted)

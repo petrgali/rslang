@@ -1,5 +1,4 @@
-import { Loader } from "rsuite"
-import WordBox from "./WordBox"
+import WordBox from "./WordBox/WordBox"
 import { wordStatus } from "../constant"
 import WordButtons from "./WordButtons"
 

@@ -2,6 +2,7 @@ export const API_BASE_URL = "https://enthusiast17-rslang-api.herokuapp.com/"
 export const USER = {
     TOKEN: "access_token",
     ID: "id",
+    LAST_VISITED: "act_pg"
 }
 export const ERROR = {
     400: "Bad request",
