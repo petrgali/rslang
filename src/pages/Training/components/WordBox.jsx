@@ -10,7 +10,6 @@ function WordBox({ word, buttons, showTranslate }) {
             <div className="image-container">
                 <img className="word-image"
                     src={API_BASE_URL + word.image}
-                    style={{ maxHeight: "10em" }}
                     alt={word.word} />
             </div>
             <div className="word-cover">

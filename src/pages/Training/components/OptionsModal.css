@@ -4,9 +4,20 @@
     flex-direction: column;
 }
 
-.options-item{
+.options-item {
     display: flex;
     width: 70%;
     justify-content: space-between;
     margin: 10px auto;
+}
+
+.options-box {
+    width: 230px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+.options-button {
+    cursor: pointer
 }

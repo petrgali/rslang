@@ -50,7 +50,6 @@ const requestAPI = async (options) => {
     }
 }
 const interactAPI = {
-    // endpoints with no required registration
     getWords: (page = 0, group = 0) => {
         return requestAPI({
             url: `${API_BASE_URL}words?page=${page}&group=${group}`,
@@ -61,12 +60,6 @@ const interactAPI = {
             url: `${API_BASE_URL}words/${id}`,
         })
     },
-    /* newUser schema sample 
-    {
-    "name": "string",
-    "email": "string",
-    "password": "string"
-    }*/
     registerUser: (user) => {
         return requestAPI({
             ...postNoAuth,
@@ -74,11 +67,6 @@ const interactAPI = {
             data: JSON.stringify(user)
         })
     },
-    /* signin schema sample
-    {
-    "email": "string",
-    "password": "string"
-    }*/
     loginUser: async (user) => {
         let response = await requestAPI({
             ...postNoAuth,
@@ -97,25 +85,18 @@ const interactAPI = {
         }
         return { status: response.status, payload: response.payload }
     },
-    // USERS JWT required 
     getUserbyId: (id = localStorage.getItem(USER.ID)) => {
         return requestAPI({
             ...getAuth,
             url: `${API_BASE_URL}users/${id}`,
         })
     },
-    // USERS/WORDS JWT required
     getUserWords: (id = localStorage.getItem(USER.ID)) => {
         return requestAPI({
             ...getAuth,
             url: `${API_BASE_URL}users/${id}/words`,
         })
     },
-    /*word setting schema sample 
-    {
-    "difficulty": "string", (hard, deleted)
-    "optional": {}          (isLearning: bool)
-    }*/
     addUserWord: (wordId, setting) => {
         let id = localStorage.getItem(USER.ID)
         return requestAPI({
@@ -131,11 +112,6 @@ const interactAPI = {
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
         })
     },
-    /*word setting schema sample 
-    {
-    "difficulty": "string", (hard, deleted)
-    "optional": {}          (isLearning: bool)
-    }*/
     updateUserWordbyId: (wordId, setting) => {
         let id = localStorage.getItem(USER.ID)
         return requestAPI({
@@ -151,7 +127,6 @@ const interactAPI = {
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
         })
     },
-    // USERS/Statistic JWT required
     getUserStat: () => {
         let id = localStorage.getItem(USER.ID)
         return requestAPI({
@@ -159,11 +134,6 @@ const interactAPI = {
             url: `${API_BASE_URL}users/${id}/statistics`,
         })
     },
-    /* user stat schema sample
-    {
-    "learnedWords": 0,
-    "optional": {}
-    }*/
     updateUserStat: (stat) => {
         let id = localStorage.getItem(USER.ID)
         return requestAPI({
@@ -172,7 +142,6 @@ const interactAPI = {
             data: JSON.stringify(stat),
         })
     },
-    //USER/Setting JWT required
     getUserSettings: () => {
         let id = localStorage.getItem(USER.ID)
         return requestAPI({
@@ -180,11 +149,6 @@ const interactAPI = {
             url: `${API_BASE_URL}users/${id}/settings`,
         })
     },
-    /* user settings schema sample
-    {
-    "wordsPerDay": 0,
-    "optional": {}
-    }*/
     updateUserSettings: (setting) => {
         let id = localStorage.getItem(USER.ID)
         return requestAPI({
@@ -193,11 +157,10 @@ const interactAPI = {
             data: JSON.stringify(setting),
         })
     },
-    // USER/AggregatedWords
     getTrainingAggregatedWords: (group = 0, page = 0, words = 20) => {
         let id = localStorage.getItem(USER.ID)
-        let filter = `{ "$or": [{ "userWord.difficulty": "hard" }, { "userWord": null }] }`
-        // let filter = `{"$or": [{"$and":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.difficulty": "deleted"}]}]},{"userWord": null}]}`
+        // let filter = `{ "$or": [{ "userWord.difficulty": "hard" }, { "userWord": null }] }`
+        let filter = `{"$or": [{"$and":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.difficulty": "deleted"}]}]},{"userWord": null}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
             ...getAuth,
