@@ -1,0 +1,11 @@
+@import "../assets/fonts/Golos-Text/stylesheet.css";
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  position: relative;
+  font-family: 'Golos Text';
+}
