@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { Button, Divider, Icon, IconButton } from "rsuite";
 import GameLoading from "../../components/GameLoading";
 import GameResult from "../../components/GameResult/GameResult";
@@ -21,6 +22,14 @@ const Savannah = ({ match }) => {
   const savannaRef = useRef()
   const wordRef = useRef()
   const btnsRef = useRef()
+
+  useHotkeys("1", () => btnsRef.current && btnsRef.current.children[0].click())
+
+  useHotkeys("2", () => btnsRef.current && btnsRef.current.children[1].click())
+
+  useHotkeys("3", () => btnsRef.current && btnsRef.current.children[2].click())
+
+  useHotkeys("4", () => btnsRef.current && btnsRef.current.children[3].click())
 
   useEffect(() => {
     if (!isPlaying || isGameOver) {
