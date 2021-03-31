@@ -15,9 +15,7 @@ const Sound = {
         }
     },
     stop: () => {
-        sound.pause(
-            sound.currentTime = 0
-        )
+        sound.pause()
     }
 }
 
