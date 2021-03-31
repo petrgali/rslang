@@ -10,7 +10,7 @@ export const SPRINT_LEVELS_ROUTE = "/mini-games/sprint/levels"
 export const OWN_GAME_LEVELS_ROUTE = "/mini-games/own-game/levels"
 
 
-export const miniGamesData = {
+export const MINI_GAMES_DATA = {
   savannah: {
     name: "Саванна",
     about: [

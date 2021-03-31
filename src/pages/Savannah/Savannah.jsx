@@ -4,7 +4,7 @@ import { Button, Divider, Icon, IconButton } from "rsuite";
 import GameLoading from "../../components/GameLoading";
 import GameResult from "../../components/GameResult/GameResult";
 import useGameEngine from "../../hooks/hooks";
-import { miniGamesData } from "../../navigation/CONSTANT";
+import { MINI_GAMES_DATA } from "../../navigation/CONSTANT";
 import "./Savannah.css";
 
 let interval
@@ -64,12 +64,12 @@ const Savannah = ({ match }) => {
 
   return (
     <div ref={savannaRef} className="savannah">
-      <h1 className="title">{ miniGamesData["savannah"].name }</h1>
+      <h1 className="title">{ MINI_GAMES_DATA["savannah"].name }</h1>
       {!isPlaying ? (
         <>
           <h2 className="subtitle">Об игре</h2>
           <Divider className="divider" />
-          { miniGamesData["savannah"].about.map((text, textKey) => (
+          { MINI_GAMES_DATA["savannah"].about.map((text, textKey) => (
             <p key={textKey} className="about-game">
               { text }
             </p>
