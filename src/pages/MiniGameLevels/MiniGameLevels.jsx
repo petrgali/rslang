@@ -2,14 +2,14 @@ import React from "react";
 import { useHistory } from "react-router";
 import { Divider } from "rsuite";
 import CardList from "../../components/CardList";
-import { miniGamesData } from "../../navigation/CONSTANT";
+import { MINI_GAMES_DATA } from "../../navigation/CONSTANT";
 import "./MiniGameLevels.css";
 
 const MiniGameLevels = ({ name }) => {
   const history = useHistory()
 
   const handleAction = (level) => {
-    history.push(`${miniGamesData[name.toLowerCase()].location}/${level}`)
+    history.push(`${MINI_GAMES_DATA[name.toLowerCase()].location}/${level}`)
   }
 
   const cards = [
@@ -81,10 +81,10 @@ const MiniGameLevels = ({ name }) => {
 
   return (
     <div className="mini-games-levels">
-      <h1 className="title">{ miniGamesData[name.toLowerCase()].name }</h1>
+      <h1 className="title">{ MINI_GAMES_DATA[name.toLowerCase()].name }</h1>
       <h2 className="subtitle">Об игре</h2>
       <Divider className="divider" />
-      { miniGamesData[name.toLowerCase()].about.map((text, textKey) => (
+      { MINI_GAMES_DATA[name.toLowerCase()].about.map((text, textKey) => (
         <p key={textKey} className="about-game">
           { text }
         </p>

@@ -4,16 +4,16 @@ import { Button, Divider, Icon, IconButton } from "rsuite";
 import GameLoading from "../../components/GameLoading";
 import GameResult from "../../components/GameResult/GameResult";
 import useGameEngine from "../../hooks/hooks";
-import { miniGamesData } from "../../navigation/CONSTANT";
+import { MINI_GAMES_DATA } from "../../navigation/CONSTANT";
 import "./Savannah.css";
 
 let interval
 
 const Savannah = ({ match }) => {
   const [{word, words}, {
-    guess, forceGameOver, isLoading, isGameOver, history,
+    guess, forceGameOver, forceNextWord, isLoading, isGameOver, history,
   }] = useGameEngine({
-    type: "Savannah", group: match.params.level - 1
+    type: "savannah", group: match.params.level - 1
   })
   const [isPlaying, setIsPlaying] = useState(false)
   const [isGameLoading, setIsGameLoading] = useState(false)
@@ -41,6 +41,9 @@ const Savannah = ({ match }) => {
         clearInterval(interval)
         guess({ word: "" })
         setLives(lives.slice(1))
+        setTimeout(() => {
+          forceNextWord()
+        }, 1000)
       } else {
         setTop(top + 1)
       }
@@ -58,23 +61,27 @@ const Savannah = ({ match }) => {
     }
   }, [lives])
 
-  const handleFullScreen = (event) => {
+  const handleFullScreen = () => {
     savannaRef.current.requestFullscreen()
+  }
+
+  const handleClose = () => {
+    forceGameOver()
   }
 
   return (
     <div ref={savannaRef} className="savannah">
-      <h1 className="title">{ miniGamesData["savannah"].name }</h1>
+      <h1 className="title">{ MINI_GAMES_DATA["savannah"].name }</h1>
       {!isPlaying ? (
         <>
           <h2 className="subtitle">Об игре</h2>
           <Divider className="divider" />
-          { miniGamesData["savannah"].about.map((text, textKey) => (
+          { MINI_GAMES_DATA["savannah"].about.map((text, textKey) => (
             <p key={textKey} className="about-game">
               { text }
             </p>
           )) }
-          <div className="content">
+          <div className="game-content">
             <IconButton
               appearance="primary"
               icon={<Icon icon="play-circle" />}
@@ -98,11 +105,17 @@ const Savannah = ({ match }) => {
               <div className="lives">
                 {lives.map((_, liveKey) => <Icon key={liveKey} icon="heart" size="2x" />)}
               </div>
-              <IconButton
-                className="full-screen-btn"
-                icon={<Icon icon="arrows-alt" />}
-                circle size="lg"
-                onClick={handleFullScreen} />
+              <div className="game-menu">
+                <IconButton
+                  icon={<Icon icon="arrows-alt" />}
+                  circle size="lg"
+                  onClick={handleFullScreen} />
+
+                <IconButton
+                  icon={<Icon icon="close" />}
+                  circle size="lg"
+                  onClick={handleClose} />
+              </div>
               <div className="game">
                 <p
                   className="word"
@@ -120,6 +133,9 @@ const Savannah = ({ match }) => {
                         if (word.color) return
                         clearInterval(interval)
                         !guess(word) && setLives(lives.slice(1))
+                        setTimeout(() => {
+                          forceNextWord()
+                        }, 1000)
                         event.currentTarget.blur()
                       }}>
                         {word.wordTranslate.toLowerCase()}

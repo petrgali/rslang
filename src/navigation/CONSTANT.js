@@ -10,7 +10,7 @@ export const SPRINT_LEVELS_ROUTE = "/mini-games/sprint/levels"
 export const OWN_GAME_LEVELS_ROUTE = "/mini-games/own-game/levels"
 
 
-export const miniGamesData = {
+export const MINI_GAMES_DATA = {
   savannah: {
     name: "Саванна",
     about: [
@@ -18,5 +18,13 @@ export const miniGamesData = {
       "Управлять мини-игрой можно как мышкой, так и клавишами на клавиатуре (1, 2, 3, 4)."
     ],
     location: SAVANNAH_LEVELS_ROUTE,
+  },
+  audiocall: {
+    name: "Аудиовызов",
+    about: [
+      'Мини-игра "Аудиовызов" - это тренировка, развивающая навыки речи и перевода.',
+      "Управлять мини-игрой можно как мышкой, так и клавишами на клавиатуре (1, 2, 3, 4, 5)."
+    ],
+    location: AUDIOCALL_LEVELS_ROUTE,
   }
 }
