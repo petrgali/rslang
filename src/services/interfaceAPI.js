@@ -49,6 +49,7 @@ const requestAPI = async (options) => {
         }
     }
 }
+
 const interactAPI = {
     getWords: (page = 0, group = 0) => {
         return requestAPI({
@@ -96,6 +97,12 @@ const interactAPI = {
             ...getAuth,
             url: `${API_BASE_URL}users/${id}/words`,
         })
+    },
+    getHardOrIsLearningOrRegularWords: (group = 0, page = 0, id = localStorage.getItem(USER.ID)) => {
+      return requestAPI({
+        ...getAuth,
+        url: `${API_BASE_URL}users/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={"$or":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.optional.isLearning": true}]},{"userWord":null}]}`,
+      })
     },
     addUserWord: (wordId, setting) => {
         let id = localStorage.getItem(USER.ID)
@@ -159,7 +166,6 @@ const interactAPI = {
     },
     getTrainingAggregatedWords: (group = 0, page = 0, words = 20) => {
         let id = localStorage.getItem(USER.ID)
-        // let filter = `{ "$or": [{ "userWord.difficulty": "hard" }, { "userWord": null }] }`
         let filter = `{"$or": [{"$and":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.difficulty": "deleted"}]}]},{"userWord": null}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
@@ -168,4 +174,5 @@ const interactAPI = {
         })
     }
 }
-export default interactAPI
+
+export default Object.freeze(interactAPI)
