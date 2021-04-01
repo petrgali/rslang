@@ -13,7 +13,7 @@ const Savannah = ({ match }) => {
   const [{word, words}, {
     guess, forceGameOver, isLoading, isGameOver, history,
   }] = useGameEngine({
-    type: "Savannah", group: match.params.level - 1
+    type: "savannah", group: match.params.level - 1
   })
   const [isPlaying, setIsPlaying] = useState(false)
   const [isGameLoading, setIsGameLoading] = useState(false)
@@ -58,8 +58,12 @@ const Savannah = ({ match }) => {
     }
   }, [lives])
 
-  const handleFullScreen = (event) => {
+  const handleFullScreen = () => {
     savannaRef.current.requestFullscreen()
+  }
+
+  const handleClose = () => {
+    forceGameOver()
   }
 
   return (
@@ -74,7 +78,7 @@ const Savannah = ({ match }) => {
               { text }
             </p>
           )) }
-          <div className="content">
+          <div className="game-content">
             <IconButton
               appearance="primary"
               icon={<Icon icon="play-circle" />}
@@ -98,11 +102,17 @@ const Savannah = ({ match }) => {
               <div className="lives">
                 {lives.map((_, liveKey) => <Icon key={liveKey} icon="heart" size="2x" />)}
               </div>
-              <IconButton
-                className="full-screen-btn"
-                icon={<Icon icon="arrows-alt" />}
-                circle size="lg"
-                onClick={handleFullScreen} />
+              <div className="game-menu">
+                <IconButton
+                  icon={<Icon icon="arrows-alt" />}
+                  circle size="lg"
+                  onClick={handleFullScreen} />
+
+                <IconButton
+                  icon={<Icon icon="close" />}
+                  circle size="lg"
+                  onClick={handleClose} />
+              </div>
               <div className="game">
                 <p
                   className="word"

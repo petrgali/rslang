@@ -21,3 +21,39 @@
   text-align: center;
   font-weight: 500;
 }
+
+.game-menu {
+  padding: 0px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 10px;
+}
+
+.game-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.game {
+  height: calc(100% - 150px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.btns {
+  padding: 0px 20px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  column-gap: 20px;
+  row-gap: 20px;
+  flex-wrap: wrap;
+  background: white;
+  z-index: 3;
+}

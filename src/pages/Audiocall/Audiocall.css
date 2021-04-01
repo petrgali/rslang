@@ -1,0 +1,26 @@
+@import "../../styles/pages.css";
+
+.audiocall {
+  padding: 20px 0px;
+  height: 100%;
+  width: 100%;
+  background: white;
+}
+
+.audiocall .game {
+  row-gap: 20px;
+}
+
+.audiocall .play-audio {
+  padding: 25px !important;
+  height: 100px !important;
+  width: 100px !important;
+}
+
+.audiocall .play-audio .icon {
+  position: relative !important;
+  height: 50px !important;
+  width: 50px !important;
+  font-size: 50px !important;
+  line-height: 0.6 !important;
+}
