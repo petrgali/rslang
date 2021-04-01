@@ -27,7 +27,7 @@ const generateGuessWords = (words, wordIndex, limit) => {
 const sizes = {
   savannah: 4,
   audiocall: 5,
-  sprint: 0
+  sprint: 2
 }
 
 const sound = (type) => {
