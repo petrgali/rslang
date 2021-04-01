@@ -1,0 +1,90 @@
+.wordbox {
+    width: 90%;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.word-image {
+    box-shadow: 0px 16px 24px 2px rgba(0, 0, 0, 0.14), 0px 6px 30px 5px rgba(0, 0, 0, 0.12), 0px 8px 10px -7px rgba(0, 0, 0, 0.2);
+    border-radius: 40px;
+    max-width: 400px;
+    max-height: 10em;
+}
+
+.word-cover {
+    display: "flex";
+    flex-direction: column;
+}
+
+.word-loader {
+    margin: auto;
+}
+
+.en-word {
+    text-align: center;
+    font-size: x-large;
+    font-weight: 500;
+}
+
+.en-pron {
+    color: black;
+    font-size: medium;
+    margin-left: 5px;
+}
+
+.en-translate {
+    font-size: medium;
+    margin-left: 5px;
+}
+
+.play-icon {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.buttons {
+    width: 150px;
+    margin: 5px auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.buttons svg {
+    cursor: pointer;
+}
+
+@media screen and (min-width: 750px) {
+    .wordbox {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: justify;
+        width: 70%;
+    }
+    .word-image {
+        max-width: 200px;
+        margin: auto;
+        vertical-align: baseline;
+    }
+    .word-cover {
+        margin: 0 20px 0 20px;
+        width: 70%;
+    }
+    .en-word {
+        text-align: left;
+    }
+}
+
+@media (min-width:750px) and (max-width:900px) {
+    .buttons {
+        flex-direction: column;
+    }
+}
