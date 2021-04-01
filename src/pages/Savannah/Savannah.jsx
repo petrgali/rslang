@@ -11,7 +11,7 @@ let interval
 
 const Savannah = ({ match }) => {
   const [{word, words}, {
-    guess, forceGameOver, isLoading, isGameOver, history,
+    guess, forceGameOver, forceNextWord, isLoading, isGameOver, history,
   }] = useGameEngine({
     type: "savannah", group: match.params.level - 1
   })
@@ -41,6 +41,9 @@ const Savannah = ({ match }) => {
         clearInterval(interval)
         guess({ word: "" })
         setLives(lives.slice(1))
+        setTimeout(() => {
+          forceNextWord()
+        }, 1000)
       } else {
         setTop(top + 1)
       }
@@ -130,6 +133,9 @@ const Savannah = ({ match }) => {
                         if (word.color) return
                         clearInterval(interval)
                         !guess(word) && setLives(lives.slice(1))
+                        setTimeout(() => {
+                          forceNextWord()
+                        }, 1000)
                         event.currentTarget.blur()
                       }}>
                         {word.wordTranslate.toLowerCase()}

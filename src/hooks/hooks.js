@@ -75,14 +75,6 @@ const useGameEngine = ({ type, group }) => {
       ...element,
       color: element.word === words[wordIndex].word ? "green" : "red"
     })))
-    if (wordIndex + 1 >= words.length) {
-      setIsGameOver(true)
-    } else {
-      setTimeout(() => {
-        setWordIndex(wordIndex + 1)
-        setGuessWords(generateGuessWords(words, wordIndex + 1, sizes[type.toLowerCase()]))
-      }, 1000)
-    }
     if (words[wordIndex].word === word.word) {
       setHistory({ ...history, correctGuessWords: [...history.correctGuessWords, words[wordIndex]]})
       sound("correct")
@@ -91,6 +83,15 @@ const useGameEngine = ({ type, group }) => {
       sound("incorrect")
     }
     return words[wordIndex].word === word.word
+  }
+
+  const forceNextWord = () => {
+    if (wordIndex + 1 >= words.length) {
+      setIsGameOver(true)
+    } else {
+      setWordIndex(wordIndex + 1)
+      setGuessWords(generateGuessWords(words, wordIndex + 1, sizes[type.toLowerCase()]))
+    }
   }
 
   const forceRestart = () => {
@@ -114,6 +115,7 @@ const useGameEngine = ({ type, group }) => {
     isLoading,
     forceGameOver: () => setIsGameOver(true),
     forceRestart,
+    forceNextWord,
   }]
 }
 
