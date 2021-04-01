@@ -1,8 +1,10 @@
 import Training from "../Training/Training"
-import interactAPI from "../../services/interfaceAPI"
+import DeletedWords from "../Dictionary/components/DeletedWordsSection"
+
 
 //authorize to get JWT token
 
+// import interactAPI from "../../services/interfaceAPI"
 // interactAPI.loginUser({
 //     email: "opelliek@gmail.com",
 //     password: "Qwerty123!"
@@ -16,7 +18,8 @@ export default function Home() {
         <div>
             <h1>Sample home page</h1>
             <Training 
-            group={0}/>
+            group={3}/>
+            <DeletedWords />
         </div>
     )
 }

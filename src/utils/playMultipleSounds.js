@@ -1,8 +1,8 @@
 let sound = new Audio()
-let idx = 1
 
 const Sound = {
     play: (source, arr) => {
+        let idx = 1
         sound.src = `${source + arr[idx - 1]}`
         sound.play()
         sound.onended = () => {
@@ -11,7 +11,6 @@ const Sound = {
                 sound.play()
                 idx++
             }
-
         }
     },
     stop: () => {

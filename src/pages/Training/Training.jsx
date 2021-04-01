@@ -71,6 +71,7 @@ const Training = ({ group }) => {
             <PageToggler
                 updatePage={handlePageUpdate}
                 activePage={activePage}
+                totalPages={30}
             />
             <Options
                 showControl={showControl}

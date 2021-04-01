@@ -12,4 +12,5 @@ export const ERROR = {
     404: "Not found",
     417: "Expectation failed",
     422: "Incorrect e-mail or password",
+    500: "API internal error"
 }

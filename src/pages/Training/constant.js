@@ -4,5 +4,6 @@ export const trainingOptions = {
 }
 export const wordStatus = {
     hard: "hard",
-    deleted: "deleted"
+    deleted: "deleted",
+    recovered: "recovered"
 }
