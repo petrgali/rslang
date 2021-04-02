@@ -19,15 +19,21 @@ export const RouterConfig = () => {
                 <Route exact path={AUDIOCALL_ROUTE} component={() => <MiniGameLevels name="Audiocall" />} />
                 <Route exact path={SPRINT_ROUTE} component={() => <MiniGameLevels name="Sprint" />} />
                 <Route exact path={SAVANNAH_LEVELS_ROUTE + "/:level"} component={({ match }) => {
-                  if (match.params.level < 1 || match.params.level > 6) return <NotFound />
+                  if (isNaN(parseFloat(match.params.level)) ||
+                      match.params.level < 1 ||
+                      match.params.level > 6) return <NotFound />
                   return <Savannah match={match} />
                 }} />
                 <Route exact path={AUDIOCALL_LEVELS_ROUTE + "/:level"} component={({ match }) => {
-                  if (match.params.level < 1 || match.params.level > 6) return <NotFound />
+                  if (isNaN(parseFloat(match.params.level)) ||
+                      match.params.level < 1 ||
+                      match.params.level > 6) return <NotFound />
                   return <Audiocall match={match} />
                 }} />
                 <Route exact path={SPRINT_LEVELS_ROUTE + "/:level"} component={({ match }) => {
-                  if (match.params.level < 1 || match.params.level > 6) return <NotFound />
+                  if (isNaN(parseFloat(match.params.level)) ||
+                      match.params.level < 1 ||
+                      match.params.level > 6) return <NotFound />
                   return <Sprint match={match} />
                 }} />
                 {/*generic 404 route*/}
