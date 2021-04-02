@@ -1,6 +1,6 @@
-import Training from "../Training/Training"
-import Dictionary from "../Dictionary/Dictionary"
-import { MODE } from "../Dictionary/constant"
+import Training from "../../components/Training"
+import Dictionary from "../../components/Dictionary"
+import { STATUS } from "../../components/constant"
 
 //authorize to get JWT token
 import interactAPI from "../../services/interfaceAPI"
@@ -10,16 +10,14 @@ import interactAPI from "../../services/interfaceAPI"
 // }).then(console.log)
 
 
-
 export default function Home() {
-
     return (
         <div>
             <h1>Sample home page</h1>
-            {/* <Training 
-            group={2}/> */}
+            <Training 
+            group={0}/>
             <Dictionary
-                mode={MODE.HARD}
+                mode={STATUS.DELETED}
             />
         </div>
     )

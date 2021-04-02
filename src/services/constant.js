@@ -4,6 +4,10 @@ export const USER = {
     ID: "id",
     LAST_VISITED: "act_pg"
 }
+export const TRAINING = {
+    showTranslate: "sh_TR",
+    showControls: "sh_CT",
+}
 export const ERROR = {
     400: "Bad request",
     401: "Access token is missing or invalid",

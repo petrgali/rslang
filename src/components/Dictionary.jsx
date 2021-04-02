@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react"
 import { Loader } from "rsuite"
-import interactAPI from "../../services/interfaceAPI"
-import WordsList from "../Training/components/WordsList"
-import Sound from "../../utils/playMultipleSounds"
-import PageToggler from "../Training/components/PageToggler"
-import Calculate from "../../utils/calculatePagination"
-import { MODE } from "./constant"
+import PageToggler from "./PageToggler"
+import WordsList from "./WordsList"
+import { STATUS } from "./constant"
+import Sound from "../utils/playMultipleSounds"
+import Calculate from "../utils/calculatePagination"
+import interactAPI from "../services/interfaceAPI"
 
 const api = interactAPI
 
 const Dictionary = ({ mode }) => {
+    
     const [data, updateData] = useState()
     const [activePage, updateActivePage] = useState(1)
     const [totalPages, updateTotal] = useState(0)
     const [groupRequest, updateGroupRequest] = useState()
     const [isLoaded, updateLoadedState] = useState(false)
     const [isEmpty, updateEmpty] = useState(false)
-
-
 
     const handle = {
         recover: (id) => {
@@ -27,65 +26,54 @@ const Dictionary = ({ mode }) => {
                     if (response.status === 204) requestData.updateAll()
                 })
         },
-        dataUpdate: (rawData) => {
-            updateData(rawData)
-            updateLoadedState(true)
+        dataUpdate: (response) => {
+            if (response.status === 200) {
+                updateData(response.payload[0].paginatedResults)
+                updateLoadedState(true)
+            }
         },
         pageUpdate: (num) => updateActivePage(num),
-        rePaginatedOutput: (rawData) => {
-            let { request, total } = Calculate.total(rawData, activePage)
-            updateTotal(total)
-            if (request) {
-                updateGroupRequest(+request.group + 1)
-                requestData.byGroup(request.group, request.page)
-                return
+        rePaginatedOutput: (response) => {
+            if (response.status === 200) {
+                let { request, total } = Calculate.total(response.payload[0].paginatedResults, activePage)
+                updateTotal(total)
+                if (request) {
+                    updateGroupRequest(+request.group + 1)
+                    requestData.byGroup(request.group, request.page)
+                    return
+                }
+                if (total > 0) {
+                    updateActivePage(activePage - 1)
+                    return
+                }
+                updateEmpty(true)
             }
-            if (total > 0) {
-                updateActivePage(activePage - 1)
-                return
-            }
-            updateEmpty(true)
         },
     }
 
     const requestData = {
         updateAll: () => {
             switch (mode) {
-                case MODE.DELETED:
+                case STATUS.DELETED:
                     api.getDeletedWords()
-                        .then((response) => {
-                            if (response.status === 200) {
-                                handle.rePaginatedOutput(response.payload[0].paginatedResults)
-                            }
-                        })
+                        .then(response => handle.rePaginatedOutput(response))
                     break
-                case MODE.HARD:
+                case STATUS.HARD:
                     api.getHardWords()
-                        .then((response) => {
-                            if (response.status === 200) {
-                                handle.rePaginatedOutput(response.payload[0].paginatedResults)
-                            }
-                        })
+                        .then(response => handle.rePaginatedOutput(response))
                     break
             }
         },
         byGroup: (group, page) => {
             switch (mode) {
-                case MODE.DELETED:
+                case STATUS.DELETED:
+                    
                     api.getDeletedWordsbyGroup(group, page)
-                        .then(response => {
-                            if (response.status === 200) {
-                                handle.dataUpdate(response.payload[0].paginatedResults)
-                            }
-                        })
+                        .then(response => handle.dataUpdate(response))
                     break
-                case MODE.HARD:
+                case STATUS.HARD:
                     api.getHardWordsbyGroup(group, page)
-                        .then(response => {
-                            if (response.status === 200) {
-                                handle.dataUpdate(response.payload[0].paginatedResults)
-                            }
-                        })
+                        .then(response => handle.dataUpdate(response))
                     break
             }
         }

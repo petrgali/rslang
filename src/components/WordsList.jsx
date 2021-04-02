@@ -1,6 +1,6 @@
 import WordBox from "./WordBox/WordBox"
-import { wordStatus } from "../constant"
 import WordButtons from "./WordButtons"
+import { STATUS } from "./constant"
 
 function WordsList({ data, setWordStatus, recoverWord, showControl, showTranslate, showRecover }) {
     return (
@@ -12,8 +12,8 @@ function WordsList({ data, setWordStatus, recoverWord, showControl, showTranslat
                 showControl={showControl}
                 showRecover={showRecover}
                 recoverWord={() => recoverWord(obj._id)}
-                setWordHard={() => setWordStatus(obj._id, wordStatus.hard)}
-                removeWord={() => setWordStatus(obj._id, wordStatus.deleted)}
+                setWordHard={() => setWordStatus(obj._id, STATUS.HARD)}
+                removeWord={() => setWordStatus(obj._id, STATUS.DELETED)}
             />} />
         )
     )

@@ -1,4 +1,3 @@
-
 const WordButtons = ({ setWordHard, removeWord, recoverWord, showRecover, showControl }) => {
     return (
         <>
