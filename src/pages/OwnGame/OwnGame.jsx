@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 import { Divider, Icon, IconButton } from "rsuite";
 import GameLoading from "../../components/GameLoading";
 import GameResult from "../../components/GameResult/GameResult";
@@ -18,6 +19,14 @@ const OwnGame = ({ match }) => {
   const [showNextBtn, setShowNextBtn] = useState(false)
   const ownGameRef = useRef()
   const btnsRef = useRef()
+
+  useHotkeys("1", () => btnsRef.current && btnsRef.current.children[0].click())
+
+  useHotkeys("2", () => btnsRef.current && btnsRef.current.children[1].click())
+
+  useHotkeys("3", () => btnsRef.current && btnsRef.current.children[2].click())
+
+  useHotkeys("4", () => btnsRef.current && btnsRef.current.children[3].click())
 
   const handleFullScreen = () => {
     ownGameRef.current.requestFullscreen()
