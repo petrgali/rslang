@@ -11,7 +11,7 @@ export const OWN_GAME_LEVELS_ROUTE = "/mini-games/own-game/levels"
 
 
 export const MINI_GAMES_DATA = {
-  savannah: {
+  "savannah": {
     name: "Саванна",
     about: [
       'Мини-игра "Саванна" – это тренажер по переводу твоего пассивного изученного словаря в активную стадию.',
@@ -19,7 +19,7 @@ export const MINI_GAMES_DATA = {
     ],
     location: SAVANNAH_LEVELS_ROUTE,
   },
-  audiocall: {
+  "audiocall": {
     name: "Аудиовызов",
     about: [
       'Мини-игра "Аудиовызов" - это тренировка, развивающая навыки речи и перевода.',
@@ -27,12 +27,20 @@ export const MINI_GAMES_DATA = {
     ],
     location: AUDIOCALL_LEVELS_ROUTE,
   },
-  sprint: {
+  "sprint": {
     name: "Спринт",
     about: [
-      'Мини-игра "Спринт" - это тренировка для повторения заученных слов из вашего словаря.',
+      'Мини-игра "Спринт" - это тренировка слов на скорость (за 60 секунд).',
       "Управлять мини-игрой можно как мышкой, так и клавишами на клавиатуре (1, 2)."
     ],
     location: SPRINT_LEVELS_ROUTE,
+  },
+  "own game": {
+    name: "Своя игра",
+    about: [
+      'Мини-игра "Своя игра" - это тренировка для визуализации слов.',
+      "Управлять мини-игрой можно как мышкой, так и клавишами на клавиатуре (1, 2, 3, 4)."
+    ],
+    location: OWN_GAME_LEVELS_ROUTE,
   }
 }
