@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { Button, Divider, Icon, IconButton, Progress } from "rsuite"
+import { Divider, Icon, IconButton, Progress } from "rsuite"
 import GameLoading from "../../components/GameLoading"
 import GameResult from "../../components/GameResult/GameResult"
 import useGameEngine from "../../hooks/hooks"
@@ -18,6 +18,7 @@ const Sprint = ({ match }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isGameLoading, setIsGameLoading] = useState(false)
   const [countDownTime, setCountDownTime] = useState(60)
+  const [result, setResult] = useState("")
   const sprintRef = useRef()
   const progressRef = useRef()
   const btnsRef = useRef()
@@ -102,8 +103,17 @@ const Sprint = ({ match }) => {
             </div>
               <div className="game">
                 <div ref={progressRef} className="progress">
-                  <Progress.Circle percent={((60 - countDownTime) * 1.666666666)} showInfo />
+                  <Progress.Circle
+                    percent={((60 - countDownTime) * 1.666666666)}
+                    showInfo={countDownTime === 60 ? false : true}
+                  />
                 </div>
+                {result === "correct" && (
+                  <Icon icon="thumbs-up" size="2x" />
+                )}
+                {result === "incorrect" && (
+                  <Icon icon="thumbs-down" size="2x" />
+                )}
                 <h3 className="subtitle" style={{ margin: 0 }}>
                   { word.word.toLowerCase() } - { words[0].wordTranslate.toLowerCase() }
                 </h3>
@@ -116,11 +126,14 @@ const Sprint = ({ match }) => {
                       if (words[0].color) return
                       if (word.word !== words[0].word) {
                         guess(word)
+                        setResult("incorrect")
                       } else {
                         guess({ word: "" })
+                        setResult("correct")
                       }
                       setTimeout(() => {
                         forceNextWord()
+                        setResult("")
                       }, 1000)
                       event.currentTarget.blur()
                     }}>
@@ -134,11 +147,14 @@ const Sprint = ({ match }) => {
                       if (words[0].color) return
                       if (word.word === words[0].word) {
                         guess(word)
+                        setResult("correct")
                       } else {
                         guess({ word: "" })
+                        setResult("incorrect")
                       }
                       setTimeout(() => {
                         forceNextWord()
+                        setResult("")
                       }, 1000)
                       event.currentTarget.blur()
                     }}>
