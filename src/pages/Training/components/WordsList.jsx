@@ -11,7 +11,7 @@ function WordsList({ data, setWordStatus, recoverWord, showControl, showTranslat
             buttons={<WordButtons
                 showControl={showControl}
                 showRecover={showRecover}
-                recoverWord={() => recoverWord(obj._id, wordStatus.recovered)}
+                recoverWord={() => recoverWord(obj._id)}
                 setWordHard={() => setWordStatus(obj._id, wordStatus.hard)}
                 removeWord={() => setWordStatus(obj._id, wordStatus.deleted)}
             />} />
