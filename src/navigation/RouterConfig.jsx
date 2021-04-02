@@ -1,6 +1,6 @@
 import { Switch, Route } from "react-router-dom"
 import Home from "../pages/Home/Home"
-import { NotFound } from "./NotFound"
+import NotFound from "../components/NotFound/NotFound"
 import { AUDIOCALL_LEVELS_ROUTE, AUDIOCALL_ROUTE, MINI_GAMES_ROUTE, ROOT, SAVANNAH_LEVELS_ROUTE, SAVANNAH_ROUTE, SPRINT_LEVELS_ROUTE, SPRINT_ROUTE } from "./CONSTANT"
 import MiniGames from "../pages/MiniGames/MiniGames"
 import MiniGameLevels from "../pages/MiniGameLevels/MiniGameLevels"
