@@ -1,8 +1,9 @@
 import { BrowserRouter } from "react-router-dom"
 import { Container, Content, Footer, Header, Sidebar } from "rsuite";
+import "rsuite/dist/styles/rsuite-default.css";
 import { RouterConfig } from "./navigation/RouterConfig"
 import setDefaults from "./services/setOptionsDefault"
-import "rsuite/dist/styles/rsuite-default.css";
+import ContainerFooter from "./components/ContainerFooter/ContainerFooter";
 import Menu from "./components/Menu/Menu";
 import "./styles/App.css";
 
@@ -22,7 +23,7 @@ function App() {
               <RouterConfig />
           </Content>
           <Footer>
-            
+            <ContainerFooter />
           </Footer>
         </Container>
       </Container>
