@@ -11,7 +11,6 @@ const Sound = {
                 sound.play()
                 idx++
             }
-
         }
     },
     stop: () => {

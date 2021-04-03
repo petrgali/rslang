@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
-import { Loader } from "rsuite"
-import interactAPI from "../../services/interfaceAPI"
-import WordsList from "./components/WordsList"
-import Options from "./components/OptionsModal/Options"
-import PageToggler from "./components/PageToggler"
-import { wordStatus, trainingOptions } from "./constant"
-import { USER } from "../../services/constant"
-import Sound from "../../utils/playMultipleSounds"
+import { Alert } from "rsuite"
+import { STATUS, MESSAGE } from "./constant"
+import { TRAINING, USER } from "../services/constant"
+import interactAPI from "../services/interfaceAPI"
+import WordsList from "./WordsList"
+import ListPlaceholder from "./ListPlaceholder/ListPlaceholder"
+import Options from "./OptionsModal/Options"
+import PageToggler from "./PageToggler"
+import Sound from "../utils/playMultipleSounds"
 
 const api = interactAPI
 
@@ -15,15 +16,15 @@ const Training = ({ group }) => {
     const [isLoaded, updateLoadedState] = useState(false)
     const [isEmpty, updateEmptyState] = useState(true)
     const [activePage, updateActivePage] = useState(+localStorage.getItem(USER.LAST_VISITED))
-    const [showControl, updateControl] = useState(localStorage.getItem(trainingOptions.showControls) === "true")
-    const [showTranslate, updateTranslate] = useState(localStorage.getItem(trainingOptions.showTranslate) === "true")
+    const [showControl, updateControl] = useState(localStorage.getItem(TRAINING.showControls) === "true")
+    const [showTranslate, updateTranslate] = useState(localStorage.getItem(TRAINING.showTranslate) === "true")
 
     const handlePageUpdate = (num) => {
         updateActivePage(num)
         localStorage.setItem(USER.LAST_VISITED, num)
     }
     const handleRawData = (rawData) => {
-        let filteredData = rawData.filter(obj => !obj.userWord || obj.userWord.difficulty !== wordStatus.deleted)
+        let filteredData = rawData.filter(obj => !obj.userWord || obj.userWord.difficulty !== STATUS.DELETED)
         if (filteredData.length < 1) {
             updateLoadedState(true)
             updateEmptyState(true)
@@ -45,20 +46,24 @@ const Training = ({ group }) => {
         api.updateUserWordbyId(id, { difficulty: mode })
             .then(response => {
                 if (response.status === 200) {
+                    Alert.info(MESSAGE.ADDED)
                     requestData()
                 } else if (response.status === 404) {
                     api.addUserWord(id, { difficulty: mode })
                         .then(response => {
-                            if (response.status === 200) requestData()
+                            if (response.status === 200) {
+                                Alert.info(MESSAGE.ADDED)
+                                requestData()
+                            }
                         })
                 }
             })
     }
     useEffect(() => {
-        localStorage.setItem(trainingOptions.showControls, showControl)
+        localStorage.setItem(TRAINING.showControls, showControl)
     }, [showControl])
     useEffect(() => {
-        localStorage.setItem(trainingOptions.showTranslate, showTranslate)
+        localStorage.setItem(TRAINING.showTranslate, showTranslate)
     }, [showTranslate])
     useEffect(() => {
         Sound.stop()
@@ -71,6 +76,7 @@ const Training = ({ group }) => {
             <PageToggler
                 updatePage={handlePageUpdate}
                 activePage={activePage}
+                totalPages={30}
             />
             <Options
                 showControl={showControl}
@@ -78,15 +84,10 @@ const Training = ({ group }) => {
                 toggleControl={() => updateControl(!showControl)}
                 toggleTranslate={() => updateTranslate(!showTranslate)}
             />
-            {!isLoaded && <Loader
-                size="lg"
-                content="Loading content..."
-                vertical />
-            }
-            {!isEmpty && isLoaded && <WordsList
+            {!isLoaded && <ListPlaceholder />}
+            {!isEmpty && <WordsList
                 data={data}
                 setWordStatus={setWordStatus}
-                isLoaded={isLoaded}
                 showControl={showControl}
                 showTranslate={showTranslate} />
             }

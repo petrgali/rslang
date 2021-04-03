@@ -1,6 +1,6 @@
 import { Icon } from "rsuite"
-import { API_BASE_URL } from "../../../../services/constant"
-import Sound from "../../../../utils/playMultipleSounds"
+import { API_BASE_URL } from "../../services/constant"
+import Sound from "../../utils/playMultipleSounds"
 import 'rsuite/dist/styles/rsuite-default.css'
 import "./WordBox.css"
 

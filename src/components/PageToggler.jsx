@@ -1,6 +1,6 @@
 import { Pagination } from "rsuite"
 
-const PageToggler = ({ updatePage, activePage, totalPages = 30 }) => {
+const PageToggler = ({ updatePage, activePage, totalPages }) => {
     const handle = (eventKey) => updatePage(eventKey)
     return (
         <Pagination
