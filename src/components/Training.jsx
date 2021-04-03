@@ -4,6 +4,7 @@ import { STATUS } from "./constant"
 import { TRAINING, USER } from "../services/constant"
 import interactAPI from "../services/interfaceAPI"
 import WordsList from "./WordsList"
+import ListPlaceholder from "./ListPlaceholder/ListPlaceholder"
 import Options from "./OptionsModal/Options"
 import PageToggler from "./PageToggler"
 import Sound from "../utils/playMultipleSounds"
@@ -79,15 +80,10 @@ const Training = ({ group }) => {
                 toggleControl={() => updateControl(!showControl)}
                 toggleTranslate={() => updateTranslate(!showTranslate)}
             />
-            {!isLoaded && <Loader
-                size="lg"
-                content="Loading content..."
-                vertical />
-            }
-            {!isEmpty && isLoaded && <WordsList
+            {!isLoaded && <ListPlaceholder />}
+            {!isEmpty && <WordsList
                 data={data}
                 setWordStatus={setWordStatus}
-                isLoaded={isLoaded}
                 showControl={showControl}
                 showTranslate={showTranslate} />
             }

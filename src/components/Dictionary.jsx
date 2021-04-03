@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
-import { Loader } from "rsuite"
 import PageToggler from "./PageToggler"
 import WordsList from "./WordsList"
 import { STATUS } from "./constant"
 import Sound from "../utils/playMultipleSounds"
 import Calculate from "../utils/calculatePagination"
 import interactAPI from "../services/interfaceAPI"
+import ListPlaceholder from "./ListPlaceholder/ListPlaceholder"
 
 const api = interactAPI
 
@@ -99,10 +99,7 @@ const Dictionary = ({ mode }) => {
                             showRecover
                             recoverWord={handle.recover}
                             data={data} />
-                        : <Loader
-                            size="lg"
-                            content="Loading content..."
-                            vertical />
+                        : <ListPlaceholder />
                     }
 
                 </>
