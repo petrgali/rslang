@@ -9,3 +9,8 @@ html, body, #root {
   position: relative;
   font-family: 'Golos Text';
 }
+
+.container {
+  min-height: 100%;
+  width: 100%;
+}
