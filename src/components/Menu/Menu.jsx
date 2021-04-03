@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation, } from "react-router";
 import { Icon, Nav, Sidenav } from "rsuite";
 import { ELECTRONIC_TEXTBOOK_ROUTE, MINI_GAMES_ROUTE, STATISTICS_ROUTE } from "../../navigation/CONSTANT";
@@ -18,10 +18,13 @@ const Menu = () => {
   const history = useHistory()
   const [activeKey, setActiveKey] = useState(getCurrentActiveKey(location.pathname))
 
+  useEffect(() => {
+    setActiveKey(getCurrentActiveKey(location.pathname))
+  }, [location.pathname])
+
   const handleSelect = (eventKey, event) => {
     eventKey = parseFloat(eventKey)
     history.push(routes[eventKey - 1])
-    setActiveKey(eventKey)
     event.currentTarget.blur()
   }
 
