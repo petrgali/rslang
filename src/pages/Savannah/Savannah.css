@@ -1,0 +1,33 @@
+@import "../../styles/pages.css";
+
+.savannah {
+  padding: 20px 0px 0px;
+  height: 100%;
+  width: 100%;
+  background: white;
+}
+
+.savannah .lives {
+  margin: 0px 0px 0px 20px;
+  height: 28px;
+  display: flex;
+  column-gap: 10px;
+}
+
+.savannah .game {
+  height: calc(100% - 200px);
+}
+
+.savannah .word {
+  position: absolute;
+  top: 180px;
+  font-size: 24px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.savannah .game-icon {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

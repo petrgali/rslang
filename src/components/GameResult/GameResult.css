@@ -1,0 +1,19 @@
+.game-result {
+  height: 100%;
+  width: 100%;
+}
+
+.game-result .restart {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.game-result .list {
+  margin: 5px 0px 10px 0px;
+}
+
+.game-result .list .list-item {
+  padding-left: 20px;
+  padding-right: 20px;
+}
