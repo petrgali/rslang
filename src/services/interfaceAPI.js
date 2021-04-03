@@ -166,13 +166,61 @@ const interactAPI = {
     },
     getTrainingAggregatedWords: (group = 0, page = 0, words = 20) => {
         let id = localStorage.getItem(USER.ID)
-        let filter = `{"$or": [{"$and":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.difficulty": "deleted"}]}]},{"userWord": null}]}`
+        let filter = `{"$or": [{ "userWord": {"$exists": true}}, {"userWord": null}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
             ...getAuth,
 
         })
-    }
+    },
+    getDeletedWords: (page = 0, words = 3600) => {
+        let id = localStorage.getItem(USER.ID)
+        let filter = `{ "$and": [{ "userWord.difficulty": "deleted" }] }`
+        return requestAPI({
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
+            ...getAuth,
+        })
+    },
+    getDeletedWordsbyGroup: (group = 0, page = 0, words = 20) => {
+        let id = localStorage.getItem(USER.ID)
+        let filter = `{ "$and": [{ "userWord.difficulty": "deleted" }] }`
+        return requestAPI({
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
+            ...getAuth,
+        })
+    },
+    getHardWords: (page = 0, words = 3600) => {
+        let id = localStorage.getItem(USER.ID)
+        let filter = `{ "$and": [{ "userWord.difficulty": "hard" }] }`
+        return requestAPI({
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
+            ...getAuth,
+        })
+    },
+    getHardWordsbyGroup: (group = 0, page = 0, words = 20) => {
+        let id = localStorage.getItem(USER.ID)
+        let filter = `{ "$and": [{ "userWord.difficulty": "hard" }] }`
+        return requestAPI({
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
+            ...getAuth,
+        })
+    },
+    getLearningWords: (page = 0, words = 3600) => {
+        let id = localStorage.getItem(USER.ID)
+        let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
+        return requestAPI({
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
+            ...getAuth,
+        })
+    },
+    getLearningWordsbyGroup: (group = 0, page = 0, words = 20) => {
+        let id = localStorage.getItem(USER.ID)
+        let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
+        return requestAPI({
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
+            ...getAuth,
+        })
+    },
 }
 
 export default Object.freeze(interactAPI)

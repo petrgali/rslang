@@ -1,10 +1,9 @@
-import { trainingOptions } from "../pages/Training/constant"
-import { USER } from "../services/constant"
+import { TRAINING, USER } from "./constant"
 
 const setDefaults = () => {
-    if (!localStorage.getItem(trainingOptions.showControls) ||
-        !localStorage.getItem(trainingOptions.showTranslate))
-        Object.values(trainingOptions)
+    if (!localStorage.getItem(TRAINING.showControls) ||
+        !localStorage.getItem(TRAINING.showTranslate))
+        Object.values(TRAINING)
             .forEach((option) => localStorage.setItem(option, true))
     if (!localStorage.getItem(USER.LAST_VISITED)) localStorage.setItem(USER.LAST_VISITED, 1)
 }
