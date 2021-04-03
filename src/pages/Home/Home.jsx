@@ -17,7 +17,7 @@ export default function Home() {
             <Training 
             group={0}/>
             <Dictionary
-                mode={STATUS.DELETED}
+                mode={STATUS.LEARNING}
             />
         </div>
     )

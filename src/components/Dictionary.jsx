@@ -65,6 +65,10 @@ const Dictionary = ({ mode }) => {
                     api.getHardWords()
                         .then(response => handle.rePaginatedOutput(response))
                     break
+                case STATUS.LEARNING:
+                    api.getLearningWords()
+                        .then(response => handle.rePaginatedOutput(response))
+
             }
         },
         byGroup: (group, page) => {
@@ -77,6 +81,9 @@ const Dictionary = ({ mode }) => {
                     api.getHardWordsbyGroup(group, page)
                         .then(response => handle.dataUpdate(response))
                     break
+                case STATUS.LEARNING:
+                    api.getLearningWordsbyGroup(group, page)
+                        .then(response => handle.dataUpdate(response))
             }
         }
     }
@@ -95,15 +102,18 @@ const Dictionary = ({ mode }) => {
                         totalPages={totalPages}
                         updatePage={handle.pageUpdate}
                     />
-                    {isLoaded
-                        ? <WordsList
+                    {isLoaded && mode !== STATUS.LEARNING &&
+                        <WordsList
                             showTranslate
                             showRecover
                             recoverWord={handle.recover}
+                            data={data} />}
+                    {isLoaded && mode === STATUS.LEARNING &&
+                        <WordsList
+                            showTranslate
                             data={data} />
-                        : <ListPlaceholder />
                     }
-
+                    {!isLoaded && <ListPlaceholder />}
                 </>
                 : <div>Все слова снова в учебнике!</div>
             }
