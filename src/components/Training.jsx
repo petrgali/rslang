@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import { Loader } from "rsuite"
-import { STATUS } from "./constant"
+import { Alert } from "rsuite"
+import { STATUS, MESSAGE } from "./constant"
 import { TRAINING, USER } from "../services/constant"
 import interactAPI from "../services/interfaceAPI"
 import WordsList from "./WordsList"
@@ -46,11 +46,15 @@ const Training = ({ group }) => {
         api.updateUserWordbyId(id, { difficulty: mode })
             .then(response => {
                 if (response.status === 200) {
+                    Alert.info(MESSAGE.ADDED)
                     requestData()
                 } else if (response.status === 404) {
                     api.addUserWord(id, { difficulty: mode })
                         .then(response => {
-                            if (response.status === 200) requestData()
+                            if (response.status === 200) {
+                                Alert.info(MESSAGE.ADDED)
+                                requestData()
+                            }
                         })
                 }
             })

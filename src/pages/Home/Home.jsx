@@ -15,7 +15,7 @@ export default function Home() {
         <div>
             <h1>Sample home page</h1>
             <Training 
-            group={1}/>
+            group={0}/>
             <Dictionary
                 mode={STATUS.DELETED}
             />

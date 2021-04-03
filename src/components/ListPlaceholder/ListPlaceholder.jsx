@@ -2,7 +2,7 @@ import { Placeholder } from "rsuite"
 import "./ListPlaceholder.css"
 const { Paragraph } = Placeholder
 const ListPlaceholder = () => {
-    let list = "abcdefghij"
+    let list = "0123456789"
     return (
         <>
             {[...list].map(value =>

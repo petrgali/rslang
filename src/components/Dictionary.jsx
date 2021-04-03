@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
+import { Alert } from "rsuite"
 import PageToggler from "./PageToggler"
 import WordsList from "./WordsList"
-import { STATUS } from "./constant"
+import { STATUS, MESSAGE } from "./constant"
 import Sound from "../utils/playMultipleSounds"
 import Calculate from "../utils/calculatePagination"
 import interactAPI from "../services/interfaceAPI"
@@ -10,7 +11,6 @@ import ListPlaceholder from "./ListPlaceholder/ListPlaceholder"
 const api = interactAPI
 
 const Dictionary = ({ mode }) => {
-    
     const [data, updateData] = useState()
     const [activePage, updateActivePage] = useState(1)
     const [totalPages, updateTotal] = useState(0)
@@ -23,7 +23,10 @@ const Dictionary = ({ mode }) => {
             Sound.stop()
             api.deleteUserWordbyId(id)
                 .then(response => {
-                    if (response.status === 204) requestData.updateAll()
+                    if (response.status === 204) {
+                        requestData.updateAll()
+                        Alert.success(MESSAGE.SUCCESS)
+                    }
                 })
         },
         dataUpdate: (response) => {
@@ -67,7 +70,6 @@ const Dictionary = ({ mode }) => {
         byGroup: (group, page) => {
             switch (mode) {
                 case STATUS.DELETED:
-                    
                     api.getDeletedWordsbyGroup(group, page)
                         .then(response => handle.dataUpdate(response))
                     break

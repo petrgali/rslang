@@ -1,7 +1,6 @@
-
 const Calculate = {
     total: (total, page) => {
-        let out = new Array(6)
+        let out = []
         total.reduce((mapPages, obj) => {
             mapPages.set(obj.group, mapPages.get(obj.group) + 1 || 1)
             return mapPages
