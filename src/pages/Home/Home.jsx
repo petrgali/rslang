@@ -1,22 +1,13 @@
-import Training from "../Training/Training"
-import interactAPI from "../../services/interfaceAPI"
+import Training from "../Training/Training";
+import "./Home.css";
 
-//authorize to get JWT token
-
-// interactAPI.loginUser({
-//     email: "opelliek@gmail.com",
-//     password: "Qwerty123!"
-// }).then(console.log)
-
-
-
-export default function Home() {
-
-    return (
-        <div>
-            <h1>Sample home page</h1>
-            <Training 
-            group={0}/>
-        </div>
-    )
+const Home = () => {
+  return (
+    <div className="home">
+      <h1 className="title">Главная страница</h1>
+      <Training group={0} />
+    </div>
+  )
 }
+
+export default Home
