@@ -1,6 +1,7 @@
 import React from "react";
 import { Divider } from "rsuite";
 import MiniGamesNav from "../../components/MiniGamesNav";
+import SectionWordsList from "./components/SectionWordsList/SectionWordsList";
 import "./Section.css"
 
 const Section = ({ match }) => {
@@ -11,8 +12,7 @@ const Section = ({ match }) => {
       <h2 className="subtitle">Мини-игры</h2>
       <Divider className="divider" />
       <MiniGamesNav section={match.params.section}/>
-      <h2 className="subtitle">Список слов</h2>
-      <Divider className="divider" />
+      <SectionWordsList group={match.params.section} />
     </div>
   )
 }
