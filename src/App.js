@@ -6,6 +6,7 @@ import setDefaults from "./services/setOptionsDefault"
 import ContainerFooter from "./components/ContainerFooter/ContainerFooter";
 import Menu from "./components/Menu/Menu";
 import "./styles/App.css";
+import CustomHeader from "./components/CustomHeader/CustomHeader";
 
 function App() {
   setDefaults()
@@ -17,7 +18,7 @@ function App() {
         </Sidebar>
         <Container>
           <Header>
-
+            <CustomHeader />
           </Header>
           <Content>
               <RouterConfig />

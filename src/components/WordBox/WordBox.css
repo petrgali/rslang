@@ -42,3 +42,20 @@ span {
   justify-content: flex-end;
   column-gap: 20px;
 }
+
+@media screen and (max-width: 400px) {
+  .wordbox {
+    padding: 0px 10px;
+    column-gap: 10px;
+  }
+  
+  .wordbox .word-info {
+    width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .wordbox .buttons {
+    width: auto;
+  }
+}

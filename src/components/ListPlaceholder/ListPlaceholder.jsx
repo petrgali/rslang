@@ -7,9 +7,9 @@ const ListPlaceholder = () => {
   return (
     <>
       <List>
-        {[...Array(20)].map(value =>
-          <List.Item>
-            <div className="placeholder-box" key={value}>
+        {[...Array(20)].map((value, valueKey) =>
+          <List.Item key={valueKey}>
+            <div className="placeholder-box">
               <Paragraph
                   rows={2}
                   graph="circle"

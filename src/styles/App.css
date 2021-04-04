@@ -14,3 +14,9 @@ html, body, #root {
   min-height: 100%;
   width: 100%;
 }
+
+@media screen and (max-width: 1100px) {
+  .container .sidebar {
+    display: none;
+  }
+}
