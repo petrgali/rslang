@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Alert } from "rsuite"
 import PageToggler from "./PageToggler"
-import WordsList from "./WordsList"
+import WordsList from "./WordsList/WordsList"
 import { STATUS, MESSAGE } from "./constant"
 import Sound from "../utils/playMultipleSounds"
 import Calculate from "../utils/calculatePagination"
