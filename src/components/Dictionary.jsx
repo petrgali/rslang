@@ -68,7 +68,9 @@ const Dictionary = ({ mode }) => {
                 case STATUS.LEARNING:
                     api.getLearningWords()
                         .then(response => handle.rePaginatedOutput(response))
-
+                    break
+                default:
+                    break
             }
         },
         byGroup: (group, page) => {
@@ -84,6 +86,9 @@ const Dictionary = ({ mode }) => {
                 case STATUS.LEARNING:
                     api.getLearningWordsbyGroup(group, page)
                         .then(response => handle.dataUpdate(response))
+                    break
+                default:
+                    break
             }
         }
     }

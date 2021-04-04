@@ -2,3 +2,17 @@
   padding: 0px calc((100% - 1150px) / 2);
   width: 100%;
 }
+
+.section-words-list .deleted-page {
+  height: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.section-words-list .deleted-page .subtitle {
+  margin: 0px;
+}

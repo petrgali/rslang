@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Alert } from "rsuite"
+import { Alert, Icon } from "rsuite"
 import { STATUS, MESSAGE } from "../../../../components/constant"
 import { TRAINING, USER } from "../../../../services/constant"
 import interactAPI from "../../../../services/interfaceAPI"
@@ -95,7 +95,10 @@ const SectionWordsList = ({ group }) => {
                 showTranslate={showTranslate} />
             }
             {isEmpty && isLoaded &&
-                <div>all words have been deleted</div>
+              <div className="deleted-page">
+                <Icon icon="ban" size="5x"/>
+                <h2 className="subtitle">Все слова были удалены</h2>
+              </div>
             }
         </div>
       </>
