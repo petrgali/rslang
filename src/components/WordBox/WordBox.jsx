@@ -50,15 +50,17 @@ function WordBox({ word, buttons, showTranslate }) {
           <img
             src={API_BASE_URL + word.image}
             alt={word.word} />
-          <IconButton
-            icon={<Icon icon="volume-up" />}
-            circle
-            size="lg"
-            onClick={() =>  Sound.play(
-              API_BASE_URL,
-              [word.audio, word.audioMeaning, word.audioExample]
-            )}
-          />
+          <div>
+            <IconButton
+              icon={<Icon icon="volume-up" />}
+              circle
+              size="lg"
+              onClick={() =>  Sound.play(
+                API_BASE_URL,
+                [word.audio, word.audioMeaning, word.audioExample]
+              )}
+            />
+          </div>
           <span className="word-title">{word.word} - {word.wordTranslate}</span>
           <span>{word.transcription}</span>
           <span dangerouslySetInnerHTML={{ __html: word.textMeaning }} />
