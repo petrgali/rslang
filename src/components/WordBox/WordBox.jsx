@@ -42,7 +42,10 @@ function WordBox({ word, buttons, showTranslate }) {
       <div className="buttons">
           {buttons}
       </div>
-      <CustomDrawer show={showDrawer} handleShow={setShowDrawer} content={
+      <CustomDrawer show={showDrawer} handleShow={(status) => {
+        if (!status) Sound.stop()
+        setShowDrawer(status)
+      }} content={
         <>
           <img
             src={API_BASE_URL + word.image}
@@ -56,9 +59,8 @@ function WordBox({ word, buttons, showTranslate }) {
               [word.audio, word.audioMeaning, word.audioExample]
             )}
           />
-          <span className="word-title">{word.word}</span>
+          <span className="word-title">{word.word} - {word.wordTranslate}</span>
           <span>{word.transcription}</span>
-          <span>{word.wordTranslate}</span>
           <span dangerouslySetInnerHTML={{ __html: word.textMeaning }} />
           <span>{word.textMeaningTranslate}</span>
           <span dangerouslySetInnerHTML={{ __html: word.textExample }} />
