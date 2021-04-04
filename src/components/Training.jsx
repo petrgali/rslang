@@ -50,6 +50,10 @@ const Training = ({ group }) => {
                 difficulty: mode,
                 optional: { isLearning: false }
             }
+        if (mode === STATUS.DELETED)
+            return {
+                difficulty: mode
+            }
         return {
             difficulty: mode,
             optional: { isLearning: true }
