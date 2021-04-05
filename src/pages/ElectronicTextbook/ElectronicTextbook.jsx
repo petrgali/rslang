@@ -8,7 +8,7 @@ const ElectronicTextbook = () => {
   return (
     <div className="electronic-textbook">
       <h1 className="title">Электронный учебник</h1>
-      <h2 className="subtitle">Раздели</h2>
+      <h2 className="subtitle">Разделы</h2>
       <Divider className="divider" />
       <SectionsNav />
       <h2 className="subtitle">Словарь</h2>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router";
 import { Icon, IconButton, Nav, Navbar } from "rsuite";
+import Auth from "../Auth/Auth"
 import { ELECTRONIC_TEXTBOOK_ROUTE, MINI_GAMES_ROUTE, STATISTICS_ROUTE } from "../../navigation/CONSTANT";
 import "./CustomHeader.css"
 
@@ -16,6 +17,7 @@ const getCurrentActiveKey = (pathname) => {
 const CustomHeader = () => {
   const location = useLocation()
   const history = useHistory()
+  const [showLogin, setLogin] = useState(false)
   const [activeKey, setActiveKey] = useState(getCurrentActiveKey(location.pathname))
 
   useEffect(() => {
@@ -27,7 +29,7 @@ const CustomHeader = () => {
     history.push(routes[eventKey - 1])
     event.currentTarget.blur()
   }
-
+  const openLogin = () => setLogin(!showLogin)
   return (
     <div className="header">
       <Navbar className="navbar" appearance="inverse">
@@ -37,16 +39,18 @@ const CustomHeader = () => {
         <Navbar.Body>
           <Nav onSelect={handleSelect}>
             <Nav.Item active={activeKey === 1} eventKey="1" icon={<Icon icon="home" />} />
-            <Nav.Item active={activeKey === 2}  eventKey="2" icon={<Icon icon="book" />} />
-            <Nav.Item active={activeKey === 3}  eventKey="3" icon={<Icon icon="gamepad" />} />
-            <Nav.Item active={activeKey === 4}  eventKey="4" icon={<Icon icon="pie-chart" />} />
+            <Nav.Item active={activeKey === 2} eventKey="2" icon={<Icon icon="book" />} />
+            <Nav.Item active={activeKey === 3} eventKey="3" icon={<Icon icon="gamepad" />} />
+            <Nav.Item active={activeKey === 4} eventKey="4" icon={<Icon icon="pie-chart" />} />
           </Nav>
         </Navbar.Body>
       </Navbar>
       <IconButton
         icon={<Icon icon="sign-in" />}
         circle
+        onClick={openLogin}
       />
+      {showLogin && <Auth showLogin={showLogin} handleShow={openLogin}/>}
     </div>
   )
 }

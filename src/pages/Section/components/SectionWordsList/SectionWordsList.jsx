@@ -100,6 +100,11 @@ const SectionWordsList = ({ group }) => {
                 <h2 className="subtitle">Все слова были удалены</h2>
               </div>
             }
+            <PageToggler
+                updatePage={handlePageUpdate}
+                activePage={activePage}
+                totalPages={30}
+            />
         </div>
       </>
     )
