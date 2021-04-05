@@ -102,7 +102,7 @@ const Dictionary = () => {
     }, [mode, activePage])
     return (
       <div className="dictionary">
-        <ButtonToolbar>
+        <ButtonToolbar className="button-toolbar">
           <ButtonGroup size="lg">
           <Whisper placement="auto" trigger="hover" speaker={
               <Tooltip>Изучаемые слова</Tooltip>
@@ -154,7 +154,10 @@ const Dictionary = () => {
               }
               {!isLoaded && <ListPlaceholder />}
           </>
-          : <div>Все слова снова в учебнике!</div>
+          : <div className="dictionary-empty">
+              <Icon icon="smile-o" size="5x"/>
+              <h3 className="subtitle">Все слова снова в учебнике!</h3>
+            </div>
         }
       </div>
     )
