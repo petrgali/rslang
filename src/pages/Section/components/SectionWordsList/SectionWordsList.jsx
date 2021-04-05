@@ -44,14 +44,32 @@ const SectionWordsList = ({ group, page }) => {
                 }
             })
     }
-    const setWordStatus = (id, mode) => {
-        api.updateUserWordbyId(id, { difficulty: mode })
+    const updateOptions = (settings, mode) => {
+        if (!!settings
+            && !!settings.optional
+            && mode === STATUS.DELETED)
+            return {
+                difficulty: mode,
+                optional: { isLearning: false }
+            }
+        if (mode === STATUS.DELETED)
+            return {
+                difficulty: mode
+            }
+        return {
+            difficulty: mode,
+            optional: { isLearning: true }
+        }
+    }
+    const setWordStatus = (id, settings, mode) => {
+        let options = updateOptions(settings, mode)
+        api.updateUserWordbyId(id, options)
             .then(response => {
                 if (response.status === 200) {
                     Alert.info(MESSAGE.ADDED)
                     requestData()
                 } else if (response.status === 404) {
-                    api.addUserWord(id, { difficulty: mode })
+                    api.addUserWord(id, options)
                         .then(response => {
                             if (response.status === 200) {
                                 Alert.info(MESSAGE.ADDED)

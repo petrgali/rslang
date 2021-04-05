@@ -166,9 +166,9 @@ const interactAPI = {
     },
     getTrainingAggregatedWords: (group = 0, page = 0, words = 20) => {
         let id = localStorage.getItem(USER.ID)
-        let filter = `{"$or": [{ "userWord": {"$exists": true}}, {"userWord": null}]}`
+        let filter = `{"$and": [{"$or": [{ "userWord": {"$exists": true}}, {"userWord": null}]}, {"page": ${page}}]}`
         return requestAPI({
-            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?group=${group}&wordsPerPage=${words}&filter=${filter}`,
             ...getAuth,
 
         })
