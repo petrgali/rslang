@@ -55,10 +55,20 @@ export const RouterConfig = () => {
                   return <OwnGame match={match} />
                 }} />
                 <Route exact path={ELECTRONIC_TEXTBOOK_ROUTE} component={ElectronicTextbook} />
-                <Route exact path={ELECTRONIC_TEXTBOOK_SECTION_ROUTE + "/:section"} component={({ match }) => {                    
+                <Route exact path={ELECTRONIC_TEXTBOOK_SECTION_ROUTE + "/:section"} component={({ match }) => {
+                  match.params.page = 1                  
                   if (isNaN(parseFloat(match.params.section)) ||
                       match.params.section < 1 ||
                       match.params.section > 6) return <NotFound />
+                  return <Section match={match} />
+                }} />
+                <Route exact path={ELECTRONIC_TEXTBOOK_SECTION_ROUTE + "/:section/page/:page"} component={({ match }) => {    
+                  if (isNaN(parseFloat(match.params.section)) ||
+                      match.params.section < 1 ||
+                      match.params.section > 6) return <NotFound />
+                  if (isNaN(parseFloat(match.params.page)) ||
+                      match.params.page < 1 ||
+                      match.params.page > 30) return <NotFound />
                   return <Section match={match} />
                 }} />
                 {/*generic 404 route*/}
