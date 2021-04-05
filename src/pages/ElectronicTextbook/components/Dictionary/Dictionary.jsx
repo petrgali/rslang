@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Alert } from "rsuite"
+import { Alert, ButtonGroup, ButtonToolbar, Icon, IconButton, Tooltip, Whisper } from "rsuite"
 import PageToggler from "../../../../components/PageToggler"
 import WordsList from "../../../../components/WordsList/WordsList"
 import { STATUS, MESSAGE } from "../../../../components/constant"
@@ -10,8 +10,10 @@ import ListPlaceholder from "../../../../components/ListPlaceholder/ListPlacehol
 import "./Dictionary.css"
 
 const api = interactAPI
+const sectionColors = ["#F44336", "#FF9800", "#FFCA28", "#4CAF50", "#00BCD4", "#673AB7"]
 
-const Dictionary = ({ mode }) => {
+const Dictionary = () => {
+    const [mode, updateMode] = useState(STATUS.LEARNING)
     const [data, updateData] = useState()
     const [activePage, updateActivePage] = useState(1)
     const [totalPages, updateTotal] = useState(0)
@@ -97,12 +99,43 @@ const Dictionary = ({ mode }) => {
         updateLoadedState(false)
         requestData.updateAll()
         //eslint-disable-next-line
-    }, [activePage])
+    }, [mode, activePage])
     return (
       <div className="dictionary">
+        <ButtonToolbar>
+          <ButtonGroup size="lg">
+          <Whisper placement="auto" trigger="hover" speaker={
+              <Tooltip>Изучаемые слова</Tooltip>
+            }>
+              <IconButton
+                icon={<Icon icon="envira" />}
+                active={mode === STATUS.LEARNING}
+                onClick={() => updateMode(STATUS.LEARNING)} />
+            </Whisper>
+            <Whisper placement="auto" trigger="hover" speaker={
+              <Tooltip>Сложные слова</Tooltip>
+            }>
+              <IconButton
+                icon={<Icon icon="question-circle" />}
+                active={mode === STATUS.HARD}
+                onClick={() => updateMode(STATUS.HARD)} />
+            </Whisper>
+            <Whisper placement="auto" trigger="hover" speaker={
+              <Tooltip>Удаленные слова</Tooltip>
+            }>
+              <IconButton
+                icon={<Icon icon="ban" />}
+                active={mode === STATUS.DELETED}
+                onClick={() => updateMode(STATUS.DELETED)} />
+            </Whisper>
+          </ButtonGroup>
+        </ButtonToolbar>
         {!isEmpty
           ? <>
-              <div>Cлова из раздела {groupRequest}</div>
+              <div className="dictionary-info">
+                <Icon icon="circle" size="lg" style={{ color: sectionColors[groupRequest - 1  ] }} />
+                <span>cлова из {groupRequest} раздела</span>
+              </div>
               <PageToggler
                   activePage={activePage}
                   totalPages={totalPages}
