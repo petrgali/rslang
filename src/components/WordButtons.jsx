@@ -27,7 +27,7 @@ const WordButtons = ({ setWordHard, isWordHard, removeWord, recoverWord, showRec
       {showRecover &&
         <>
           <Whisper placement="auto" trigger="hover" speaker={tooltip("Восcтановить")}>
-            <IconButton icon={<Icon icon="ban" />} circle size="lg" onClick={recoverWord} />
+            <IconButton icon={<Icon icon="undo" />} circle size="lg" onClick={recoverWord} />
           </Whisper>
         </>
       }

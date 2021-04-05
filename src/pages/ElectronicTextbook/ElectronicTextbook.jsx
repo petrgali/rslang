@@ -1,6 +1,8 @@
 import React from "react";
 import { Divider } from "rsuite";
 import SectionsNav from "./components/SectionsNav";
+import Dictionary from "../ElectronicTextbook/components/Dictionary/Dictionary";
+import { STATUS } from "../../components/constant";
 import "./ElectronicTextbook.css"
 
 const ElectronicTextbook = () => {
@@ -13,6 +15,9 @@ const ElectronicTextbook = () => {
       <SectionsNav />
       <h2 className="subtitle">Словарь</h2>
       <Divider className="divider" />
+      <Dictionary
+        mode={STATUS.DELETED}
+      />
     </div>
   )
 }

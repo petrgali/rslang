@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { Alert } from "rsuite"
-import PageToggler from "./PageToggler"
-import WordsList from "./WordsList/WordsList"
-import { STATUS, MESSAGE } from "./constant"
-import Sound from "../utils/playMultipleSounds"
-import Calculate from "../utils/calculatePagination"
-import interactAPI from "../services/interfaceAPI"
-import ListPlaceholder from "./ListPlaceholder/ListPlaceholder"
+import PageToggler from "../../../../components/PageToggler"
+import WordsList from "../../../../components/WordsList/WordsList"
+import { STATUS, MESSAGE } from "../../../../components/constant"
+import Sound from "../../../../utils/playMultipleSounds"
+import Calculate from "../../../../utils/calculatePagination"
+import interactAPI from "../../../../services/interfaceAPI"
+import ListPlaceholder from "../../../../components/ListPlaceholder/ListPlaceholder"
+import "./Dictionary.css"
 
 const api = interactAPI
 
@@ -98,31 +99,31 @@ const Dictionary = ({ mode }) => {
         //eslint-disable-next-line
     }, [activePage])
     return (
-        <>
-            {!isEmpty
-                ? <>
-                    <div>Cлова из раздела {groupRequest}</div>
-                    <PageToggler
-                        activePage={activePage}
-                        totalPages={totalPages}
-                        updatePage={handle.pageUpdate}
-                    />
-                    {isLoaded && mode !== STATUS.LEARNING &&
-                        <WordsList
-                            showTranslate
-                            showRecover
-                            recoverWord={handle.recover}
-                            data={data} />}
-                    {isLoaded && mode === STATUS.LEARNING &&
-                        <WordsList
-                            showTranslate
-                            data={data} />
-                    }
-                    {!isLoaded && <ListPlaceholder />}
-                </>
-                : <div>Все слова снова в учебнике!</div>
-            }
-        </>
+      <div className="dictionary">
+        {!isEmpty
+          ? <>
+              <div>Cлова из раздела {groupRequest}</div>
+              <PageToggler
+                  activePage={activePage}
+                  totalPages={totalPages}
+                  updatePage={handle.pageUpdate}
+              />
+              {isLoaded && mode !== STATUS.LEARNING &&
+                  <WordsList
+                      showTranslate
+                      showRecover
+                      recoverWord={handle.recover}
+                      data={data} />}
+              {isLoaded && mode === STATUS.LEARNING &&
+                  <WordsList
+                      showTranslate
+                      data={data} />
+              }
+              {!isLoaded && <ListPlaceholder />}
+          </>
+          : <div>Все слова снова в учебнике!</div>
+        }
+      </div>
     )
 }
 
