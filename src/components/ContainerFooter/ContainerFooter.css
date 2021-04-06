@@ -1,0 +1,17 @@
+.footer {
+  padding: 0px 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer img {
+  height: 60px;
+  width: 60px;
+}
+
+.footer .github-accounts {
+  display: flex;
+  column-gap: 10px;
+}

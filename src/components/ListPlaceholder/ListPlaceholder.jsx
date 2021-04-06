@@ -1,21 +1,26 @@
-import { Placeholder } from "rsuite"
+import { List, Placeholder } from "rsuite"
 import "./ListPlaceholder.css"
+
 const { Paragraph } = Placeholder
+
 const ListPlaceholder = () => {
-    let list = "0123456789"
-    return (
-        <>
-            {[...list].map(value =>
-                <div className="placeholder-box" key={value}>
-                    <Paragraph
-                        rows={4}
-                        graph="image"
-                        active
-                    />
-                </div>
-            )}
-        </>
-    )
+  return (
+    <>
+      <List>
+        {[...Array(20)].map((value, valueKey) =>
+          <List.Item key={valueKey}>
+            <div className="placeholder-box">
+              <Paragraph
+                  rows={2}
+                  graph="circle"
+                  active
+              />
+            </div>
+          </List.Item>
+        )}
+      </List>
+    </>
+  )
 }
 
 export default ListPlaceholder

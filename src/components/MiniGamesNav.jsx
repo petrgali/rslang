@@ -1,10 +1,10 @@
 import React from "react";
 import { useHistory } from "react-router";
 import { Icon } from "rsuite";
-import { AUDIOCALL_ROUTE, OWN_GAME_ROUTE, SAVANNAH_ROUTE, SPRINT_ROUTE } from "../navigation/CONSTANT";
+import { AUDIOCALL_LEVELS_ROUTE, AUDIOCALL_ROUTE, OWN_GAME_LEVELS_ROUTE, OWN_GAME_ROUTE, SAVANNAH_LEVELS_ROUTE, SAVANNAH_ROUTE, SPRINT_LEVELS_ROUTE, SPRINT_ROUTE } from "../navigation/CONSTANT";
 import CardList from './CardList';
 
-const MiniGamesNav = () => {
+const MiniGamesNav = ({ section }) => {
   const history = useHistory()
 
   const cards = [
@@ -17,7 +17,9 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#F44336",
-        action: () => history.push(SAVANNAH_ROUTE),
+        action: () => history.push(
+          section ? `${SAVANNAH_LEVELS_ROUTE}/${section}` : SAVANNAH_ROUTE
+        ),
       },
       {
         content: (
@@ -27,7 +29,9 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#FF9800",
-        action: () => history.push(AUDIOCALL_ROUTE),
+        action: () => history.push(
+          section ? `${AUDIOCALL_LEVELS_ROUTE}/${section}` : AUDIOCALL_ROUTE
+        ),
       },
       {
         content: (
@@ -37,7 +41,9 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#FFCA28",
-        action: () => history.push(SPRINT_ROUTE),
+        action: () => history.push(
+          section ? `${SPRINT_LEVELS_ROUTE}/${section}` : SPRINT_ROUTE
+        ),
       },
       {
         content: (
@@ -47,7 +53,9 @@ const MiniGamesNav = () => {
           </>
         ),
         color: "#4CAF50",
-        action: () => history.push(OWN_GAME_ROUTE),
+        action: () => history.push(
+          section ? `${OWN_GAME_LEVELS_ROUTE}/${section}` : OWN_GAME_ROUTE
+        ),
       },
     ]
   ]

@@ -3,10 +3,19 @@
   width: 100%;
 }
 
+.game-result .content {
+  padding: 0px calc((100% - 1150px) / 2);
+}
+
 .game-result .restart {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+.game-result .list-title {
+  margin: 0px 0px 0px 20px;
+  font-size: 24px;
 }
 
 .game-result .list {
@@ -16,4 +25,8 @@
 .game-result .list .list-item {
   padding-left: 20px;
   padding-right: 20px;
+}
+
+.game-result .list .list-item span {
+  font-size: 16px;
 }
