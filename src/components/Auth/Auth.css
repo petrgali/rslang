@@ -1,4 +1,4 @@
-.inputgroup-box {
+/* .inputgroup-box {
     width: 90%;
     height: 50px;
 }
@@ -9,4 +9,12 @@
 
 .icon-button {
     margin: 0 10px 0 0;
+} */
+
+.form-button {
+    width: 150px
+}
+
+.form-field {
+    margin: 15px 0 0 0
 }
