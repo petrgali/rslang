@@ -15,12 +15,13 @@
 }
 
 .savannah .game {
+  position: relative;
   height: calc(100% - 200px);
 }
 
 .savannah .word {
   position: absolute;
-  top: 180px;
+  top: 0;
   font-size: 24px;
   font-weight: 600;
   z-index: 2;
