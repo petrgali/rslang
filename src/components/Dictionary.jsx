@@ -7,6 +7,7 @@ import Sound from "../utils/playMultipleSounds"
 import Calculate from "../utils/calculatePagination"
 import interactAPI from "../services/interfaceAPI"
 import ListPlaceholder from "./ListPlaceholder/ListPlaceholder"
+import { useSelector } from "react-redux"
 
 const api = interactAPI
 
@@ -17,11 +18,12 @@ const Dictionary = ({ mode }) => {
     const [groupRequest, updateGroupRequest] = useState()
     const [isLoaded, updateLoadedState] = useState(false)
     const [isEmpty, updateEmpty] = useState(false)
-
+    const userId = useSelector(state => state.credentials.userId)
+    console.log(userId)
     const handle = {
         recover: (id) => {
             Sound.stop()
-            api.deleteUserWordbyId(id)
+            api.deleteUserWordbyId(userId, id)
                 .then(response => {
                     if (response.status === 204) {
                         requestData.updateAll()
@@ -58,15 +60,15 @@ const Dictionary = ({ mode }) => {
         updateAll: () => {
             switch (mode) {
                 case STATUS.DELETED:
-                    api.getDeletedWords()
+                    api.getDeletedWords(userId)
                         .then(response => handle.rePaginatedOutput(response))
                     break
                 case STATUS.HARD:
-                    api.getHardWords()
+                    api.getHardWords(userId)
                         .then(response => handle.rePaginatedOutput(response))
                     break
                 case STATUS.LEARNING:
-                    api.getLearningWords()
+                    api.getLearningWords(userId)
                         .then(response => handle.rePaginatedOutput(response))
                     break
                 default:
@@ -76,15 +78,15 @@ const Dictionary = ({ mode }) => {
         byGroup: (group, page) => {
             switch (mode) {
                 case STATUS.DELETED:
-                    api.getDeletedWordsbyGroup(group, page)
+                    api.getDeletedWordsbyGroup(userId, group, page)
                         .then(response => handle.dataUpdate(response))
                     break
                 case STATUS.HARD:
-                    api.getHardWordsbyGroup(group, page)
+                    api.getHardWordsbyGroup(userId, group, page)
                         .then(response => handle.dataUpdate(response))
                     break
                 case STATUS.LEARNING:
-                    api.getLearningWordsbyGroup(group, page)
+                    api.getLearningWordsbyGroup(userId, group, page)
                         .then(response => handle.dataUpdate(response))
                     break
                 default:

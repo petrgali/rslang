@@ -1,12 +1,13 @@
-import { DUMMY_ACTION } from "../types";
+import { CRED_ACTION } from "../types";
 
 const initialState = {
-    dummy: "",
+    name: "",
+    userId: "",
 }
 
-export const dummyReducer = (state = initialState, action) => {
+export const credentialsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case DUMMY_ACTION:
+        case CRED_ACTION:
             return {
                 ...state,
                 ...action.payload

@@ -9,10 +9,12 @@ import Options from "../../../../components/Options/Options"
 import PageToggler from "../../../../components/PageToggler"
 import Sound from "../../../../utils/playMultipleSounds"
 import "./SectionWordsList.css"
+import { useSelector } from "react-redux"
 
 const api = interactAPI
 
 const SectionWordsList = ({ group }) => {
+    const userId = useSelector(state => state.credentials.userId)
     const [data, updateData] = useState()
     const [isLoaded, updateLoadedState] = useState(false)
     const [isEmpty, updateEmptyState] = useState(true)
@@ -37,7 +39,7 @@ const SectionWordsList = ({ group }) => {
         updateLoadedState(true)
     }
     const requestData = () => {
-        api.getTrainingAggregatedWords(group, activePage - 1)
+        api.getTrainingAggregatedWords(userId, group, activePage - 1)
             .then((response) => {
                 if (response.status === 200) {
                     handleRawData(response.payload[0].paginatedResults)
@@ -45,13 +47,13 @@ const SectionWordsList = ({ group }) => {
             })
     }
     const setWordStatus = (id, mode) => {
-        api.updateUserWordbyId(id, { difficulty: mode })
+        api.updateUserWordbyId(userId, id, { difficulty: mode })
             .then(response => {
                 if (response.status === 200) {
                     Alert.info(MESSAGE.ADDED)
                     requestData()
                 } else if (response.status === 404) {
-                    api.addUserWord(id, { difficulty: mode })
+                    api.addUserWord(userId, id, { difficulty: mode })
                         .then(response => {
                             if (response.status === 200) {
                                 Alert.info(MESSAGE.ADDED)
@@ -74,39 +76,39 @@ const SectionWordsList = ({ group }) => {
         // eslint-disable-next-line
     }, [activePage])
     return (
-      <>
-        <Options
-            showControl={showControl}
-            showTranslate={showTranslate}
-            toggleControl={() => updateControl(!showControl)}
-            toggleTranslate={() => updateTranslate(!showTranslate)}
-        />
-        <div className="section-words-list">
-            <PageToggler
-                updatePage={handlePageUpdate}
-                activePage={activePage}
-                totalPages={30}
-            />
-            {!isLoaded && <ListPlaceholder />}
-            {!isEmpty && <WordsList
-                data={data}
-                setWordStatus={setWordStatus}
+        <>
+            <Options
                 showControl={showControl}
-                showTranslate={showTranslate} />
-            }
-            {isEmpty && isLoaded &&
-              <div className="deleted-page">
-                <Icon icon="ban" size="5x"/>
-                <h2 className="subtitle">Все слова были удалены</h2>
-              </div>
-            }
-            <PageToggler
-                updatePage={handlePageUpdate}
-                activePage={activePage}
-                totalPages={30}
+                showTranslate={showTranslate}
+                toggleControl={() => updateControl(!showControl)}
+                toggleTranslate={() => updateTranslate(!showTranslate)}
             />
-        </div>
-      </>
+            <div className="section-words-list">
+                <PageToggler
+                    updatePage={handlePageUpdate}
+                    activePage={activePage}
+                    totalPages={30}
+                />
+                {!isLoaded && <ListPlaceholder />}
+                {!isEmpty && <WordsList
+                    data={data}
+                    setWordStatus={setWordStatus}
+                    showControl={showControl}
+                    showTranslate={showTranslate} />
+                }
+                {isEmpty && isLoaded &&
+                    <div className="deleted-page">
+                        <Icon icon="ban" size="5x" />
+                        <h2 className="subtitle">Все слова были удалены</h2>
+                    </div>
+                }
+                <PageToggler
+                    updatePage={handlePageUpdate}
+                    activePage={activePage}
+                    totalPages={30}
+                />
+            </div>
+        </>
     )
 }
 

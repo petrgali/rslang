@@ -7,9 +7,24 @@ import ContainerFooter from "./components/ContainerFooter/ContainerFooter";
 import Menu from "./components/Menu/Menu";
 import "./styles/App.css";
 import CustomHeader from "./components/CustomHeader/CustomHeader";
+import { useDispatch, useSelector } from "react-redux";
+import { USER } from "./services/constant"
+import { useEffect } from "react"
+import { getUserCredentials } from "./redux/actions/credentialsAction"
 
 function App() {
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getUserCredentials({
+      name: localStorage.getItem(USER.NAME),
+      userId: localStorage.getItem(USER.ID)
+    }))
+  }, [dispatch])
+
   setDefaults()
+
   return (
     <BrowserRouter>
       <Container className="container">
@@ -21,7 +36,7 @@ function App() {
             <CustomHeader />
           </Header>
           <Content>
-              <RouterConfig />
+            <RouterConfig />
           </Content>
           <Footer>
             <ContainerFooter />

@@ -4,6 +4,7 @@ import { Icon, IconButton, Nav, Navbar } from "rsuite";
 import Auth from "../Auth/Auth"
 import { ELECTRONIC_TEXTBOOK_ROUTE, MINI_GAMES_ROUTE, STATISTICS_ROUTE } from "../../navigation/CONSTANT";
 import "./CustomHeader.css"
+import { useSelector } from "react-redux";
 
 const routes = ["/", ELECTRONIC_TEXTBOOK_ROUTE, MINI_GAMES_ROUTE, STATISTICS_ROUTE]
 
@@ -19,6 +20,7 @@ const CustomHeader = () => {
   const history = useHistory()
   const [showLogin, setLogin] = useState(false)
   const [activeKey, setActiveKey] = useState(getCurrentActiveKey(location.pathname))
+  const userName = useSelector(state => state.credentials.name)
 
   useEffect(() => {
     setActiveKey(getCurrentActiveKey(location.pathname))
@@ -45,12 +47,18 @@ const CustomHeader = () => {
           </Nav>
         </Navbar.Body>
       </Navbar>
-      <IconButton
-        icon={<Icon icon="sign-in" />}
-        circle
-        onClick={openLogin}
-      />
-      {showLogin && <Auth showLogin={showLogin} handleShow={openLogin}/>}
+      {userName
+        ? <IconButton
+          icon={<Icon icon="user" />}
+          circle
+          onClick={openLogin}
+        />
+        : <IconButton
+          icon={<Icon icon="sign-in" />}
+          circle
+          onClick={openLogin}
+        />}
+      {showLogin && <Auth showLogin={showLogin} handleShow={openLogin} />}
     </div>
   )
 }

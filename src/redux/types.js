@@ -1,1 +1,1 @@
-export const DUMMY_ACTION = "DUMMY_ACTION"
+export const CRED_ACTION = "GET_CREDENTIALS"

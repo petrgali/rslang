@@ -1,137 +1,101 @@
 import { useState, useEffect } from "react"
-import { Icon, InputGroup, Input, Button, Form, FormGroup, FormControl, ButtonToolbar } from "rsuite"
+import { useSelector, useDispatch } from "react-redux"
+import { Button } from "rsuite"
 import CustomDrawer from "../CustomDrawer/CustomDrawer"
-import PwdInputHandler from "../PwdInputHandler"
 import "./Auth.css"
+import interfaceAPI from "../../services/interfaceAPI"
+import { getUserCredentials } from "../../redux/actions/credentialsAction"
+import LoginForm from "../LoginForm"
+import RegisterForm from "../RegisterForm"
 
 const Auth = ({ showLogin, handleShow }) => {
-    const [title, updateTitle] = useState("ВХОД")
-    // const [registerModeOn, setRegisterMode] = useState(false)
-    // const [pwdMain, updatePwdMain] = useState("")
-    // const [pwdSecond, updatePwdSecond] = useState("")
-    // const [lockType, updateLockType] = useState("unlock")
-    // const clearBothPwd = () => {
-    //     updatePwdMain("")
-    //     updatePwdSecond("")
-    // }
-
-    // useEffect(() => {
-    //     registerModeOn
-    //         ? updateTitle("РЕГИСТРАЦИЯ")
-    //         : updateTitle("ВХОД")
-    //     updatePwdMain("")
-    //     updatePwdSecond("")
-    // }, [registerModeOn])
-    // useEffect(() => {
-    //     checkPwdIdent()
-    // }, [pwdMain, pwdSecond])
-    // useEffect(() => {
-    //     checkPwdIdent()
-    // }, [])
-
-    // const handleRegister = () => setRegisterMode(!registerModeOn)
-
-    // const checkPwdIdent = () => {
-    //     if (pwdMain === pwdSecond && !!pwdMain) {
-    //         updateLockType("lock")
-    //         return
-    //     }
-    //     updateLockType("unlock")
-    // }
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.credentials.name)
+    const [title, updateTitle] = useState("Вход")
+    const [registerMode, updateRegistermode] = useState(false)
+    const [formValue, updateFormValue] = useState({
+        email: "",
+        password: ""
+    })
+    const [registerFormValue, updateRegisterForm] = useState({
+        name: "",
+        email: "",
+        password: "",
+        // avatar: ""
+    })
+    const [queryInProgress, updateQueryProgress] = useState(false)
+    const logOut = () => dispatch(getUserCredentials({}))
+    const setFormValues = (data) => updateFormValue({ ...formValue, ...data })
+    const setRegisterFormValues = (data) => updateRegisterForm({ ...registerFormValue, ...data })
+    useEffect(() => {
+        user
+            ? updateTitle(`Привет, ${user}!`)
+            : updateTitle("Вход")
+    }, [user])
+    const handleRegister = () => {
+        updateRegistermode(true)
+        updateTitle("Регистрация")
+    }
+    const handleCloseRegister = () => {
+        updateRegistermode(false)
+        updateTitle("Вход")
+    }
+    const sendLoginInfo = () => {
+        updateQueryProgress(true)
+        interfaceAPI.loginUser(formValue)
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(getUserCredentials(response.payload))
+                }
+                updateQueryProgress(false)
+            })
+    }
+    const sendRegisterInfo = () => {
+        updateQueryProgress(true)
+        interfaceAPI.registerUser(registerFormValue)
+            .then(response => {
+                ////////handle register
+            })
+        updateQueryProgress(false)
+    }
     return (
-
-
         <CustomDrawer
             title={title}
             show={showLogin}
             handleShow={handleShow}
             content={(
-                <Form >
-                    <FormGroup style={{ display: "flex", flexDirection: "column", alignItems: "center" }} >
-                        <FormControl className="form-field"
-                            placeholder="Ваш email"
-                            name="name" />
-                        <FormControl className="form-field"
-                            placeholder="Ваш пароль"
-                            name="password"
-                            type="password" />
-                    </FormGroup>
-                    <ButtonToolbar style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <Button className="form-button" appearance="primary" >ВОЙТИ</Button>
-                        <Button className="form-button" appearance="link" >Зарегистрироваться</Button>
-                    </ButtonToolbar>
-                </Form>
+                <>
+                    {!registerMode && <LoginForm
+                        user={user}
+                        handleShow={handleShow}
+                        formValue={formValue}
+                        setFormValues={setFormValues}
+                        logOut={logOut}
+                        queryInProgress={queryInProgress}
+                        sendLoginInfo={sendLoginInfo} />}
+                    {registerMode &&
+                        <>
+                            <RegisterForm
+                                formValue={registerFormValue}
+                                setFormValues={setRegisterFormValues}
+                                queryInProgress={queryInProgress}
+                                sendRegister={sendRegisterInfo}
+                            />
+                            <Button
+                                className="form-button"
+                                appearance="subtle"
+                                onClick={handleCloseRegister}
+                            >Отмена</Button>
+                        </>
+                    }
+                    {!user && !registerMode && <Button
+                        className="form-button"
+                        appearance="link"
+                        onClick={handleRegister}>
+                        Зарегистрироваться</Button>}
+                </>
             )}
         />
-        // <CustomDrawer
-        //     title={title}
-        //     show={showLogin}
-        //     handleShow={handleShow}
-        //     content={
-        //         <>
-        //             <InputGroup inside className="inputgroup-box">
-        //                 <Input placeholder="Ваш email" size="lg" />
-        //                 <InputGroup.Addon>
-        //                     <Icon icon="envelope" size="2x" />
-        //                 </InputGroup.Addon>
-        //             </InputGroup>
-        //             {!registerModeOn &&
-        //                 <>
-        //                     <PwdInputHandler
-        //                         title="Ваш пароль"
-        //                         inputValue={pwdMain}
-        //                         updateValue={(value) => updatePwdMain(value)}
-        //                         lockType="shield"
-        //                         clearHandle={clearBothPwd}
-        //                     />
-        //                     <Button
-        //                         className="drawer-button"
-        //                         appearance="primary">ВОЙТИ
-        //                     </Button>
-        //                     <Button
-        //                         style={{ width: "150px" }}
-        //                         appearance="link"
-        //                         onClick={handleRegister}
-        //                     >Зарегистрироваться
-        //                     </Button>
-        //                 </>}
-        //             {registerModeOn &&
-        //                 <>
-        //                     <InputGroup inside className="inputgroup-box">
-        //                         <Input placeholder="Ваше имя" size="lg" />
-        //                         <InputGroup.Addon>
-        //                             <Icon icon="avatar" size="2x" />
-        //                         </InputGroup.Addon>
-        //                     </InputGroup>
-        //                     <PwdInputHandler
-        //                         title="придумайте пароль"
-        //                         inputValue={pwdMain}
-        //                         updateValue={(value) => updatePwdMain(value)}
-        //                         lockType={lockType}
-        //                         clearHandle={clearBothPwd}
-        //                     />
-        //                     <PwdInputHandler
-        //                         title="повторите пароль"
-        //                         inputValue={pwdSecond}
-        //                         updateValue={(value) => updatePwdSecond(value)}
-        //                         lockType={lockType}
-        //                         clearHandle={() => updatePwdSecond("")}
-        //                     />
-        //                     <Button
-        //                         className="drawer-button"
-        //                         appearance="primary">
-        //                         ОТПРАВИТЬ</Button>
-        //                     <Button
-        //                         className="drawer-button"
-        //                         appearance="subtle"
-        //                         onClick={handleRegister}
-        //                     >ОТМЕНА</Button>
-        //                 </>
-        //             }
-
-
-        //         </>
-        //     } />
     )
 }
 
