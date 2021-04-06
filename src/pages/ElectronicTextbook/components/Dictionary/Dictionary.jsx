@@ -41,6 +41,7 @@ const Dictionary = () => {
         pageUpdate: (num) => updateActivePage(num),
         rePaginatedOutput: (response) => {
             if (response.status === 200) {
+                updateEmpty(false)
                 let { request, total } = Calculate.total(response.payload[0].paginatedResults, activePage)
                 updateTotal(total)
                 if (request) {
