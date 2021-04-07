@@ -5,6 +5,9 @@
   width: 100%;
   position: relative;
   background: white;
+  background-image: url("../../assets/figures-yellow.png"), url("../../assets/quarter-circle-yellow.png");
+  background-position: right center, bottom left;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .sprint .progress {

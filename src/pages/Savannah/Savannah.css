@@ -5,6 +5,9 @@
   width: 100%;
   position: relative;
   background: white;
+  background-image: url("../../assets/figures-red.png"), url("../../assets/quarter-circle-red.png");
+  background-position: right center, bottom left;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .savannah .lives {
