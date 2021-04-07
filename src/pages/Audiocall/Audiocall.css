@@ -5,6 +5,9 @@
   width: 100%;
   position: relative;
   background: white;
+  background-image: url("../../assets/figures-orange.png"), url("../../assets/quarter-circle-orange.png");
+  background-position: right center, bottom left;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .audiocall .game {

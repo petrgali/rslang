@@ -5,6 +5,9 @@
   width: 100%;
   position: relative;
   background: white;
+  background-image: url("../../assets/figures-red.png"), url("../../assets/quarter-circle-red.png");
+  background-position: right center, bottom left;
+  background-repeat: no-repeat, no-repeat;
 }
 
 .savannah .lives {
@@ -15,12 +18,13 @@
 }
 
 .savannah .game {
+  position: relative;
   height: calc(100% - 200px);
 }
 
 .savannah .word {
   position: absolute;
-  top: 180px;
+  top: 0;
   font-size: 24px;
   font-weight: 600;
   z-index: 2;
