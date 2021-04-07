@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { BrowserRouter } from "react-router-dom"
 import { Container, Content, Footer, Header, Sidebar } from "rsuite";
 import "rsuite/dist/styles/rsuite-default.css";
@@ -7,20 +8,24 @@ import ContainerFooter from "./components/ContainerFooter/ContainerFooter";
 import Menu from "./components/Menu/Menu";
 import "./styles/App.css";
 import CustomHeader from "./components/CustomHeader/CustomHeader";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { USER } from "./services/constant"
-import { useEffect } from "react"
 import { getUserCredentials } from "./redux/actions/credentialsAction"
+import interactAPI from "./services/interfaceAPI"
+
 
 function App() {
 
   const dispatch = useDispatch()
-
   useEffect(() => {
-    dispatch(getUserCredentials({
-      name: localStorage.getItem(USER.NAME),
-      userId: localStorage.getItem(USER.ID)
-    }))
+    interactAPI.getUserbyId(localStorage.getItem(USER.ID))
+      .then(response => {
+        dispatch(getUserCredentials({
+          name: localStorage.getItem(USER.NAME),
+          userId: localStorage.getItem(USER.ID),
+          avatar: response.payload.avatar
+        }))
+      })
   }, [dispatch])
 
   setDefaults()

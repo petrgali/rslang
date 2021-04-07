@@ -75,20 +75,19 @@ const interactAPI = {
             url: `${API_BASE_URL}words/${id}`,
         })
     },
-    registerUser: (user) => {
-        return requestAPI({
+    registerUser: async (user) => {
+        let response = await requestAPI({
             ...setHeaders.postNoAuth(),
             url: `${API_BASE_URL}users`,
             data: JSON.stringify(user)
         })
+        return { status: response.status, payload: response.payload }
     },
     avatarUpload: async (fileData) => {
-        console.log(fileData)
         let response = await requestAPI({
             method: "POST",
             url: `${API_BASE_URL}avatar`,
-            data: JSON.stringify(fileData),
-            // ...setHeaders.postNoAuth()
+            data: fileData,
         })
         return { status: response.status, payload: response.payload }
     },
