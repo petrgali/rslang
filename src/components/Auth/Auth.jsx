@@ -21,7 +21,7 @@ const Auth = ({ showLogin, handleShow }) => {
         name: "",
         email: "",
         password: "",
-        // avatar: ""
+        avatar: ""
     })
     const [queryInProgress, updateQueryProgress] = useState(false)
     const logOut = () => dispatch(getUserCredentials({}))
@@ -51,12 +51,15 @@ const Auth = ({ showLogin, handleShow }) => {
             })
     }
     const sendRegisterInfo = () => {
-        updateQueryProgress(true)
-        interfaceAPI.registerUser(registerFormValue)
-            .then(response => {
-                ////////handle register
-            })
-        updateQueryProgress(false)
+        console.log(registerFormValue)
+        // updateQueryProgress(true)
+        // interfaceAPI.registerUser(registerFormValue)
+        //     .then(response => {
+        ////////handle register with avatar
+        // })
+        // updateQueryProgress(false)
+        interfaceAPI.avatarUpload(registerFormValue.avatar)
+            .then(console.log)
     }
     return (
         <CustomDrawer

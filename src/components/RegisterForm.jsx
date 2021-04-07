@@ -1,14 +1,16 @@
-import { useEffect } from "react"
-import { Form, FormGroup, ButtonToolbar, FormControl, Button } from "rsuite"
+import { Form, FormGroup, ButtonToolbar, FormControl, Button, Uploader } from "rsuite"
 
 const centered = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center"
 }
-
 const RegisterForm = ({ formValue, setFormValues, queryInProgress, sendRegister }) => {
-
+    const setBase64Image = (file) => {
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
+        reader.onload = setFormValues({ avatar: file })
+    }
     return (
         <Form onChange={setFormValues}>
             <FormGroup style={centered} >
@@ -30,6 +32,16 @@ const RegisterForm = ({ formValue, setFormValues, queryInProgress, sendRegister 
                     name="passControl"
                     type="password" />
             </FormGroup>
+            <Uploader
+                list-type="picture"
+                autoUpload={false}
+                accept="image/*"
+                onChange={(data) => {
+                    if (data.length > 0) setBase64Image(data[0].blobFile)
+                }}
+            >
+                <Button appearance="subtle">АВАТАР</Button>
+            </Uploader>
             <ButtonToolbar style={centered}>
                 {queryInProgress
                     ? <Button

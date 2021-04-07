@@ -5,7 +5,7 @@ const setStorage = (...props) => {
     props.map(obj => localStorage.setItem(obj.name, obj.payload))
 }
 
-const getHeaders = {
+const setHeaders = {
     defaultHeaders: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -13,7 +13,7 @@ const getHeaders = {
     postNoAuth: () => {
         return {
             method: "POST",
-            headers: getHeaders.defaultHeaders
+            headers: setHeaders.defaultHeaders
         }
     },
     postAuth: () => {
@@ -21,7 +21,7 @@ const getHeaders = {
             method: "POST",
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-                ...getHeaders.defaultHeaders,
+                ...setHeaders.defaultHeaders,
             }
         }
     },
@@ -29,14 +29,14 @@ const getHeaders = {
         return {
             method: "PUT",
             'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-            ...getHeaders.defaultHeaders
+            ...setHeaders.defaultHeaders
         }
     },
     deleteAuth: () => {
         return {
             method: "DELETE",
             'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-            ...getHeaders.defaultHeaders
+            ...setHeaders.defaultHeaders
         }
     },
     getAuth: () => {
@@ -77,20 +77,24 @@ const interactAPI = {
     },
     registerUser: (user) => {
         return requestAPI({
-            ...getHeaders.postNoAuth(),
+            ...setHeaders.postNoAuth(),
             url: `${API_BASE_URL}users`,
             data: JSON.stringify(user)
         })
     },
-    avatarUpload: () => {
-        return requestAPI({
-            url: `${API_BASE_URL}avatar/`,
-            ...getHeaders.postNoAuth()
+    avatarUpload: async (fileData) => {
+        console.log(fileData)
+        let response = await requestAPI({
+            method: "POST",
+            url: `${API_BASE_URL}avatar`,
+            data: JSON.stringify(fileData),
+            // ...setHeaders.postNoAuth()
         })
+        return { status: response.status, payload: response.payload }
     },
     loginUser: async (user) => {
         let response = await requestAPI({
-            ...getHeaders.postNoAuth(),
+            ...setHeaders.postNoAuth(),
             url: `${API_BASE_URL}signin`,
             data: JSON.stringify(user),
         })
@@ -114,70 +118,70 @@ const interactAPI = {
     },
     getUserbyId: (id) => {
         return requestAPI({
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}`,
         })
     },
     getUserWords: (id) => {
         return requestAPI({
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/words`,
         })
     },
     getHardOrIsLearningOrRegularWords: (id, group = 0, page = 0) => {
         return requestAPI({
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={"$or":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.optional.isLearning": true}]},{"userWord":null}]}`,
         })
     },
     addUserWord: (id, wordId, setting,) => {
         return requestAPI({
-            ...getHeaders.postAuth(),
+            ...setHeaders.postAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
             data: JSON.stringify(setting)
         })
     },
     getUserWordbyId: (id, wordId) => {
         return requestAPI({
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
         })
     },
     updateUserWordbyId: (id, wordId, setting) => {
         return requestAPI({
-            ...getHeaders.putAuth(),
+            ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
             data: JSON.stringify(setting)
         })
     },
     deleteUserWordbyId: (id, wordId) => {
         return requestAPI({
-            ...getHeaders.deleteAuth(),
+            ...setHeaders.deleteAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
         })
     },
     getUserStat: (id) => {
         return requestAPI({
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/statistics`,
         })
     },
     updateUserStat: (id, stat) => {
         return requestAPI({
-            ...getHeaders.putAuth(),
+            ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/statistics`,
             data: JSON.stringify(stat),
         })
     },
     getUserSettings: (id) => {
         return requestAPI({
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/settings`,
         })
     },
     updateUserSettings: (id, setting) => {
         return requestAPI({
-            ...getHeaders.putAuth(),
+            ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/settings`,
             data: JSON.stringify(setting),
         })
@@ -186,7 +190,7 @@ const interactAPI = {
         let filter = `{"$or": [{ "userWord": {"$exists": true}}, {"userWord": null}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
 
         })
     },
@@ -194,42 +198,42 @@ const interactAPI = {
         let filter = `{ "$and": [{ "userWord.difficulty": "deleted" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
         })
     },
     getDeletedWordsbyGroup: (id, group = 0, page = 0, words = 20) => {
         let filter = `{ "$and": [{ "userWord.difficulty": "deleted" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
         })
     },
     getHardWords: (id, page = 0, words = 3600) => {
         let filter = `{ "$and": [{ "userWord.difficulty": "hard" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
         })
     },
     getHardWordsbyGroup: (id, group = 0, page = 0, words = 20) => {
         let filter = `{ "$and": [{ "userWord.difficulty": "hard" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
         })
     },
     getLearningWords: (id, page = 0, words = 3600) => {
         let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
         })
     },
     getLearningWordsbyGroup: (id, group = 0, page = 0, words = 20) => {
         let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getHeaders.getAuth(),
+            ...setHeaders.getAuth(),
         })
     },
 }
