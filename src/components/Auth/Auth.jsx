@@ -26,6 +26,7 @@ const Auth = ({ showLogin, handleShow }) => {
     }, [user])
     useEffect(() => {
         updateLoginError()
+        updateRegisterError()
     }, [registerMode])
     const handleRegister = () => {
         updateRegistermode(true)
@@ -47,7 +48,11 @@ const Auth = ({ showLogin, handleShow }) => {
                         interfaceAPI.getUserbyId(userId)
                             .then(response => {
                                 let { avatar } = response.payload
-                                dispatch(getUserCredentials({ name: name, userId: userId, avatar: avatar }))
+                                dispatch(getUserCredentials({
+                                    name: name,
+                                    userId: userId,
+                                    avatar: avatar
+                                }))
                             })
                     } else {
                         updateLoginError(response.payload)
@@ -68,10 +73,17 @@ const Auth = ({ showLogin, handleShow }) => {
                             email: data.email,
                             password: data.password,
                             avatar: response.payload.secure_url
+                        }).then(response => {
+                            if (response.status === 200) {
+                                authService.sendLoginInfo({
+                                    email: data.email,
+                                    password: data.password
+                                })
+                                handleCloseRegister()
+                                return
+                            }
+                            updateRegisterError(response.payload)
                         })
-                            .then(response => {
-                                if (response.status !== 200) updateRegisterError(response.payload)
-                            })
                     } else {
                         updateRegisterError(response.payload)
                     }

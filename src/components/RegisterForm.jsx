@@ -59,15 +59,13 @@ const RegisterForm = ({ queryInProgress, sendRegister }) => {
             >
                 <Button className="form-button" appearance="subtle">АВАТАР</Button>
             </Uploader>
-
-            {validationError && <Message
-                showIcon
-                type="warning"
-                title="Что-то не в порядке"
-                description={validationError} />
-            }
-            {!validationError &&
-                <ButtonToolbar style={centered}>
+            {validationError
+                ? <Message
+                    showIcon
+                    type="warning"
+                    title="Что-то не в порядке"
+                    description={validationError} />
+                : <ButtonToolbar style={centered}>
                     {queryInProgress
                         ? <Button
                             className="form-button"
@@ -81,7 +79,6 @@ const RegisterForm = ({ queryInProgress, sendRegister }) => {
                     }
                 </ButtonToolbar>
             }
-
         </Form>
     )
 }
