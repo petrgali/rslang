@@ -3,6 +3,7 @@ import { CRED_ACTION } from "../types";
 const initialState = {
     name: "",
     userId: "",
+    avatar: ""
 }
 
 export const credentialsReducer = (state = initialState, action) => {

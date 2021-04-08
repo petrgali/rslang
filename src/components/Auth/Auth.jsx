@@ -4,7 +4,7 @@ import { Button, Message } from "rsuite"
 import { USER } from "../../services/constant"
 import CustomDrawer from "../CustomDrawer/CustomDrawer"
 import interfaceAPI from "../../services/interfaceAPI"
-import { getUserCredentials } from "../../redux/actions/credentialsAction"
+import { updateUserCredentials } from "../../redux/actions/credentialsAction"
 import LoginForm from "../LoginForm"
 import RegisterForm from "../RegisterForm"
 import setDefault from "../../services/setOptionsDefault"
@@ -45,15 +45,11 @@ const Auth = ({ showLogin, handleShow }) => {
                 .then(response => {
                     if (response.status === 200) {
                         let { name, userId } = response.payload
-                        interfaceAPI.getUserbyId(userId)
-                            .then(response => {
-                                let { avatar } = response.payload
-                                dispatch(getUserCredentials({
-                                    name: name,
-                                    userId: userId,
-                                    avatar: avatar
-                                }))
-                            })
+                        dispatch(updateUserCredentials({
+                            name: name,
+                            userId: userId,
+                        }))
+                        window.location.reload()
                     } else {
                         updateLoginError(response.payload)
                     }
@@ -91,7 +87,7 @@ const Auth = ({ showLogin, handleShow }) => {
                 })
         },
         logout: () => {
-            dispatch(getUserCredentials({}))
+            dispatch(updateUserCredentials({}))
             localStorage.setItem(USER.ID, "")
             localStorage.setItem(USER.NAME, "")
             setDefault(true)
@@ -116,15 +112,8 @@ const Auth = ({ showLogin, handleShow }) => {
                         type="warning"
                         title="Что-то не в порядке"
                         description={loginError} />}
-                    {!registerMode && <LoginForm
-                        user={user}
-                        handleShow={handleShow}
-                        logOut={authService.logout}
-                        queryInProgress={queryInProgress}
-                        loginError={loginError}
-                        sendLoginInfo={authService.sendLoginInfo} />}
-                    {registerMode &&
-                        <>
+                    {registerMode
+                        ? <>
                             <RegisterForm
                                 queryInProgress={queryInProgress}
                                 registerError={registerError}
@@ -136,7 +125,13 @@ const Auth = ({ showLogin, handleShow }) => {
                                 onClick={handleCloseRegister}
                             >Отмена</Button>
                         </>
-                    }
+                        : <LoginForm
+                            user={user}
+                            handleShow={handleShow}
+                            logOut={authService.logout}
+                            queryInProgress={queryInProgress}
+                            loginError={loginError}
+                            sendLoginInfo={authService.sendLoginInfo} />}
                     {!user && !registerMode && <Button
                         className="form-button"
                         appearance="link"

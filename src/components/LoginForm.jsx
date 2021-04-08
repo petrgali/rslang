@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useSelector } from "react-redux"
 import { Button, Form, FormGroup, FormControl, ButtonToolbar } from "rsuite"
+import avatarPlaceholder from "../assets/png/avatarPlaceholder.png"
 
 const centered = {
     display: "flex",
@@ -8,8 +9,8 @@ const centered = {
     alignItems: "center"
 }
 
-const LoginForm = ({ user, handleShow, logOut, queryInProgress, sendLoginInfo }) => {
-    const avatar = useSelector(state => state.credentials.avatar)
+const LoginForm = ({ user, logOut, queryInProgress, sendLoginInfo }) => {
+    const avatar = useSelector(state => state.credentials.avatar) || avatarPlaceholder
     const [formValue, updateFormValue] = useState({
         email: "",
         password: ""
@@ -23,11 +24,6 @@ const LoginForm = ({ user, handleShow, logOut, queryInProgress, sendLoginInfo })
                         className="form-avatar"
                         src={avatar}
                         alt="аватар пользователя" />}
-                    <Button
-                        className="form-button"
-                        appearance="primary"
-                        onClick={handleShow}
-                    >ПРОДОЛЖИТЬ</Button>
                     <Button
                         className="form-button"
                         appearance="primary"

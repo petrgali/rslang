@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import { Icon, IconButton, Nav, Navbar } from "rsuite";
 import Auth from "../Auth/Auth"
 import { ELECTRONIC_TEXTBOOK_ROUTE, MINI_GAMES_ROUTE, STATISTICS_ROUTE } from "../../navigation/CONSTANT";
 import "./CustomHeader.css"
-import { useSelector } from "react-redux";
 
 const routes = ["/", ELECTRONIC_TEXTBOOK_ROUTE, MINI_GAMES_ROUTE, STATISTICS_ROUTE]
 
@@ -58,7 +58,7 @@ const CustomHeader = () => {
           circle
           onClick={openLogin}
         />}
-      {showLogin && <Auth showLogin={showLogin} handleShow={openLogin} />}
+      <Auth showLogin={showLogin} handleShow={openLogin} />
     </div>
   )
 }
