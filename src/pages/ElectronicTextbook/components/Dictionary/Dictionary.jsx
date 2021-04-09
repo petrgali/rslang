@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 import { Alert, ButtonGroup, ButtonToolbar, Icon, IconButton, Tooltip, Whisper } from "rsuite"
 import PageToggler from "../../../../components/PageToggler"
 import WordsList from "../../../../components/WordsList/WordsList"
@@ -20,11 +21,11 @@ const Dictionary = () => {
     const [groupRequest, updateGroupRequest] = useState()
     const [isLoaded, updateLoadedState] = useState(false)
     const [isEmpty, updateEmpty] = useState(false)
-
+    const userId = useSelector(state => state.credentials.userId)
     const handle = {
         recover: (id) => {
             Sound.stop()
-            api.deleteUserWordbyId(id)
+            api.deleteUserWordbyId(userId, id)
                 .then(response => {
                     if (response.status === 204) {
                         requestData.updateAll()
@@ -62,15 +63,15 @@ const Dictionary = () => {
         updateAll: () => {
             switch (mode) {
                 case STATUS.DELETED:
-                    api.getDeletedWords()
+                    api.getDeletedWords(userId)
                         .then(response => handle.rePaginatedOutput(response))
                     break
                 case STATUS.HARD:
-                    api.getHardWords()
+                    api.getHardWords(userId)
                         .then(response => handle.rePaginatedOutput(response))
                     break
                 case STATUS.LEARNING:
-                    api.getLearningWords()
+                    api.getLearningWords(userId)
                         .then(response => handle.rePaginatedOutput(response))
                     break
                 default:
@@ -80,15 +81,15 @@ const Dictionary = () => {
         byGroup: (group, page) => {
             switch (mode) {
                 case STATUS.DELETED:
-                    api.getDeletedWordsbyGroup(group, page)
+                    api.getDeletedWordsbyGroup(userId, group, page)
                         .then(response => handle.dataUpdate(response))
                     break
                 case STATUS.HARD:
-                    api.getHardWordsbyGroup(group, page)
+                    api.getHardWordsbyGroup(userId, group, page)
                         .then(response => handle.dataUpdate(response))
                     break
                 case STATUS.LEARNING:
-                    api.getLearningWordsbyGroup(group, page)
+                    api.getLearningWordsbyGroup(userId, group, page)
                         .then(response => handle.dataUpdate(response))
                     break
                 default:
@@ -102,65 +103,65 @@ const Dictionary = () => {
         //eslint-disable-next-line
     }, [mode, activePage])
     return (
-      <div className="dictionary">
-        <ButtonToolbar className="button-toolbar">
-          <ButtonGroup size="lg">
-          <Whisper placement="auto" trigger="hover" speaker={
-              <Tooltip>Изучаемые слова</Tooltip>
-            }>
-              <IconButton
-                icon={<Icon icon="envira" />}
-                active={mode === STATUS.LEARNING}
-                onClick={() => updateMode(STATUS.LEARNING)} />
-            </Whisper>
-            <Whisper placement="auto" trigger="hover" speaker={
-              <Tooltip>Сложные слова</Tooltip>
-            }>
-              <IconButton
-                icon={<Icon icon="question-circle" />}
-                active={mode === STATUS.HARD}
-                onClick={() => updateMode(STATUS.HARD)} />
-            </Whisper>
-            <Whisper placement="auto" trigger="hover" speaker={
-              <Tooltip>Удаленные слова</Tooltip>
-            }>
-              <IconButton
-                icon={<Icon icon="ban" />}
-                active={mode === STATUS.DELETED}
-                onClick={() => updateMode(STATUS.DELETED)} />
-            </Whisper>
-          </ButtonGroup>
-        </ButtonToolbar>
-        {!isEmpty
-          ? <>
-              <div className="dictionary-info">
-                <Icon icon="circle" size="lg" style={{ color: sectionColors[groupRequest - 1  ] }} />
-                <span>cлова из {groupRequest} раздела</span>
-              </div>
-              <PageToggler
-                  activePage={activePage}
-                  totalPages={totalPages}
-                  updatePage={handle.pageUpdate}
-              />
-              {isLoaded && mode !== STATUS.LEARNING &&
-                  <WordsList
-                      showTranslate
-                      showRecover
-                      recoverWord={handle.recover}
-                      data={data} />}
-              {isLoaded && mode === STATUS.LEARNING &&
-                  <WordsList
-                      showTranslate
-                      data={data} />
-              }
-              {!isLoaded && <ListPlaceholder />}
-          </>
-          : <div className="dictionary-empty">
-              <Icon icon="smile-o" size="5x"/>
-              <h3 className="subtitle">Все слова снова в учебнике!</h3>
-            </div>
-        }
-      </div>
+        <div className="dictionary">
+            <ButtonToolbar className="button-toolbar">
+                <ButtonGroup size="lg">
+                    <Whisper placement="auto" trigger="hover" speaker={
+                        <Tooltip>Изучаемые слова</Tooltip>
+                    }>
+                        <IconButton
+                            icon={<Icon icon="envira" />}
+                            active={mode === STATUS.LEARNING}
+                            onClick={() => updateMode(STATUS.LEARNING)} />
+                    </Whisper>
+                    <Whisper placement="auto" trigger="hover" speaker={
+                        <Tooltip>Сложные слова</Tooltip>
+                    }>
+                        <IconButton
+                            icon={<Icon icon="question-circle" />}
+                            active={mode === STATUS.HARD}
+                            onClick={() => updateMode(STATUS.HARD)} />
+                    </Whisper>
+                    <Whisper placement="auto" trigger="hover" speaker={
+                        <Tooltip>Удаленные слова</Tooltip>
+                    }>
+                        <IconButton
+                            icon={<Icon icon="ban" />}
+                            active={mode === STATUS.DELETED}
+                            onClick={() => updateMode(STATUS.DELETED)} />
+                    </Whisper>
+                </ButtonGroup>
+            </ButtonToolbar>
+            {!isEmpty
+                ? <>
+                    <div className="dictionary-info">
+                        <Icon icon="circle" size="lg" style={{ color: sectionColors[groupRequest - 1] }} />
+                        <span>cлова из {groupRequest} раздела</span>
+                    </div>
+                    <PageToggler
+                        activePage={activePage}
+                        totalPages={totalPages}
+                        updatePage={handle.pageUpdate}
+                    />
+                    {isLoaded && mode !== STATUS.LEARNING &&
+                        <WordsList
+                            showTranslate
+                            showRecover
+                            recoverWord={handle.recover}
+                            data={data} />}
+                    {isLoaded && mode === STATUS.LEARNING &&
+                        <WordsList
+                            showTranslate
+                            data={data} />
+                    }
+                    {!isLoaded && <ListPlaceholder />}
+                </>
+                : <div className="dictionary-empty">
+                    <Icon icon="smile-o" size="5x" />
+                    <h3 className="subtitle">Все слова снова в учебнике!</h3>
+                </div>
+            }
+        </div>
     )
 }
 

@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { BrowserRouter } from "react-router-dom"
 import { Container, Content, Footer, Header, Sidebar } from "rsuite";
 import "rsuite/dist/styles/rsuite-default.css";
@@ -7,9 +8,27 @@ import ContainerFooter from "./components/ContainerFooter/ContainerFooter";
 import Menu from "./components/Menu/Menu";
 import "./styles/App.css";
 import CustomHeader from "./components/CustomHeader/CustomHeader";
+import { useDispatch } from "react-redux";
+import { USER } from "./services/constant"
+import { updateUserCredentials } from "./redux/actions/credentialsAction"
+import interactAPI from "./services/interfaceAPI"
+
 
 function App() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    interactAPI.getUserbyId(localStorage.getItem(USER.ID))
+      .then(response => {
+        dispatch(updateUserCredentials({
+          name: localStorage.getItem(USER.NAME),
+          userId: localStorage.getItem(USER.ID),
+          avatar: response.payload.avatar
+        }))
+      })
+  }, [dispatch])
+
   setDefaults()
+
   return (
     <BrowserRouter>
       <Container className="container">
@@ -21,7 +40,7 @@ function App() {
             <CustomHeader />
           </Header>
           <Content>
-              <RouterConfig />
+            <RouterConfig />
           </Content>
           <Footer>
             <ContainerFooter />

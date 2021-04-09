@@ -5,35 +5,53 @@ const setStorage = (...props) => {
     props.map(obj => localStorage.setItem(obj.name, obj.payload))
 }
 
-const postNoAuth = {
-    method: "POST",
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-    }
-}
-const postAuth = {
-    method: "POST",
-    headers: {
-        'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-        ...postNoAuth.headers,
+const setHeaders = {
+    defaultHeaders: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
     },
-}
-const putAuth = {
-    method: "PUT",
-    headers: { ...postAuth.headers }
-}
-const deleteAuth = {
-    method: "DELETE",
-    headers: { ...postAuth.headers }
-}
-const getAuth = {
-    headers: {
-        'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-        'Accept': 'application/json',
+    postNoAuth: () => {
+        return {
+            method: "POST",
+            headers: setHeaders.defaultHeaders
+        }
+    },
+    postAuth: () => {
+        return {
+            method: "POST",
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
+                ...setHeaders.defaultHeaders,
+            }
+        }
+    },
+    putAuth: () => {
+        return {
+            method: "PUT",
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
+                ...setHeaders.defaultHeaders
+            }
+        }
+    },
+    deleteAuth: () => {
+        return {
+            method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
+                ...setHeaders.defaultHeaders
+            }
+        }
+    },
+    getAuth: () => {
+        return {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
+                'Accept': 'application/json',
+            }
+        }
     }
 }
-
 const requestAPI = async (options) => {
     try {
         let response = await axios(options)
@@ -61,16 +79,25 @@ const interactAPI = {
             url: `${API_BASE_URL}words/${id}`,
         })
     },
-    registerUser: (user) => {
-        return requestAPI({
-            ...postNoAuth,
+    registerUser: async (user) => {
+        let response = await requestAPI({
+            ...setHeaders.postNoAuth(),
             url: `${API_BASE_URL}users`,
             data: JSON.stringify(user)
         })
+        return { status: response.status, payload: response.payload }
+    },
+    avatarUpload: async (fileData) => {
+        let response = await requestAPI({
+            method: "POST",
+            url: `${API_BASE_URL}avatar`,
+            data: fileData,
+        })
+        return { status: response.status, payload: response.payload }
     },
     loginUser: async (user) => {
         let response = await requestAPI({
-            ...postNoAuth,
+            ...setHeaders.postNoAuth(),
             url: `${API_BASE_URL}signin`,
             data: JSON.stringify(user),
         })
@@ -79,146 +106,138 @@ const interactAPI = {
                 name: USER.TOKEN,
                 payload: response.payload.token
             }, {
+                name: USER.REFRESH_TOKEN,
+                payload: response.payload.refreshToken
+            }, {
                 name: USER.ID,
                 payload: response.payload.userId
+            }, {
+                name: USER.NAME,
+                payload: response.payload.name
             })
-            return { status: response.status }
+            return { status: response.status, payload: response.payload }
         }
         return { status: response.status, payload: response.payload }
     },
-    getUserbyId: (id = localStorage.getItem(USER.ID)) => {
+    getUserbyId: (id) => {
         return requestAPI({
-            ...getAuth,
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}`,
         })
     },
-    getUserWords: (id = localStorage.getItem(USER.ID)) => {
+    getUserWords: (id) => {
         return requestAPI({
-            ...getAuth,
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/words`,
         })
     },
-    getHardOrIsLearningOrRegularWords: (group = 0, page = 0, id = localStorage.getItem(USER.ID)) => {
-      return requestAPI({
-        ...getAuth,
-        url: `${API_BASE_URL}users/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={"$or":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.optional.isLearning": true}]},{"userWord":null}]}`,
-      })
-    },
-    addUserWord: (wordId, setting) => {
-        let id = localStorage.getItem(USER.ID)
+    getHardOrIsLearningOrRegularWords: (id, group = 0, page = 0) => {
         return requestAPI({
-            ...postAuth,
+            ...setHeaders.getAuth(),
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={"$or":[{"$or": [{"userWord.difficulty":"hard"}, {"userWord.optional.isLearning": true}]},{"userWord":null}]}`,
+        })
+    },
+    addUserWord: (id, wordId, setting,) => {
+        return requestAPI({
+            ...setHeaders.postAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
             data: JSON.stringify(setting)
         })
     },
-    getUserWordbyId: (wordId) => {
-        let id = localStorage.getItem(USER.ID)
+    getUserWordbyId: (id, wordId) => {
         return requestAPI({
-            ...getAuth,
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
         })
     },
-    updateUserWordbyId: (wordId, setting) => {
-        let id = localStorage.getItem(USER.ID)
+    updateUserWordbyId: (id, wordId, setting) => {
+        console.log(id, wordId, setting)
         return requestAPI({
-            ...putAuth,
+            ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
             data: JSON.stringify(setting)
         })
     },
-    deleteUserWordbyId: (wordId) => {
-        let id = localStorage.getItem(USER.ID)
+    deleteUserWordbyId: (id, wordId) => {
         return requestAPI({
-            ...deleteAuth,
+            ...setHeaders.deleteAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
         })
     },
-    getUserStat: () => {
-        let id = localStorage.getItem(USER.ID)
+    getUserStat: (id) => {
         return requestAPI({
-            ...getAuth,
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/statistics`,
         })
     },
-    updateUserStat: (stat) => {
-        let id = localStorage.getItem(USER.ID)
+    updateUserStat: (id, stat) => {
         return requestAPI({
-            ...putAuth,
+            ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/statistics`,
             data: JSON.stringify(stat),
         })
     },
-    getUserSettings: () => {
-        let id = localStorage.getItem(USER.ID)
+    getUserSettings: (id) => {
         return requestAPI({
-            ...getAuth,
+            ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}/settings`,
         })
     },
-    updateUserSettings: (setting) => {
-        let id = localStorage.getItem(USER.ID)
+    updateUserSettings: (id, setting) => {
         return requestAPI({
-            ...putAuth,
+            ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/settings`,
             data: JSON.stringify(setting),
         })
     },
-    getTrainingAggregatedWords: (group = 0, page = 0, words = 20) => {
-        let id = localStorage.getItem(USER.ID)
-        let filter = `{"$and": [{"$or": [{ "userWord": {"$exists": true}}, {"userWord": null}]}, {"page": ${page}}]}`
+    getTrainingAggregatedWords: (id, group = 0, page = 0, words = 20) => {
+        let filter = `{"$or": [{ "userWord": {"$exists": true}}, {"userWord": null}]}`
         return requestAPI({
-            url: `${API_BASE_URL}users/${id}/aggregatedWords?group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getAuth,
+            url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
+            ...setHeaders.getAuth(),
 
         })
     },
-    getDeletedWords: (page = 0, words = 3600) => {
-        let id = localStorage.getItem(USER.ID)
+    getDeletedWords: (id, page = 0, words = 3600) => {
         let filter = `{ "$and": [{ "userWord.difficulty": "deleted" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
-            ...getAuth,
+            ...setHeaders.getAuth(),
         })
     },
-    getDeletedWordsbyGroup: (group = 0, page = 0, words = 20) => {
-        let id = localStorage.getItem(USER.ID)
+    getDeletedWordsbyGroup: (id, group = 0, page = 0, words = 20) => {
         let filter = `{ "$and": [{ "userWord.difficulty": "deleted" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getAuth,
+            ...setHeaders.getAuth(),
         })
     },
-    getHardWords: (page = 0, words = 3600) => {
-        let id = localStorage.getItem(USER.ID)
+    getHardWords: (id, page = 0, words = 3600) => {
         let filter = `{ "$and": [{ "userWord.difficulty": "hard" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
-            ...getAuth,
+            ...setHeaders.getAuth(),
         })
     },
-    getHardWordsbyGroup: (group = 0, page = 0, words = 20) => {
-        let id = localStorage.getItem(USER.ID)
+    getHardWordsbyGroup: (id, group = 0, page = 0, words = 20) => {
         let filter = `{ "$and": [{ "userWord.difficulty": "hard" }] }`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getAuth,
+            ...setHeaders.getAuth(),
         })
     },
-    getLearningWords: (page = 0, words = 3600) => {
-        let id = localStorage.getItem(USER.ID)
+    getLearningWords: (id, page = 0, words = 3600) => {
         let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
-            ...getAuth,
+            ...setHeaders.getAuth(),
         })
     },
-    getLearningWordsbyGroup: (group = 0, page = 0, words = 20) => {
-        let id = localStorage.getItem(USER.ID)
+    getLearningWordsbyGroup: (id, group = 0, page = 0, words = 20) => {
         let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
-            ...getAuth,
+            ...setHeaders.getAuth(),
         })
     },
 }
