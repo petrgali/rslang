@@ -53,6 +53,7 @@ const RegisterForm = ({ queryInProgress, sendRegister }) => {
                 autoUpload={false}
                 multiple={false}
                 accept="image/*"
+                onRemove={() => updateFormValue({ ...formValue, avatar: "" })}
                 onChange={(data) => {
                     if (data.length > 0) setBase64Image(data[0].blobFile)
                 }}
