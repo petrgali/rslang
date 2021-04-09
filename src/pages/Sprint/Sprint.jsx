@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { Divider, Icon, IconButton, Progress } from "rsuite"
+import { Divider, Icon, IconButton } from "rsuite"
 import GameLoading from "../../components/GameLoading"
 import GameResult from "../../components/GameResult/GameResult"
+import Timer from "../../components/Timer"
 import useGameEngine from "../../hooks/hooks"
 import { MINI_GAMES_DATA } from "../../navigation/CONSTANT"
 import "./Sprint.css"
-
-let interval
 
 const Sprint = ({ match }) => {
   const [{word, words}, {
@@ -20,7 +19,6 @@ const Sprint = ({ match }) => {
   const [countDownTime, setCountDownTime] = useState(60)
   const [result, setResult] = useState("")
   const sprintRef = useRef()
-  const progressRef = useRef()
   const btnsRef = useRef()
 
   useHotkeys("1", () => btnsRef.current && btnsRef.current.children[0].click())
@@ -28,26 +26,11 @@ const Sprint = ({ match }) => {
   useHotkeys("2", () => btnsRef.current && btnsRef.current.children[1].click())
 
   useEffect(() => {
-    if (!isPlaying || isGameOver) {
-      clearInterval(interval)
+    if (countDownTime === 0) {
+      forceGameOver()
       return
     }
-    interval = setInterval(() => {
-      if (countDownTime === 0) {
-        clearInterval(interval)
-        forceGameOver()
-        return
-      }
-      setCountDownTime(countDownTime - 1)
-    }, 1000)
-    return () => clearInterval(interval)
-  }, [countDownTime, forceGameOver, isGameOver, isPlaying])
-
-  useEffect(() => {
-    if (!progressRef.current) return
-    const progress = progressRef.current.querySelector("span")
-    progress.children[0].textContent = countDownTime
-  }, [countDownTime])
+  }, [countDownTime, forceGameOver])
   
   const handleFullScreen = () => {
     sprintRef.current.requestFullscreen()
@@ -102,12 +85,10 @@ const Sprint = ({ match }) => {
                 onClick={handleClose} />
             </div>
               <div className="game">
-                <div ref={progressRef} className="progress">
-                  <Progress.Circle
-                    percent={((60 - countDownTime) * 1.666666666)}
-                    showInfo={countDownTime === 60 ? false : true}
-                  />
-                </div>
+                <Timer
+                  shouldStart={isPlaying}
+                  countDownTime={countDownTime}
+                  setCountDownTime={setCountDownTime} />
                 {result === "correct" && (
                   <Icon icon="thumbs-up" size="2x" />
                 )}

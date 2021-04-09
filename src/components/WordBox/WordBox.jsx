@@ -30,11 +30,11 @@ function WordBox({ word, buttons, showTranslate }) {
           onClick={() => setShowDrawer(true)}
         >
           <span className="word-title">
-            {word.word}
+            {word.word.toLowerCase()}
           </span>
           {showTranslate && (
             <span>
-              {word.wordTranslate}
+              {word.wordTranslate.toLowerCase()}
             </span>
           )}
         </div>
@@ -61,7 +61,7 @@ function WordBox({ word, buttons, showTranslate }) {
               )}
             />
           </div>
-          <span className="word-title">{word.word} - {word.wordTranslate}</span>
+          <span className="word-title">{word.word.toLowerCase()} - {word.wordTranslate.toLowerCase()}</span>
           <span>{word.transcription}</span>
           <span dangerouslySetInnerHTML={{ __html: word.textMeaning }} />
           <span>{word.textMeaningTranslate}</span>

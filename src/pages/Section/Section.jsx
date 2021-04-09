@@ -11,8 +11,8 @@ const Section = ({ match }) => {
       <h1 className="title">{match.params.section} раздел</h1>
       <h2 className="subtitle">Мини-игры</h2>
       <Divider className="divider" />
-      <MiniGamesNav section={match.params.section}/>
-      <SectionWordsList group={match.params.section} />
+      <MiniGamesNav section={parseFloat(match.params.section)}/>
+      <SectionWordsList group={parseFloat(match.params.section)} page={parseFloat(match.params.page)} />
     </div>
   )
 }

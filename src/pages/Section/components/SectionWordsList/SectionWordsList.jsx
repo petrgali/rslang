@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Alert, Icon } from "rsuite"
 import { STATUS, MESSAGE } from "../../../../components/constant"
-import { TRAINING, USER } from "../../../../services/constant"
+import { TRAINING } from "../../../../services/constant"
 import interactAPI from "../../../../services/interfaceAPI"
 import WordsList from "../../../../components/WordsList/WordsList"
 import ListPlaceholder from "../../../../components/ListPlaceholder/ListPlaceholder"
@@ -10,22 +10,22 @@ import PageToggler from "../../../../components/PageToggler"
 import Sound from "../../../../utils/playMultipleSounds"
 import "./SectionWordsList.css"
 import { useSelector } from "react-redux"
+import { useHistory } from "react-router"
+import { ELECTRONIC_TEXTBOOK_SECTION_ROUTE } from "../../../../navigation/CONSTANT"
 
 const api = interactAPI
 
-const SectionWordsList = ({ group }) => {
+const SectionWordsList = ({ group, page }) => {
     const userId = useSelector(state => state.credentials.userId)
+    const history = useHistory()
     const [data, updateData] = useState()
     const [isLoaded, updateLoadedState] = useState(false)
     const [isEmpty, updateEmptyState] = useState(true)
-    const [activePage, updateActivePage] = useState(+localStorage.getItem(USER.LAST_VISITED))
     const [showControl, updateControl] = useState(localStorage.getItem(TRAINING.showControls) === "true")
     const [showTranslate, updateTranslate] = useState(localStorage.getItem(TRAINING.showTranslate) === "true")
 
     const handlePageUpdate = (num) => {
-        if (activePage !== num) updateData([])
-        updateActivePage(num)
-        localStorage.setItem(USER.LAST_VISITED, num)
+        history.push(ELECTRONIC_TEXTBOOK_SECTION_ROUTE + `/${group}/page/${num}`)
     }
     const handleRawData = (rawData) => {
         let filteredData = rawData.filter(obj => !obj.userWord || obj.userWord.difficulty !== STATUS.DELETED)
@@ -39,21 +39,40 @@ const SectionWordsList = ({ group }) => {
         updateLoadedState(true)
     }
     const requestData = () => {
-        api.getTrainingAggregatedWords(userId, group, activePage - 1)
+        api.getTrainingAggregatedWords(userId, group - 1, page - 1)
             .then((response) => {
                 if (response.status === 200) {
                     handleRawData(response.payload[0].paginatedResults)
                 }
             })
     }
-    const setWordStatus = (id, mode) => {
-        api.updateUserWordbyId(userId, id, { difficulty: mode })
-            .then(response => {
+    const updateOptions = (settings, mode) => {
+        if (!!settings
+            && !!settings.optional
+            && mode === STATUS.DELETED)
+            return {
+                difficulty: mode,
+                optional: { isLearning: false }
+            }
+        if (mode === STATUS.DELETED)
+            return {
+                difficulty: mode
+            }
+        return {
+            difficulty: mode,
+            optional: { isLearning: true }
+        }
+    }
+    const setWordStatus = (id, settings, mode) => {
+        let options = updateOptions(settings, mode)
+        api.updateUserWordbyId(userId, id, options)
+        .then(response => {
+                console.log(response)
                 if (response.status === 200) {
                     Alert.info(MESSAGE.ADDED)
                     requestData()
                 } else if (response.status === 404) {
-                    api.addUserWord(userId, id, { difficulty: mode })
+                    api.addUserWord(userId, id, options)
                         .then(response => {
                             if (response.status === 200) {
                                 Alert.info(MESSAGE.ADDED)
@@ -70,11 +89,13 @@ const SectionWordsList = ({ group }) => {
         localStorage.setItem(TRAINING.showTranslate, showTranslate)
     }, [showTranslate])
     useEffect(() => {
-        Sound.stop()
         updateLoadedState(false)
         requestData()
+        return () => {
+            Sound.stop()
+        }
         // eslint-disable-next-line
-    }, [activePage])
+    }, [page])
     return (
         <>
             <Options
@@ -86,7 +107,7 @@ const SectionWordsList = ({ group }) => {
             <div className="section-words-list">
                 <PageToggler
                     updatePage={handlePageUpdate}
-                    activePage={activePage}
+                    activePage={page}
                     totalPages={30}
                 />
                 {!isLoaded && <ListPlaceholder />}
@@ -102,11 +123,6 @@ const SectionWordsList = ({ group }) => {
                         <h2 className="subtitle">Все слова были удалены</h2>
                     </div>
                 }
-                <PageToggler
-                    updatePage={handlePageUpdate}
-                    activePage={activePage}
-                    totalPages={30}
-                />
             </div>
         </>
     )

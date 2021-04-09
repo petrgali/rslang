@@ -7,8 +7,8 @@ const setStorage = (...props) => {
 
 const setHeaders = {
     defaultHeaders: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        "Accept": "application/json",
+        "Content-Type": "application/json"
     },
     postNoAuth: () => {
         return {
@@ -28,15 +28,19 @@ const setHeaders = {
     putAuth: () => {
         return {
             method: "PUT",
-            'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-            ...setHeaders.defaultHeaders
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
+                ...setHeaders.defaultHeaders
+            }
         }
     },
     deleteAuth: () => {
         return {
             method: "DELETE",
-            'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
-            ...setHeaders.defaultHeaders
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem(USER.TOKEN)}`,
+                ...setHeaders.defaultHeaders
+            }
         }
     },
     getAuth: () => {
@@ -147,6 +151,7 @@ const interactAPI = {
         })
     },
     updateUserWordbyId: (id, wordId, setting) => {
+        console.log(id, wordId, setting)
         return requestAPI({
             ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,

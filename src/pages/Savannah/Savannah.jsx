@@ -17,10 +17,11 @@ const Savannah = ({ match }) => {
   })
   const [isPlaying, setIsPlaying] = useState(false)
   const [isGameLoading, setIsGameLoading] = useState(false)
-  const [top, setTop] = useState(150)
+  const [top, setTop] = useState(0)
   const [lives, setLives] = useState([...Array(5)])
   const savannaRef = useRef()
   const wordRef = useRef()
+  const gameRef = useRef()
   const btnsRef = useRef()
 
   useHotkeys("1", () => btnsRef.current && btnsRef.current.children[0].click())
@@ -37,7 +38,10 @@ const Savannah = ({ match }) => {
       return
     }
     interval = setInterval(() => {
-      if (btnsRef.current.getBoundingClientRect().top < top) {
+      const gameRefRectTop = gameRef.current.getBoundingClientRect().top
+      const btnsRefRectTop = btnsRef.current.getBoundingClientRect().top
+      const wordRefRectTop = wordRef.current.getBoundingClientRect().top
+      if (btnsRefRectTop - gameRefRectTop < wordRefRectTop - gameRefRectTop) {
         clearInterval(interval)
         guess({ word: "" })
         setLives(lives.slice(1))
@@ -52,7 +56,7 @@ const Savannah = ({ match }) => {
   }, [isPlaying, isGameOver, top])
 
   useEffect(() => {
-    setTop(150)
+    setTop(0)
   }, [word])
 
   useEffect(() => {
@@ -116,7 +120,7 @@ const Savannah = ({ match }) => {
                   circle size="lg"
                   onClick={handleClose} />
               </div>
-              <div className="game">
+              <div ref={gameRef} className="game">
                 <p
                   className="word"
                   ref={wordRef}
