@@ -10,33 +10,31 @@ const validationRules = {
     email: [
         (data) => { if (!mailformat.test(data)) return "введите корректный email" }
     ],
+    passwordVerify: [
+        (a, b) => { if (a !== b) return "пароли не совпадают" }
+    ],
     password: [
         (data) => { if (data.length < 8) return "пароль слишком короткий" }
     ],
-    passwordVerify: [
-        (a, b) => { if (a !== b) return "пароли не совпадают" }
-    ]
-    ,
     avatar: [
         (data) => { if (data.size > 5000000) return "файл слишком большой" },
-        (data) => { if (!data) return "выберите аватар" }
     ]
 }
 
 export const formValid = (form) => {
     let error
     Object.keys(form).forEach(property => {
-        if (property !== "passwordVerify") {
-            validationRules[property].forEach(rule => {
-                if (rule(form[property])) {
-                    error = rule(form[property])
-                }
-
-            })
-        } else {
+        if (property === "passwordVerify" && !!form[property]) {
             validationRules[property].forEach(rule => {
                 if (rule(form.password, form.passwordVerify)) {
                     error = rule(form.password, form.passwordVerify)
+                }
+            })
+        }
+        if (property !== "passwordVerify" && !!form[property]) {
+            validationRules[property].forEach(rule => {
+                if (rule(form[property])) {
+                    error = rule(form[property])
                 }
             })
         }

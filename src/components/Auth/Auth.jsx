@@ -36,6 +36,10 @@ const Auth = ({ showLogin, handleShow }) => {
         updateRegistermode(false)
         updateTitle("Вход")
     }
+    const isFormFulilled = (form) => {
+        return Object.keys(form)
+            .some(key => !form[key] && key !== "avatar")
+    }
 
     const authService = {
         sendLoginInfo: (data) => {
@@ -57,6 +61,10 @@ const Auth = ({ showLogin, handleShow }) => {
                 })
         },
         sendRegisterInfo: (data) => {
+            if (isFormFulilled(data)) {
+                updateRegisterError("заполните все поля")
+                return
+            }
             updateQueryProgress(true)
             updateRegisterError()
             let form = new FormData()
@@ -103,12 +111,16 @@ const Auth = ({ showLogin, handleShow }) => {
                     {registerError &&
                         <Message
                             showIcon
+                            closable
+                            onClose={() => updateRegisterError()}
                             type="warning"
                             title="Что-то не в порядке"
                             description={registerError} />
                     }
                     {loginError && <Message
                         showIcon
+                        closable
+                        onClose={() => updateLoginError()}
                         type="warning"
                         title="Что-то не в порядке"
                         description={loginError} />}
