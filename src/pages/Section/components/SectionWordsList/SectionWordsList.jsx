@@ -89,13 +89,14 @@ const SectionWordsList = ({ group, page }) => {
         localStorage.setItem(TRAINING.showTranslate, showTranslate)
     }, [showTranslate])
     useEffect(() => {
+        if (!userId) return
         updateLoadedState(false)
         requestData()
         return () => {
             Sound.stop()
         }
         // eslint-disable-next-line
-    }, [page])
+    }, [userId, page])
     return (
         <>
             <Options
