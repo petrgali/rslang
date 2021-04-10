@@ -1,8 +1,8 @@
 import { combineReducers } from "redux"
-import { dummyReducer } from "../reducers/dummyReducer"
+import { credentialsReducer } from "./loginReducer"
 
 export const rootReducer = combineReducers({
-    dummy: dummyReducer,
+    credentials: credentialsReducer,
 })
 
 export default rootReducer

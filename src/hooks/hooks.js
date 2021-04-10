@@ -2,20 +2,21 @@ import { useEffect, useState } from "react"
 import interfaceAPI from "../services/interfaceAPI"
 import correctAudioSrc from "../assets/audio/correct.mp3"
 import incorrectAudioSrc from "../assets/audio/error.mp3"
+import { useSelector } from "react-redux"
 
 const shuffle = (arr) => {
   if (arr.length <= 1) return arr
   const result = arr.slice()
   for (let i = result.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [result[i], result[j]] = [result[j], result[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
   }
   return result
 }
 
 const generateGuessWords = (words, wordIndex, limit) => {
   const generatedIndexes = [wordIndex]
-  while(generatedIndexes.length < limit) {
+  while (generatedIndexes.length < limit) {
     const randomIndex = Math.floor(Math.random() * words.length)
     if (!generatedIndexes.includes(randomIndex)) {
       generatedIndexes.push(randomIndex)
@@ -37,6 +38,7 @@ const sound = (type) => {
 }
 
 const useGameEngine = ({ type, group }) => {
+  const userId = useSelector(state => state.credentials.userId)
   const [words, setWords] = useState([])
   const [wordIndex, setWordIndex] = useState(0)
   const [page, setPage] = useState(0)
@@ -50,7 +52,7 @@ const useGameEngine = ({ type, group }) => {
 
   useEffect(() => {
     setIsLoading(true)
-    interfaceAPI.getHardOrIsLearningOrRegularWords(group, page)
+    interfaceAPI.getHardOrIsLearningOrRegularWords(userId, group, page)
       .then((data) => {
         setWords([...words, ...data.payload[0].paginatedResults])
         setGuessWords(generateGuessWords(data.payload[0].paginatedResults, wordIndex, sizes[type.toLowerCase()]))
@@ -62,12 +64,12 @@ const useGameEngine = ({ type, group }) => {
 
   useEffect(() => {
     if (wordIndex === words.length - 11) {
-      interfaceAPI.getHardOrIsLearningOrRegularWords(group, page + 1)
-      .then((data) => {
-        setWords([...words, ...data.payload[0].paginatedResults])
-        setPage(page + 1)
-      })
-      .catch(() => { })
+      interfaceAPI.getHardOrIsLearningOrRegularWords(userId, group, page + 1)
+        .then((data) => {
+          setWords([...words, ...data.payload[0].paginatedResults])
+          setPage(page + 1)
+        })
+        .catch(() => { })
     }
   }, [wordIndex])
 
@@ -77,10 +79,10 @@ const useGameEngine = ({ type, group }) => {
       color: element.word === words[wordIndex].word ? "green" : "red"
     })))
     if (words[wordIndex].word === word.word) {
-      setHistory({ ...history, correctGuessWords: [...history.correctGuessWords, words[wordIndex]]})
+      setHistory({ ...history, correctGuessWords: [...history.correctGuessWords, words[wordIndex]] })
       sound("correct")
     } else {
-      setHistory({ ...history, incorrectGuessWords: [...history.incorrectGuessWords, words[wordIndex]]})
+      setHistory({ ...history, incorrectGuessWords: [...history.incorrectGuessWords, words[wordIndex]] })
       sound("incorrect")
     }
     return words[wordIndex].word === word.word
