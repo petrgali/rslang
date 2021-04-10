@@ -1,6 +1,6 @@
-import { Icon, IconButton, Tooltip, Whisper } from "rsuite"
+import { Button, Icon, IconButton, Tooltip, Whisper } from "rsuite"
 
-const WordButtons = ({ setWordHard, isWordHard, removeWord, recoverWord, showRecover, showControl }) => {
+const WordButtons = ({ word, setWordHard, isWordHard, removeWord, recoverWord, showRecover, showControl, showStats }) => {
   const tooltip = (text) => (
     <Tooltip>
       { text }
@@ -31,6 +31,20 @@ const WordButtons = ({ setWordHard, isWordHard, removeWord, recoverWord, showRec
           </Whisper>
         </>
       }
+      {showStats && (
+        <>
+          <Whisper placement="auto" trigger="hover" speaker={tooltip("Количество правильных ответов")}>
+            <IconButton icon={(
+              (word.userWord && word.userWord.optional && word.userWord.optional.correctGuessNumber) || 0
+            )} circle size="lg" color="green" />
+          </Whisper>
+          <Whisper placement="auto" trigger="hover" speaker={tooltip("Количество неправильных ответов")}>
+            <IconButton icon={
+              (word.userWord && word.userWord.optional && word.userWord.optional.incorrectGuessNumber) || 0
+            } circle size="lg" color="red" />
+          </Whisper>
+        </>
+      )}
     </>
   )
 }
