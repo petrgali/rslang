@@ -9,6 +9,7 @@ import {
   SAVANNAH_ROUTE,
   SPRINT_LEVELS_ROUTE,
   SPRINT_ROUTE,
+  STATISTICS_ROUTE,
 } from "./CONSTANT"
 import MiniGames from "../pages/MiniGames/MiniGames"
 import MiniGameLevels from "../pages/MiniGameLevels/MiniGameLevels"
@@ -18,6 +19,7 @@ import Sprint from "../pages/Sprint/Sprint"
 import OwnGame from "../pages/OwnGame/OwnGame"
 import ElectronicTextbook from "../pages/ElectronicTextbook/ElectronicTextbook"
 import Section from "../pages/Section/Section"
+import Statistics from "../pages/Statistics/Statistics"
 
 export const RouterConfig = () => {
     return (
@@ -71,6 +73,7 @@ export const RouterConfig = () => {
                       match.params.page > 30) return <NotFound />
                   return <Section match={match} />
                 }} />
+                <Route exact path={STATISTICS_ROUTE} component={Statistics} />
                 {/*generic 404 route*/}
                 <Route path="*">
                     <NotFound />

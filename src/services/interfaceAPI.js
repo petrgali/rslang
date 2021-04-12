@@ -151,7 +151,6 @@ const interactAPI = {
         })
     },
     updateUserWordbyId: (id, wordId, setting) => {
-        console.log(id, wordId, setting)
         return requestAPI({
             ...setHeaders.putAuth(),
             url: `${API_BASE_URL}users/${id}/words/${wordId}`,
@@ -227,14 +226,14 @@ const interactAPI = {
         })
     },
     getLearningWords: (id, page = 0, words = 3600) => {
-        let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
+        let filter = `{"$or": [{"userWord.optional.isLearning": true}, {"userWord.difficulty": "hard"}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&wordsPerPage=${words}&filter=${filter}`,
             ...setHeaders.getAuth(),
         })
     },
     getLearningWordsbyGroup: (id, group = 0, page = 0, words = 20) => {
-        let filter = `{"$or": [{ "userWord.optional": {"isLearning": true}}, {"userWord.difficulty": "hard"}]}`
+        let filter = `{"$or": [{"userWord.optional.isLearning": true}, {"userWord.difficulty": "hard"}]}`
         return requestAPI({
             url: `${API_BASE_URL}users/${id}/aggregatedWords?page=${page}&group=${group}&wordsPerPage=${words}&filter=${filter}`,
             ...setHeaders.getAuth(),

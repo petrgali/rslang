@@ -98,10 +98,11 @@ const Dictionary = () => {
         }
     }
     useEffect(() => {
+        if (!userId) return
         updateLoadedState(false)
         requestData.updateAll()
         //eslint-disable-next-line
-    }, [mode, activePage])
+    }, [userId, mode, activePage])
     return (
         <div className="dictionary">
             <ButtonToolbar className="button-toolbar">
@@ -152,6 +153,7 @@ const Dictionary = () => {
                     {isLoaded && mode === STATUS.LEARNING &&
                         <WordsList
                             showTranslate
+                            showStats
                             data={data} />
                     }
                     {!isLoaded && <ListPlaceholder />}

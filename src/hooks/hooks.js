@@ -46,11 +46,13 @@ const useGameEngine = ({ type, group }) => {
   const [isGameOver, setIsGameOver] = useState(false)
   const [guessWords, setGuessWords] = useState([])
   const [history, setHistory] = useState({
+    type,
     correctGuessWords: [],
     incorrectGuessWords: [],
   })
 
   useEffect(() => {
+    if (!userId) return
     setIsLoading(true)
     interfaceAPI.getHardOrIsLearningOrRegularWords(userId, group, page)
       .then((data) => {
@@ -60,7 +62,7 @@ const useGameEngine = ({ type, group }) => {
         return data
       })
       .catch(() => { })
-  }, [])
+  }, [userId])
 
   useEffect(() => {
     if (wordIndex === words.length - 11) {
@@ -103,7 +105,7 @@ const useGameEngine = ({ type, group }) => {
     setWords([])
     setGuessWords([])
     setWordIndex(0)
-    setHistory({ correctGuessWords: [], incorrectGuessWords: [] })
+    setHistory({ type, correctGuessWords: [], incorrectGuessWords: [] })
     setIsGameOver(false)
     setIsLoading(false)
   }
