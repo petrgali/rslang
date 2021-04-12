@@ -1,0 +1,30 @@
+@import "../../styles/pages.css";
+
+.statistics {
+  height: 100%;
+  width: 100%;
+  background: white;
+  overflow: hidden;
+}
+
+.statistics .echarts-for-react>div {
+  width: auto !important;
+}
+
+.statistics .echarts-for-react>canvas {
+  width: auto !important;
+}
+
+.mini-game-title {
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (min-width: 1600px) {
+  .line-chart {
+    padding: 0px 200px;
+    position: relative;
+  }
+}
