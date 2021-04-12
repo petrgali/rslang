@@ -59,6 +59,7 @@ const GameResult = ({ history }) => {
   }
 
   useEffect(() => {
+    if (history.incorrectGuessWords.length === 0 && history.correctGuessWords.length === 0) return
     history.incorrectGuessWords.forEach((word) => {
       setOrUpdateUserWord(word, {
         optional: {
