@@ -146,14 +146,12 @@ const Dictionary = () => {
                     />
                     {isLoaded && mode !== STATUS.LEARNING &&
                         <WordsList
-                            isUserAuth
                             showTranslate
                             showRecover
                             recoverWord={handle.recover}
                             data={data} />}
                     {isLoaded && mode === STATUS.LEARNING &&
                         <WordsList
-                            isUserAuth
                             showTranslate
                             showStats
                             data={data} />

@@ -125,7 +125,6 @@ const SectionWordsList = ({ group, page }) => {
                 {userId ? (
                   <>
                     {!isEmpty && <WordsList
-                        isUserAuth
                         data={data}
                         setWordStatus={setWordStatus}
                         showControl={showControl}
