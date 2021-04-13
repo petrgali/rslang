@@ -52,26 +52,46 @@ const useGameEngine = ({ type, group }) => {
   })
 
   useEffect(() => {
-    if (!userId) return
-    setIsLoading(true)
-    interfaceAPI.getHardOrIsLearningOrRegularWords(userId, group, page)
-      .then((data) => {
-        setWords([...words, ...data.payload[0].paginatedResults])
-        setGuessWords(generateGuessWords(data.payload[0].paginatedResults, wordIndex, sizes[type.toLowerCase()]))
-        setIsLoading(false)
-        return data
+    if (userId) {
+      setIsLoading(true)
+      interfaceAPI.getHardOrIsLearningOrRegularWords(userId, group, page)
+        .then((data) => {
+          setWords([...words, ...data.payload[0].paginatedResults])
+          setGuessWords(generateGuessWords(data.payload[0].paginatedResults, wordIndex, sizes[type.toLowerCase()]))
+          setIsLoading(false)
+          return data
+        })
+        .catch(() => { })
+    } else {
+      setIsLoading(true)
+      interfaceAPI.getWords(page, group).then((data) => {
+        if (data.status === 200) {
+          setWords([...words, ...data.payload])
+          setGuessWords(generateGuessWords(data.payload, wordIndex, sizes[type.toLowerCase()]))
+          setIsLoading(false)
+          return data
+        }
       })
       .catch(() => { })
+    }
   }, [userId])
 
   useEffect(() => {
     if (wordIndex === words.length - 11) {
-      interfaceAPI.getHardOrIsLearningOrRegularWords(userId, group, page + 1)
+      if (userId) {
+        interfaceAPI.getHardOrIsLearningOrRegularWords(userId, group, page + 1)
         .then((data) => {
           setWords([...words, ...data.payload[0].paginatedResults])
           setPage(page + 1)
         })
         .catch(() => { })
+      } else {
+        interfaceAPI.getWords(page + 1, group).then((data) => {
+          setWords([...words, ...data.payload])
+          setPage(page + 1)
+        })
+        .catch(() => { })
+      }
     }
   }, [wordIndex])
 

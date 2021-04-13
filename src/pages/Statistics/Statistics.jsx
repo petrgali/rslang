@@ -6,6 +6,7 @@ import interfaceAPI from "../../services/interfaceAPI";
 import CardStatsList from "./components/CardStatsList";
 import "./Statistics.css";
 import { computeHeadingLevel } from "@testing-library/dom";
+import UnAuth from "../../components/UnAuth/UnAuth";
 
 const initialCurrentMiniGameStats = Object.freeze([
   { title: "Количество изученных слов", number: 0 },
@@ -114,39 +115,51 @@ const Statistics = () => {
       <h1 className="title">Статистика</h1>
       <h2 className="subtitle">Краткосрочная статистика</h2>
       <Divider className="divider" />
-      <div className="mini-game-title">
-        <h2 className="subtitle">Общая статистика по мини-игр за сегодняшний день</h2>
-      </div>
-      <CardStatsList data={currentTotalMiniGamesStats} />
-      <div className="mini-game-title">
-        <Icon icon="globe" size="3x" /> 
-        <h2 className="subtitle">Саванна</h2>
-      </div>
-      <CardStatsList data={savannahStats} />
-      <div className="mini-game-title">
-        <Icon icon="headphones" size="3x" /> 
-        <h2 className="subtitle">Аудиовызов</h2>
-      </div>
-      <CardStatsList data={audiocallStats} />
-      <div className="mini-game-title">
-        <Icon icon="rocket" size="3x" /> 
-        <h2 className="subtitle">Спринт</h2>
-      </div>
-      <CardStatsList data={sprintStats} />
-      <div className="mini-game-title">
-        <Icon icon="bomb" size="3x" /> 
-        <h2 className="subtitle">Своя игра</h2>
-      </div>
-      <CardStatsList data={owngameStats} />
+      {userId ? (
+        <>
+          <div className="mini-game-title">
+            <h2 className="subtitle">Общая статистика по мини-игр за сегодняшний день</h2>
+          </div>
+          <CardStatsList data={currentTotalMiniGamesStats} />
+          <div className="mini-game-title">
+            <Icon icon="globe" size="3x" /> 
+            <h2 className="subtitle">Саванна</h2>
+          </div>
+          <CardStatsList data={savannahStats} />
+          <div className="mini-game-title">
+            <Icon icon="headphones" size="3x" /> 
+            <h2 className="subtitle">Аудиовызов</h2>
+          </div>
+          <CardStatsList data={audiocallStats} />
+          <div className="mini-game-title">
+            <Icon icon="rocket" size="3x" /> 
+            <h2 className="subtitle">Спринт</h2>
+          </div>
+          <CardStatsList data={sprintStats} />
+          <div className="mini-game-title">
+            <Icon icon="bomb" size="3x" /> 
+            <h2 className="subtitle">Своя игра</h2>
+          </div>
+          <CardStatsList data={owngameStats} />
+        </>
+      ) : (
+        <UnAuth />
+      )}
       <h2 className="subtitle">Долгосрочная статистика</h2>
       <Divider className="divider" />
-      <div className="mini-game-title">
-        <h2 className="subtitle">Общая статистика по мини-игр за каждый день</h2>
-      </div>
-      <CardStatsList data={totalStats} />
-      <div className="line-chart">
-        <LineChart height={400} name="Количество изученных слов за каждый день" data={everydayStats} />
-      </div>
+      {userId ? (
+        <>
+          <div className="mini-game-title">
+            <h2 className="subtitle">Общая статистика по мини-игр за каждый день</h2>
+          </div>
+          <CardStatsList data={totalStats} />
+          <div className="line-chart">
+            <LineChart height={400} name="Количество изученных слов за каждый день" data={everydayStats} />
+          </div>
+        </>
+      ) : (
+        <UnAuth />
+      )}
     </div>
   )
 }

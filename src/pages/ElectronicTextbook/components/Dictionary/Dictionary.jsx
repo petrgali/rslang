@@ -9,6 +9,7 @@ import Calculate from "../../../../utils/calculatePagination"
 import interactAPI from "../../../../services/interfaceAPI"
 import ListPlaceholder from "../../../../components/ListPlaceholder/ListPlaceholder"
 import "./Dictionary.css"
+import UnAuth from "../../../../components/UnAuth/UnAuth"
 
 const api = interactAPI
 const sectionColors = ["#F44336", "#FF9800", "#FFCA28", "#4CAF50", "#00BCD4", "#673AB7"]
@@ -160,7 +161,7 @@ const Dictionary = () => {
                 </>
                 : <div className="dictionary-empty">
                     <Icon icon="smile-o" size="5x" />
-                    <h3 className="subtitle">Все слова снова в учебнике!</h3>
+                    <h3 className="subtitle">Все слова в учебнике!</h3>
                 </div>
             }
         </div>

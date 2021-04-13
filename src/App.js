@@ -1,6 +1,6 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { BrowserRouter } from "react-router-dom"
-import { Container, Content, Footer, Header, Sidebar } from "rsuite";
+import { Container, Content, Footer, Header, Loader, Sidebar } from "rsuite";
 import "rsuite/dist/styles/rsuite-default.css";
 import { RouterConfig } from "./navigation/RouterConfig"
 import setDefaults from "./services/setOptionsDefault"
@@ -15,6 +15,7 @@ import interactAPI from "./services/interfaceAPI"
 
 function App() {
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(true)
   useEffect(() => {
     interactAPI.getUserByRefreshToken()
       .then(response => {
@@ -24,30 +25,44 @@ function App() {
           userId: id,
           avatar
         }))
+        setIsLoading(false)
+      }).catch(() => {
+        setIsLoading(false)
       })
   }, [dispatch])
 
   setDefaults()
 
   return (
-    <BrowserRouter>
-      <Container className="container">
-        <Sidebar className="sidebar" style={{ flex: 0, width: 56 }}>
-          <Menu />
-        </Sidebar>
-        <Container>
-          <Header>
-            <CustomHeader />
-          </Header>
-          <Content>
-            <RouterConfig />
-          </Content>
-          <Footer>
-            <ContainerFooter />
-          </Footer>
-        </Container>
-      </Container>
-    </BrowserRouter>
+    <>
+      {!isLoading ? (
+        <BrowserRouter>
+          <Container className="container">
+            <Sidebar className="sidebar" style={{ flex: 0, width: 56 }}>
+              <Menu />
+            </Sidebar>
+            <Container>
+              <Header>
+                <CustomHeader />
+              </Header>
+              <Content>
+                <RouterConfig />
+              </Content>
+              <Footer>
+                <ContainerFooter />
+              </Footer>
+            </Container>
+          </Container>
+        </BrowserRouter>
+      ) : (
+        <Loader
+          content="Идет загрузка..."
+          size="lg"
+          vertical
+          center
+        />
+      )}
+    </>
   )
 }
 export default App;
