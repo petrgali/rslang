@@ -81,13 +81,13 @@ const SectionWordsList = ({ group, page }) => {
                 console.log(response)
                 if (response.status === 200) {
                     Alert.info(MESSAGE.ADDED)
-                    requestData()
+                    requestData(userId)
                 } else if (response.status === 404) {
                     api.addUserWord(userId, id, options)
                         .then(response => {
                             if (response.status === 200) {
                                 Alert.info(MESSAGE.ADDED)
-                                requestData()
+                                requestData(userId)
                             }
                         })
                 }
@@ -125,6 +125,7 @@ const SectionWordsList = ({ group, page }) => {
                 {userId ? (
                   <>
                     {!isEmpty && <WordsList
+                        isUserAuth
                         data={data}
                         setWordStatus={setWordStatus}
                         showControl={showControl}

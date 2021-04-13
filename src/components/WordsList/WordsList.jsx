@@ -4,7 +4,7 @@ import WordButtons from "../WordButtons"
 import { STATUS } from "../constant"
 import "./WordsList.css"
 
-function WordsList({ data, setWordStatus, recoverWord, showControl, showTranslate, showRecover, showStats }) {
+function WordsList({ data, isUserAuth, setWordStatus, recoverWord, showControl, showTranslate, showRecover, showStats }) {
   return (
     <List className="words-list">
       {data.map((obj) =>
@@ -12,7 +12,7 @@ function WordsList({ data, setWordStatus, recoverWord, showControl, showTranslat
         <WordBox
           showTranslate={showTranslate}
           word={obj}
-          buttons={setWordStatus ? (
+          buttons={isUserAuth ? (
             <WordButtons
               word={obj}
               showControl={showControl}
