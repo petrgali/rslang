@@ -9,7 +9,6 @@ import Calculate from "../../../../utils/calculatePagination"
 import interactAPI from "../../../../services/interfaceAPI"
 import ListPlaceholder from "../../../../components/ListPlaceholder/ListPlaceholder"
 import "./Dictionary.css"
-import UnAuth from "../../../../components/UnAuth/UnAuth"
 
 const api = interactAPI
 const sectionColors = ["#F44336", "#FF9800", "#FFCA28", "#4CAF50", "#00BCD4", "#673AB7"]
