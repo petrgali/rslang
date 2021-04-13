@@ -3,21 +3,21 @@ const mailformat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\
 
 const validationRules = {
     name: [
-        (data) => { if (data.length < 2) return "имя слишком короткое" },
-        (data) => { if (data.length > 20) return "имя слишком длинное" },
-        (data) => { if (!data) return "введите имя" }
+        (data) => { if (data.length < 2) return "Имя слишком короткое" },
+        (data) => { if (data.length > 20) return "Имя слишком длинное" },
+        (data) => { if (!data) return "Введите имя" }
     ],
     email: [
-        (data) => { if (!mailformat.test(data)) return "введите корректный email" }
+        (data) => { if (!mailformat.test(data)) return "Введите корректный адрес электронной почты" }
     ],
     passwordVerify: [
-        (a, b) => { if (a !== b) return "пароли не совпадают" }
+        (a, b) => { if (a !== b) return "Пароли не совпадают" }
     ],
     password: [
-        (data) => { if (data.length < 8) return "пароль слишком короткий" }
+        (data) => { if (data.length < 8) return "Пароль слишком короткий" }
     ],
     avatar: [
-        (data) => { if (data.size > 5000000) return "файл слишком большой" },
+        (data) => { if (data.size > 5000000) return "Файл слишком большой" },
     ]
 }
 
