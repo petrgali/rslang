@@ -9,7 +9,6 @@ import Menu from "./components/Menu/Menu";
 import "./styles/App.css";
 import CustomHeader from "./components/CustomHeader/CustomHeader";
 import { useDispatch } from "react-redux";
-import { USER } from "./services/constant"
 import { updateUserCredentials } from "./redux/actions/credentialsAction"
 import interactAPI from "./services/interfaceAPI"
 
@@ -17,12 +16,13 @@ import interactAPI from "./services/interfaceAPI"
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
-    interactAPI.getUserbyId(localStorage.getItem(USER.ID))
+    interactAPI.getUserByRefreshToken()
       .then(response => {
+        const { id, name, avatar} = response.payload
         dispatch(updateUserCredentials({
-          name: localStorage.getItem(USER.NAME),
-          userId: localStorage.getItem(USER.ID),
-          avatar: response.payload.avatar
+          name,
+          userId: id,
+          avatar
         }))
       })
   }, [dispatch])

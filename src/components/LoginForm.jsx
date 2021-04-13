@@ -29,7 +29,7 @@ const LoginForm = ({ user, logOut, queryInProgress, sendLoginInfo }) => {
                         appearance="primary"
                         onClick={logOut}
                         color="orange"
-                    >ВЫЙТИ</Button>
+                    >Выйти</Button>
                 </>
                 : <Form onChange={setFormValues}>
                     <FormGroup style={centered} >

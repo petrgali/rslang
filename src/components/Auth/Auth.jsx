@@ -96,8 +96,10 @@ const Auth = ({ showLogin, handleShow }) => {
         },
         logout: () => {
             dispatch(updateUserCredentials({}))
-            localStorage.setItem(USER.ID, "")
-            localStorage.setItem(USER.NAME, "")
+            localStorage.removeItem(USER.ID)
+            localStorage.removeItem(USER.NAME)
+            localStorage.removeItem(USER.TOKEN)
+            localStorage.removeItem(USER.REFRESH_TOKEN)
             setDefault(true)
             window.location.reload()
         }

@@ -50,7 +50,15 @@ const setHeaders = {
                 'Accept': 'application/json',
             }
         }
-    }
+    },
+    getAuthRefreshToken: () => {
+      return {
+          headers: {
+              'Authorization': `Bearer ${localStorage.getItem(USER.REFRESH_TOKEN)}`,
+              'Accept': 'application/json',
+          }
+      }
+  }
 }
 const requestAPI = async (options) => {
     try {
@@ -124,6 +132,12 @@ const interactAPI = {
             ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}`,
         })
+    },
+    getUserByRefreshToken: () => {
+      return requestAPI({
+          ...setHeaders.getAuthRefreshToken(),
+          url: `${API_BASE_URL}users/me`,
+      })
     },
     getUserWords: (id) => {
         return requestAPI({
