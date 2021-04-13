@@ -1,6 +1,7 @@
 import { Button, Icon, IconButton, Tooltip, Whisper } from "rsuite"
 
 const WordButtons = ({ word, setWordHard, isWordHard, removeWord, recoverWord, showRecover, showControl, showStats }) => {
+  console.log(showStats)
   const tooltip = (text) => (
     <Tooltip>
       { text }

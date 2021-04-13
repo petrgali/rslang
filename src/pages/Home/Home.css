@@ -1,7 +1,24 @@
 @import "../../styles/pages.css";
-
 .home {
   height: 100%;
   width: 100%;
   background: white;
+}
+
+.player-wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding-top: 56.25%;
+}
+
+.react-player {
+  position: absolute;
+  top: 50px
+}
+
+.team-avatar {
+  max-width: 50%;
+  -webkit-clip-path: circle(35% at 55% 50%);
+  clip-path: circle(35% at 55% 50%);
 }
