@@ -99,7 +99,7 @@ const Home = () => {
         <ReactPlayer
           className="react-player"
           controls
-          url='https://www.youtube.com/watch?v=HjxZYiTpU3k&t=431s'
+          url='https://www.youtube.com/watch?v=aX0bIa9OmLo'
           width="70%"
           height="70%"
         />
