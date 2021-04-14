@@ -127,11 +127,11 @@ const Sprint = ({ match }) => {
                       setTimeout(() => {
                         setAnimationIn(false)
                         setAnimationBackground("")
-                      }, 900)
+                      }, 400)
                       setTimeout(() => {
                         forceNextWord()
                         setResult("")
-                      }, 1000)
+                      }, 500)
                       event.currentTarget.blur()
                     }}>
                     Неверно
@@ -156,11 +156,11 @@ const Sprint = ({ match }) => {
                       setTimeout(() => {
                         setAnimationIn(false)
                         setAnimationBackground("")
-                      }, 900)
+                      }, 400)
                       setTimeout(() => {
                         forceNextWord()
                         setResult("")
-                      }, 1000)
+                      }, 500)
                       event.currentTarget.blur()
                     }}>
                     Верно
