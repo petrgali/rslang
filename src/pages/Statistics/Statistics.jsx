@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Icon } from "rsuite";
-import { LineChart } from "@rsuite/charts"
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from "recharts";
 import interfaceAPI from "../../services/interfaceAPI";
 import CardStatsList from "./components/CardStatsList";
-import "./Statistics.css";
 import UnAuth from "../../components/UnAuth/UnAuth";
+import "./Statistics.css";
 
 const initialCurrentMiniGameStats = Object.freeze([
   { title: "Количество изученных слов", number: 0 },
@@ -32,7 +41,10 @@ const Statistics = () => {
   const [sprintStats, setSprintStats] = useState(initialCurrentMiniGameStats)
   const [owngameStats, setOwngameStats] = useState(initialCurrentMiniGameStats)
   const [totalStats, setTotalStats] = useState(initialTotalStats)
-  const [everydayStats, setEverydayStats] = useState([[getCurrentDate(), 0]])
+  const [everydayStats, setEverydayStats] = useState([{
+    "Дата": getCurrentDate(),
+    "Количество изученных слов": 0,
+  }])
 
   const setOrUpdateCurrentMiniGameStats = (stats, setterOrUpdater) => {
     const currentDateStat = stats.find((element) => element.date === getCurrentDate())
@@ -97,8 +109,15 @@ const Statistics = () => {
       const dateParts = dateString.split("/")
       return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
     }
-    
-    setEverydayStats(Object.entries(everydayLearnedStats).sort(([a], [b]) => toMonthDayYear(a) - toMonthDayYear(b)))
+
+    setEverydayStats(
+      Object.entries(everydayLearnedStats)
+      .sort(([a], [b]) => toMonthDayYear(a) - toMonthDayYear(b))
+      .map(([date, learnedWords]) => ({
+        "Дата": date,
+        "Количество изученных слов": learnedWords,
+      }))
+    )
   }
 
   useEffect(() => {
@@ -159,7 +178,27 @@ const Statistics = () => {
           </div>
           <CardStatsList data={totalStats} />
           <div className="line-chart">
-            <LineChart height={400} name="Количество изученных слов за каждый день" data={everydayStats} />
+            <ResponsiveContainer width="95%">
+              <LineChart
+                data={everydayStats}
+                margin={{
+                  top: 10,
+                  right: 40,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="Дата" />
+                <YAxis dataKey="Количество изученных слов" />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="Количество изученных слов"
+                  stroke="#4CAF50"
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </>
       ) : (
