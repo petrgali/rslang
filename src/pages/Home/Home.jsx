@@ -1,6 +1,6 @@
 import "./Home.css";
 import ReactPlayer from "react-player/lazy"
-import { Divider, Timeline, Icon, Panel, Whisper, IconButton, Button } from "rsuite"
+import { Divider, Timeline, Icon, Panel } from "rsuite"
 import face from "../../assets/png/external-content.duckduckgo.com.jpeg"
 
 const Home = () => {
