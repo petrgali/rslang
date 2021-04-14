@@ -5,7 +5,6 @@ import { LineChart } from "@rsuite/charts"
 import interfaceAPI from "../../services/interfaceAPI";
 import CardStatsList from "./components/CardStatsList";
 import "./Statistics.css";
-import { computeHeadingLevel } from "@testing-library/dom";
 import UnAuth from "../../components/UnAuth/UnAuth";
 
 const initialCurrentMiniGameStats = Object.freeze([
@@ -93,7 +92,13 @@ const Statistics = () => {
       })
       return obj
     }, {})
-    setEverydayStats(Object.entries(everydayLearnedStats).sort(([a], [b]) => new Date(a) - new Date(b)))
+
+    const toMonthDayYear = (dateString) => {
+      const dateParts = dateString.split("/")
+      return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+    }
+    
+    setEverydayStats(Object.entries(everydayLearnedStats).sort(([a], [b]) => toMonthDayYear(a) - toMonthDayYear(b)))
   }
 
   useEffect(() => {
