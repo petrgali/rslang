@@ -4,7 +4,7 @@ import correctAudioSrc from "../assets/audio/correct.mp3"
 import incorrectAudioSrc from "../assets/audio/error.mp3"
 import { useSelector } from "react-redux"
 
-const shuffle = (arr) => {
+export const shuffle = (arr) => {
   if (arr.length <= 1) return arr
   const result = arr.slice()
   for (let i = result.length - 1; i > 0; i--) {
@@ -14,7 +14,7 @@ const shuffle = (arr) => {
   return result
 }
 
-const generateGuessWords = (words, wordIndex, limit) => {
+export const generateGuessWords = (words, wordIndex, limit) => {
   const generatedIndexes = [wordIndex]
   while (generatedIndexes.length < limit) {
     const randomIndex = Math.floor(Math.random() * words.length)
