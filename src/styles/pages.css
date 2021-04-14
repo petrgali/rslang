@@ -10,6 +10,16 @@
   line-height: 34px;
 }
 
+@media screen and (max-width: 992px) {
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 26px;
+  }
+}
+
 .divider {
   margin: 5px 0px 10px 0px !important;
 }
