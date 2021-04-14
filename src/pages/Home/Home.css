@@ -5,7 +5,51 @@
   background: white;
 }
 
-.player-wrapper {
+.about {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.title {
+  flex-direction: column;
+}
+
+.text {
+  width: 80%;
+  text-align: justify;
+  align-items: center;
+}
+
+.prop {
+  justify-content: center;
+  width: 60%;
+}
+
+* .custom-timeline {
+  margin-left: 20px;
+}
+
+.custom-timeline .rs-timeline-item-custom-dot .rs-icon {
+  position: absolute;
+  background: #fff;
+  top: 0;
+  left: -2px;
+  border: 2px solid #ddd;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  padding-top: 9px;
+  color: #999;
+  margin-left: -13px;
+}
+
+.custom-timeline .rs-timeline-item-content {
+  margin-left: 24px;
+}
+
+* .player-wrapper {
   display: flex;
   justify-content: center;
   position: relative;
@@ -14,11 +58,44 @@
 
 .react-player {
   position: absolute;
-  top: 50px
+  top: 10%
+}
+
+.team {
+  display: flex;
+  justify-content: space-between;
 }
 
 .team-avatar {
   max-width: 50%;
   -webkit-clip-path: circle(35% at 55% 50%);
   clip-path: circle(35% at 55% 50%);
+}
+
+.team-panel {
+  margin: 0 2% 0 2%;
+}
+
+.rs-panel-body {
+  display: flex;
+  justify-content: space-around;
+}
+
+.team-member {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  width: 60%
+}
+
+@media screen and (max-width: 750px) {
+  .about {
+    flex-direction: column;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+  }
+  .prop {
+    margin: 15px 0 15px 0;
+  }
 }
