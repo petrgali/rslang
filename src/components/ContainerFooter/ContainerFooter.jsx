@@ -27,16 +27,6 @@ const ContainerFooter = () => {
             />
           </a>
         </Whisper>
-        <Whisper placement="auto" trigger="hover" speaker={tooltip("@alibek-tse")}>
-          <a href="https://github.com/alibek-tse">
-            <IconButton
-              appearance="link"
-              icon={<Icon icon="github" />}
-              circle
-              size="lg"
-            />
-          </a>
-        </Whisper>
         <Whisper placement="auto" trigger="hover" speaker={tooltip("@enthusiast17")}>
           <a href="https://github.com/enthusiast17">
             <IconButton

@@ -29,15 +29,19 @@ const LoginForm = ({ user, logOut, queryInProgress, sendLoginInfo }) => {
                         appearance="primary"
                         onClick={logOut}
                         color="orange"
-                    >ВЫЙТИ</Button>
+                    >Выйти</Button>
                 </>
                 : <Form onChange={setFormValues}>
                     <FormGroup style={centered} >
-                        <FormControl className="form-field"
+                        <FormControl
+                            style={{ width: "100%" }}
+                            className="form-field"
                             value={formValue.email}
-                            placeholder="Ваш email"
+                            placeholder="Ваша электронная почта"
                             name="email" />
-                        <FormControl className="form-field"
+                        <FormControl
+                            style={{ width: "100%" }}
+                            className="form-field"
                             value={formValue.password}
                             placeholder="Ваш пароль"
                             name="password"
@@ -48,12 +52,12 @@ const LoginForm = ({ user, logOut, queryInProgress, sendLoginInfo }) => {
                             ? <Button
                                 className="form-button"
                                 appearance="primary"
-                                loading ></Button>
+                                loading />
                             : <Button
                                 className="form-button"
                                 appearance="primary"
                                 onClick={() => sendLoginInfo(formValue)}
-                            >ВОЙТИ</Button>
+                            >Войти</Button>
                         }
                     </ButtonToolbar>
                 </Form>

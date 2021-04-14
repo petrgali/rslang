@@ -160,7 +160,7 @@ const Dictionary = () => {
                 </>
                 : <div className="dictionary-empty">
                     <Icon icon="smile-o" size="5x" />
-                    <h3 className="subtitle">Все слова снова в учебнике!</h3>
+                    <h3 className="subtitle">Все слова в учебнике!</h3>
                 </div>
             }
         </div>
