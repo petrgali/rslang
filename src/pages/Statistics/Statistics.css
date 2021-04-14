@@ -22,9 +22,10 @@
   justify-content: center;
 }
 
-@media screen and (min-width: 1600px) {
-  .line-chart {
-    padding: 0px 200px;
-    position: relative;
-  }
+.line-chart {
+  padding: 0px calc((100% - 1120px) / 2);
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
