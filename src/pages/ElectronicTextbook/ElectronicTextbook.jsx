@@ -4,8 +4,11 @@ import SectionsNav from "./components/SectionsNav";
 import Dictionary from "../ElectronicTextbook/components/Dictionary/Dictionary";
 import { STATUS } from "../../components/constant";
 import "./ElectronicTextbook.css"
+import { useSelector } from "react-redux";
+import UnAuth from "../../components/UnAuth/UnAuth";
 
 const ElectronicTextbook = () => {
+  const userId = useSelector(state => state.credentials.userId)
 
   return (
     <div className="electronic-textbook">
@@ -15,9 +18,13 @@ const ElectronicTextbook = () => {
       <SectionsNav />
       <h2 className="subtitle">Словарь</h2>
       <Divider className="divider" />
-      <Dictionary
-        mode={STATUS.DELETED}
-      />
+      {userId ? (
+        <Dictionary
+          mode={STATUS.DELETED}
+        />
+      ) : (
+        <UnAuth />
+      )}
     </div>
   )
 }

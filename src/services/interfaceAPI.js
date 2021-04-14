@@ -1,5 +1,6 @@
 import { API_BASE_URL, USER, ERROR } from "./constant"
 import axios from "axios"
+import store from "../redux/store"
 
 const setStorage = (...props) => {
     props.map(obj => localStorage.setItem(obj.name, obj.payload))
@@ -50,7 +51,15 @@ const setHeaders = {
                 'Accept': 'application/json',
             }
         }
-    }
+    },
+    getAuthRefreshToken: () => {
+      return {
+          headers: {
+              'Authorization': `Bearer ${localStorage.getItem(USER.REFRESH_TOKEN)}`,
+              'Accept': 'application/json',
+          }
+      }
+  }
 }
 const requestAPI = async (options) => {
     try {
@@ -108,22 +117,28 @@ const interactAPI = {
             }, {
                 name: USER.REFRESH_TOKEN,
                 payload: response.payload.refreshToken
-            }, {
-                name: USER.ID,
-                payload: response.payload.userId
-            }, {
-                name: USER.NAME,
-                payload: response.payload.name
             })
             return { status: response.status, payload: response.payload }
         }
         return { status: response.status, payload: response.payload }
+    },
+    renewAccessToken: async (id) => {
+      return requestAPI({
+          ...setHeaders.getAuthRefreshToken(),
+          url: `${API_BASE_URL}users/${id}/tokens/renewaccesstoken`,
+      })
     },
     getUserbyId: (id) => {
         return requestAPI({
             ...setHeaders.getAuth(),
             url: `${API_BASE_URL}users/${id}`,
         })
+    },
+    getUserByRefreshToken: () => {
+      return requestAPI({
+          ...setHeaders.getAuthRefreshToken(),
+          url: `${API_BASE_URL}users/me`,
+      })
     },
     getUserWords: (id) => {
         return requestAPI({
@@ -240,5 +255,20 @@ const interactAPI = {
         })
     },
 }
+
+axios.interceptors.response.use(undefined, (error) => {
+  if (error.response.status === 401) {
+    return interactAPI.renewAccessToken(store.getState().credentials.userId)
+      .then((response) => {
+        setStorage({
+            name: USER.TOKEN,
+            payload: response.payload.token
+        })
+        error.config.headers.Authorization = `Bearer ${localStorage.getItem(USER.TOKEN)}`;
+        return axios.request(error.config);
+      });
+  }
+  return Promise.reject(error);
+});
 
 export default Object.freeze(interactAPI)

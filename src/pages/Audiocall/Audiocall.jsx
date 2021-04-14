@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { Button, Divider, Icon, IconButton } from "rsuite"
+import { Button, Divider, Icon, IconButton, Animation } from "rsuite"
 import GameLoading from "../../components/GameLoading"
 import GameResult from "../../components/GameResult/GameResult"
 import useGameEngine from "../../hooks/hooks"
 import { MINI_GAMES_DATA } from "../../navigation/CONSTANT"
 import { API_BASE_URL } from "../../services/constant"
+import Sound from "../../utils/playMultipleSounds"
 import "./Audiocall.css"
 
 const Audiocall = ({ match }) => {
@@ -17,6 +18,8 @@ const Audiocall = ({ match }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [showWord, setShowWord] = useState(false)
   const [isGameLoading, setIsGameLoading] = useState(false)
+  const [animationPlacement, setAnimationPlacement] = useState("right")
+  const [animationIn, setAnimationIn] = useState(true)
   const audiocallRef = useRef()
   const btnsRef = useRef()
 
@@ -37,9 +40,10 @@ const Audiocall = ({ match }) => {
   }, [isPlaying, word])
 
   const soundWord = (word) => {
-    new Audio(
-      `${API_BASE_URL}${word.audio}`
-    ).play()
+    Sound.play(
+      API_BASE_URL,
+      [word.audio]
+    )
   }
 
   const handleFullScreen = () => {
@@ -94,69 +98,77 @@ const Audiocall = ({ match }) => {
             circle size="lg"
             onClick={handleClose} />
         </div>
-         <div className="game">
-          {!showWord ? (
-            <IconButton
-            className="play-audio"
-            icon={<Icon className="icon" icon="volume-up" />}
-            circle
-            size="lg"
-            onClick={() => soundWord(word)} />
-          ) : (
-            <>
-              <img
-                className="word-img"
-                src={`${API_BASE_URL}${word.image}`}
-                alt={word.word}
-              />
+        <Animation.Slide in={animationIn} placement={animationPlacement}>
+          <div className="game">
+            {!showWord ? (
               <IconButton
-                icon={<Icon className="icon" icon="volume-up" />}
-                circle
-                size="lg"
-                onClick={() => soundWord(word)} />
-              <h3 className="subtitle" style={{ margin: 0 }}>{ word.word }</h3>
-            </>
-          )}
-          <div ref={btnsRef} className="btns">
-            {words.map((word, keyWord) => (
+              className="play-audio"
+              icon={<Icon className="icon" icon="volume-up" />}
+              circle
+              size="lg"
+              onClick={() => soundWord(word)} />
+            ) : (
+              <>
+                <img
+                  className="word-img"
+                  src={`${API_BASE_URL}${word.image}`}
+                  alt={word.word}
+                />
+                <IconButton
+                  icon={<Icon className="icon" icon="volume-up" />}
+                  circle
+                  size="lg"
+                  onClick={() => soundWord(word)} />
+                <h3 className="subtitle" style={{ margin: 0 }}>{ word.word }</h3>
+              </>
+            )}
+            <div ref={btnsRef} className="btns">
+              {words.map((word, keyWord) => (
+                <Button
+                  key={keyWord}
+                  color={word.color}
+                  size="lg"
+                  onClick={(event) => {
+                    if (word.color) return
+                    guess(word)
+                    setShowWord(true)
+                    event.currentTarget.blur()
+                  }}>
+                    {word.wordTranslate.toLowerCase()}
+                </Button>
+              ))}
+            </div>
+            {!showWord ? (
               <Button
-                key={keyWord}
-                color={word.color}
+                appearance="primary"
                 size="lg"
                 onClick={(event) => {
-                  if (word.color) return
-                  guess(word)
+                  guess({ word: "" })
                   setShowWord(true)
                   event.currentTarget.blur()
                 }}>
-                  {word.wordTranslate.toLowerCase()}
+                  Не знаю
               </Button>
-            ))}
+            ) : (
+              <IconButton
+                appearance="primary"
+                icon={<Icon icon="long-arrow-right" />}
+                size="lg"
+                onClick={(event) => {
+                  forceNextWord()
+                  event.currentTarget.blur()
+                  setAnimationPlacement("left")
+                  setAnimationIn(false)
+                  setTimeout(() => {
+                    setAnimationPlacement("right")
+                    setAnimationIn(true)
+                  }, 500)
+                }}>
+                  Дальше
+              </IconButton>
+            )}
           </div>
-          {!showWord ? (
-            <Button
-              appearance="primary"
-              size="lg"
-              onClick={(event) => {
-                guess({ word: "" })
-                setShowWord(true)
-                event.currentTarget.blur()
-              }}>
-                Не знаю
-            </Button>
-          ) : (
-            <IconButton
-              appearance="primary"
-              icon={<Icon icon="long-arrow-right" />}
-              size="lg"
-              onClick={(event) => {
-                forceNextWord()
-                event.currentTarget.blur()
-              }}>
-                Дальше
-            </IconButton>
-          )}
-        </div>
+        </Animation.Slide>
         </>
        )}
         {isGameOver && (

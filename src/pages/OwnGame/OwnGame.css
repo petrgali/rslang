@@ -8,6 +8,7 @@
   background-image: url("../../assets/figures-green.png"), url("../../assets/quarter-circle-green.png");
   background-position: right center, bottom left;
   background-repeat: no-repeat, no-repeat;
+  overflow: hidden;
 }
 
 .own-game .game .subtitle {
@@ -21,7 +22,6 @@
   width: 200px;
   max-height: 20vh;
   transition: 0.5s;
-  border: 6px solid white;
   border-radius: 6px;
 }
 

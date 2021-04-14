@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Icon } from "rsuite";
-import { LineChart } from "@rsuite/charts"
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from "recharts";
 import interfaceAPI from "../../services/interfaceAPI";
 import CardStatsList from "./components/CardStatsList";
+import UnAuth from "../../components/UnAuth/UnAuth";
 import "./Statistics.css";
-import { computeHeadingLevel } from "@testing-library/dom";
 
 const initialCurrentMiniGameStats = Object.freeze([
   { title: "Количество изученных слов", number: 0 },
@@ -32,7 +41,10 @@ const Statistics = () => {
   const [sprintStats, setSprintStats] = useState(initialCurrentMiniGameStats)
   const [owngameStats, setOwngameStats] = useState(initialCurrentMiniGameStats)
   const [totalStats, setTotalStats] = useState(initialTotalStats)
-  const [everydayStats, setEverydayStats] = useState([[getCurrentDate(), 0]])
+  const [everydayStats, setEverydayStats] = useState([{
+    "Дата": getCurrentDate(),
+    "Количество изученных слов": 0,
+  }])
 
   const setOrUpdateCurrentMiniGameStats = (stats, setterOrUpdater) => {
     const currentDateStat = stats.find((element) => element.date === getCurrentDate())
@@ -92,7 +104,20 @@ const Statistics = () => {
       })
       return obj
     }, {})
-    setEverydayStats(Object.entries(everydayLearnedStats).sort(([a], [b]) => new Date(a) - new Date(b)))
+
+    const toMonthDayYear = (dateString) => {
+      const dateParts = dateString.split("/")
+      return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0])
+    }
+
+    setEverydayStats(
+      Object.entries(everydayLearnedStats)
+      .sort(([a], [b]) => toMonthDayYear(a) - toMonthDayYear(b))
+      .map(([date, learnedWords]) => ({
+        "Дата": date,
+        "Количество изученных слов": learnedWords,
+      }))
+    )
   }
 
   useEffect(() => {
@@ -114,39 +139,71 @@ const Statistics = () => {
       <h1 className="title">Статистика</h1>
       <h2 className="subtitle">Краткосрочная статистика</h2>
       <Divider className="divider" />
-      <div className="mini-game-title">
-        <h2 className="subtitle">Общая статистика по мини-игр за сегодняшний день</h2>
-      </div>
-      <CardStatsList data={currentTotalMiniGamesStats} />
-      <div className="mini-game-title">
-        <Icon icon="globe" size="3x" /> 
-        <h2 className="subtitle">Саванна</h2>
-      </div>
-      <CardStatsList data={savannahStats} />
-      <div className="mini-game-title">
-        <Icon icon="headphones" size="3x" /> 
-        <h2 className="subtitle">Аудиовызов</h2>
-      </div>
-      <CardStatsList data={audiocallStats} />
-      <div className="mini-game-title">
-        <Icon icon="rocket" size="3x" /> 
-        <h2 className="subtitle">Спринт</h2>
-      </div>
-      <CardStatsList data={sprintStats} />
-      <div className="mini-game-title">
-        <Icon icon="bomb" size="3x" /> 
-        <h2 className="subtitle">Своя игра</h2>
-      </div>
-      <CardStatsList data={owngameStats} />
+      {userId ? (
+        <>
+          <div className="mini-game-title">
+            <h2 className="subtitle">Общая статистика по мини-игр за сегодняшний день</h2>
+          </div>
+          <CardStatsList data={currentTotalMiniGamesStats} />
+          <div className="mini-game-title">
+            <Icon icon="globe" size="3x" /> 
+            <h2 className="subtitle">Саванна</h2>
+          </div>
+          <CardStatsList data={savannahStats} />
+          <div className="mini-game-title">
+            <Icon icon="headphones" size="3x" /> 
+            <h2 className="subtitle">Аудиовызов</h2>
+          </div>
+          <CardStatsList data={audiocallStats} />
+          <div className="mini-game-title">
+            <Icon icon="rocket" size="3x" /> 
+            <h2 className="subtitle">Спринт</h2>
+          </div>
+          <CardStatsList data={sprintStats} />
+          <div className="mini-game-title">
+            <Icon icon="bomb" size="3x" /> 
+            <h2 className="subtitle">Своя игра</h2>
+          </div>
+          <CardStatsList data={owngameStats} />
+        </>
+      ) : (
+        <UnAuth />
+      )}
       <h2 className="subtitle">Долгосрочная статистика</h2>
       <Divider className="divider" />
-      <div className="mini-game-title">
-        <h2 className="subtitle">Общая статистика по мини-игр за каждый день</h2>
-      </div>
-      <CardStatsList data={totalStats} />
-      <div className="line-chart">
-        <LineChart height={400} name="Количество изученных слов за каждый день" data={everydayStats} />
-      </div>
+      {userId ? (
+        <>
+          <div className="mini-game-title">
+            <h2 className="subtitle">Общая статистика по мини-игр за каждый день</h2>
+          </div>
+          <CardStatsList data={totalStats} />
+          <div className="line-chart">
+            <ResponsiveContainer width="95%">
+              <LineChart
+                data={everydayStats}
+                margin={{
+                  top: 10,
+                  right: 40,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="Дата" />
+                <YAxis dataKey="Количество изученных слов" />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="Количество изученных слов"
+                  stroke="#4CAF50"
+                  activeDot={{ r: 8 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </>
+      ) : (
+        <UnAuth />
+      )}
     </div>
   )
 }

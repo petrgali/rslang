@@ -38,13 +38,24 @@ const SectionWordsList = ({ group, page }) => {
         updateEmptyState(false)
         updateLoadedState(true)
     }
-    const requestData = () => {
+    const requestData = (userId) => {
+      if (userId) {
         api.getTrainingAggregatedWords(userId, group - 1, page - 1)
             .then((response) => {
                 if (response.status === 200) {
                     handleRawData(response.payload[0].paginatedResults)
                 }
             })
+      } else {
+        api.getWords(page - 1, group - 1)
+        .then((response) => {
+            if (response.status === 200) {
+              updateData(response.payload)
+              updateEmptyState(false)
+              updateLoadedState(true)
+            }
+        })
+      }
     }
     const updateOptions = (settings, mode) => {
         if (!!settings
@@ -70,13 +81,13 @@ const SectionWordsList = ({ group, page }) => {
                 console.log(response)
                 if (response.status === 200) {
                     Alert.info(MESSAGE.ADDED)
-                    requestData()
+                    requestData(userId)
                 } else if (response.status === 404) {
                     api.addUserWord(userId, id, options)
                         .then(response => {
                             if (response.status === 200) {
                                 Alert.info(MESSAGE.ADDED)
-                                requestData()
+                                requestData(userId)
                             }
                         })
                 }
@@ -89,9 +100,8 @@ const SectionWordsList = ({ group, page }) => {
         localStorage.setItem(TRAINING.showTranslate, showTranslate)
     }, [showTranslate])
     useEffect(() => {
-        if (!userId) return
         updateLoadedState(false)
-        requestData()
+        requestData(userId)
         return () => {
             Sound.stop()
         }
@@ -112,18 +122,30 @@ const SectionWordsList = ({ group, page }) => {
                     totalPages={30}
                 />
                 {!isLoaded && <ListPlaceholder />}
-                {!isEmpty && <WordsList
-                    data={data}
-                    setWordStatus={setWordStatus}
-                    showControl={showControl}
-                    showTranslate={showTranslate} />
-                }
-                {isEmpty && isLoaded &&
-                    <div className="deleted-page">
-                        <Icon icon="ban" size="5x" />
-                        <h2 className="subtitle">Все слова были удалены</h2>
-                    </div>
-                }
+                {userId ? (
+                  <>
+                    {!isEmpty && <WordsList
+                        data={data}
+                        setWordStatus={setWordStatus}
+                        showControl={showControl}
+                        showTranslate={showTranslate} />
+                    }
+                    {isEmpty && isLoaded &&
+                        <div className="deleted-page">
+                            <Icon icon="ban" size="5x" />
+                            <h2 className="subtitle">Все слова были удалены</h2>
+                        </div>
+                    }
+                  </>
+                ) : (
+                  <>
+                    {isLoaded && (
+                      <WordsList
+                        data={data}
+                        showTranslate={showTranslate} />
+                    )}
+                  </>
+                )}
             </div>
         </>
     )

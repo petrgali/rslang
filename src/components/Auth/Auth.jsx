@@ -62,7 +62,7 @@ const Auth = ({ showLogin, handleShow }) => {
         },
         sendRegisterInfo: (data) => {
             if (isFormFulilled(data)) {
-                updateRegisterError("заполните все поля")
+                updateRegisterError("Заполните все поля")
                 return
             }
             updateQueryProgress(true)
@@ -96,9 +96,12 @@ const Auth = ({ showLogin, handleShow }) => {
         },
         logout: () => {
             dispatch(updateUserCredentials({}))
-            localStorage.setItem(USER.ID, "")
-            localStorage.setItem(USER.NAME, "")
+            localStorage.removeItem(USER.ID)
+            localStorage.removeItem(USER.NAME)
+            localStorage.removeItem(USER.TOKEN)
+            localStorage.removeItem(USER.REFRESH_TOKEN)
             setDefault(true)
+            window.location.reload()
         }
     }
     return (
@@ -110,6 +113,7 @@ const Auth = ({ showLogin, handleShow }) => {
                 <>
                     {registerError &&
                         <Message
+                            style={{ width: 270 }}
                             showIcon
                             closable
                             onClose={() => updateRegisterError()}
@@ -129,6 +133,7 @@ const Auth = ({ showLogin, handleShow }) => {
                             <RegisterForm
                                 queryInProgress={queryInProgress}
                                 registerError={registerError}
+                                handleError={updateRegisterError}
                                 sendRegister={authService.sendRegisterInfo}
                             />
                             <Button

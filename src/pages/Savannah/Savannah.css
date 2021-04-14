@@ -22,6 +22,14 @@
   height: calc(100% - 200px);
 }
 
+.savannah .game .result {
+  height: 28px;
+}
+
+.savannah .game .btns {
+  background: white;
+}
+
 .savannah .word {
   position: absolute;
   top: 0;

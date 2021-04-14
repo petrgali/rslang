@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Divider, Icon, IconButton } from "rsuite";
+import { Divider, Icon, IconButton, Animation } from "rsuite";
 import GameLoading from "../../components/GameLoading";
 import GameResult from "../../components/GameResult/GameResult";
 import useGameEngine from "../../hooks/hooks";
@@ -17,6 +17,7 @@ const OwnGame = ({ match }) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isGameLoading, setIsGameLoading] = useState(false)
   const [showNextBtn, setShowNextBtn] = useState(false)
+  const [animationIn, setAnimationIn] = useState(true)
   const ownGameRef = useRef()
   const btnsRef = useRef()
 
@@ -80,55 +81,61 @@ const OwnGame = ({ match }) => {
                 circle size="lg"
                 onClick={handleClose} />
             </div>
-            <div className="game">
-              <h3 className="subtitle">
-                { word.word.toLowerCase() }
-              </h3>
-              <h3
-                className="subtitle"
-                style={{ fontSize: 18 }}
-                dangerouslySetInnerHTML={{ __html: word.textMeaning }}/>
-              <div ref={btnsRef} className="btns">
-                {words.map((word, wordKey) => (
-                  <div
-                    key={wordKey}
-                    className="btn"
+            <Animation.Bounce in={animationIn}>
+              <div className="game">
+                <h3 className="subtitle">
+                  { word.word.toLowerCase() }
+                </h3>
+                <h3
+                  className="subtitle"
+                  style={{ fontSize: 18 }}
+                  dangerouslySetInnerHTML={{ __html: word.textMeaning }}/>
+                <div ref={btnsRef} className="btns">
+                  {words.map((word, wordKey) => (
+                    <div
+                      key={wordKey}
+                      className="btn"
+                      onClick={(event) => {
+                        if (word.color) return
+                          guess(word)
+                          setShowNextBtn(true)
+                          event.currentTarget.blur()
+                      }}>
+                      {word.color && (
+                        <>
+                          <div className={`color-btn ${word.color}`} />
+                          <h3 className="subtitle">
+                            { word.word.toLowerCase() }
+                          </h3>
+                        </>
+                      )}
+                      <img
+                        className="img"
+                        style={{ borderColor: word.color }}
+                        src={`${API_BASE_URL}${word.image}`}
+                        alt="visualimage" />
+                    </div>
+                  ))}
+                </div>
+                {showNextBtn && (
+                  <IconButton
+                    appearance="primary"
+                    icon={<Icon icon="long-arrow-right" />}
+                    size="lg"
                     onClick={(event) => {
-                      if (word.color) return
-                        guess(word)
-                        setShowNextBtn(true)
-                        event.currentTarget.blur()
+                      setShowNextBtn(false)
+                      setAnimationIn(false)
+                      event.currentTarget.blur()
+                      setTimeout(() => {
+                        forceNextWord()
+                        setAnimationIn(true)
+                      }, 500)
                     }}>
-                    {word.color && (
-                      <>
-                        <div className={`color-btn ${word.color}`} />
-                        <h3 className="subtitle">
-                          { word.word.toLowerCase() }
-                        </h3>
-                      </>
-                    )}
-                    <img
-                      className="img"
-                      style={{ borderColor: word.color }}
-                      src={`${API_BASE_URL}${word.image}`}
-                      alt="visualimage" />
-                  </div>
-                ))}
+                      Дальше
+                  </IconButton>
+                )}
               </div>
-              {showNextBtn && (
-                <IconButton
-                  appearance="primary"
-                  icon={<Icon icon="long-arrow-right" />}
-                  size="lg"
-                  onClick={(event) => {
-                    forceNextWord()
-                    setShowNextBtn(false)
-                    event.currentTarget.blur()
-                  }}>
-                    Дальше
-                </IconButton>
-              )}
-            </div>
+            </Animation.Bounce>
           </>
         )}
         {isGameOver && (

@@ -59,6 +59,7 @@ const GameResult = ({ history }) => {
   }
 
   useEffect(() => {
+    if (!userId) return
     if (history.incorrectGuessWords.length === 0 && history.correctGuessWords.length === 0) return
     history.incorrectGuessWords.forEach((word) => {
       setOrUpdateUserWord(word, {
@@ -84,7 +85,7 @@ const GameResult = ({ history }) => {
       .then((data) => {
         setOrUpdateUserStats(data.status, data)
       })
-  }, [])
+  }, [userId])
 
   return (
     <div className="game-result">
