@@ -10,8 +10,32 @@
   background-repeat: no-repeat, no-repeat;
 }
 
+.sprint .game {
+  position: relative;
+  overflow: hidden;
+}
+
+.sprint .game .fade {
+  position: absolute;
+}
+
+.sprint .game .correct-background {
+  height: 100%;
+  width: 100%;
+  background: #4CAF50;
+  opacity: 0.3;
+  z-index: 100;
+}
+
+.sprint .game .incorrect-background {
+  height: 100%;
+  width: 100%;
+  background: #F44336;
+  opacity: 0.3;
+  z-index: 100;
+}
+
 .sprint .progress {
-  margin-right: 10px;
   width: 100px;
   display: inline-block;
 }

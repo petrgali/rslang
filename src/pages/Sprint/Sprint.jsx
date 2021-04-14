@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { Divider, Icon, IconButton } from "rsuite"
+import { Divider, Icon, IconButton, Animation } from "rsuite"
 import GameLoading from "../../components/GameLoading"
 import GameResult from "../../components/GameResult/GameResult"
 import Timer from "../../components/Timer"
@@ -18,6 +18,8 @@ const Sprint = ({ match }) => {
   const [isGameLoading, setIsGameLoading] = useState(false)
   const [countDownTime, setCountDownTime] = useState(60)
   const [result, setResult] = useState("")
+  const [animationIn, setAnimationIn] = useState(false)
+  const [animationBackground, setAnimationBackground] = useState("")
   const sprintRef = useRef()
   const btnsRef = useRef()
 
@@ -85,6 +87,9 @@ const Sprint = ({ match }) => {
                 onClick={handleClose} />
             </div>
               <div className="game">
+                <Animation.Fade in={animationIn}>
+                  <div className={animationBackground} />
+                </Animation.Fade>
                 <Timer
                   shouldStart={isPlaying}
                   countDownTime={countDownTime}
@@ -94,6 +99,9 @@ const Sprint = ({ match }) => {
                 )}
                 {result === "incorrect" && (
                   <Icon icon="thumbs-down" size="2x" />
+                )}
+                {result === "" && (
+                  <Icon icon="question-circle" size="2x" />
                 )}
                 <h3 className="subtitle" style={{ margin: 0 }}>
                   { word.word.toLowerCase() } - { words[0].wordTranslate.toLowerCase() }
@@ -108,14 +116,22 @@ const Sprint = ({ match }) => {
                       if (word.word !== words[0].word) {
                         guess(word)
                         setResult("incorrect")
+                        setAnimationIn(true)
+                        setAnimationBackground("correct-background")
                       } else {
                         guess({ word: "" })
                         setResult("correct")
+                        setAnimationIn(true)
+                        setAnimationBackground("incorrect-background")
                       }
+                      setTimeout(() => {
+                        setAnimationIn(false)
+                        setAnimationBackground("")
+                      }, 400)
                       setTimeout(() => {
                         forceNextWord()
                         setResult("")
-                      }, 1000)
+                      }, 500)
                       event.currentTarget.blur()
                     }}>
                     Неверно
@@ -129,14 +145,22 @@ const Sprint = ({ match }) => {
                       if (word.word === words[0].word) {
                         guess(word)
                         setResult("correct")
+                        setAnimationIn(true)
+                        setAnimationBackground("correct-background")
                       } else {
                         guess({ word: "" })
                         setResult("incorrect")
+                        setAnimationIn(true)
+                        setAnimationBackground("incorrect-background")
                       }
+                      setTimeout(() => {
+                        setAnimationIn(false)
+                        setAnimationBackground("")
+                      }, 400)
                       setTimeout(() => {
                         forceNextWord()
                         setResult("")
-                      }, 1000)
+                      }, 500)
                       event.currentTarget.blur()
                     }}>
                     Верно
