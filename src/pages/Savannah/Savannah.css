@@ -1,0 +1,45 @@
+@import "../../styles/pages.css";
+
+.savannah {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: white;
+  background-image: url("../../assets/figures-red.png"), url("../../assets/quarter-circle-red.png");
+  background-position: right center, bottom left;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.savannah .lives {
+  margin: 0px 0px 0px 20px;
+  height: 28px;
+  display: flex;
+  column-gap: 10px;
+}
+
+.savannah .game {
+  position: relative;
+  height: calc(100% - 200px);
+}
+
+.savannah .game .result {
+  height: 28px;
+}
+
+.savannah .game .btns {
+  background: white;
+}
+
+.savannah .word {
+  position: absolute;
+  top: 0;
+  font-size: 24px;
+  font-weight: 600;
+  z-index: 2;
+}
+
+.savannah .game-icon {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

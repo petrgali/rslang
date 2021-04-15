@@ -1,0 +1,68 @@
+.title {
+  margin: 0px 0px 0px 20px;
+  font-size: 36px;
+  line-height: 43px;
+}
+
+.subtitle {
+  margin: 0px 0px 0px 20px;
+  font-size: 28px;
+  line-height: 34px;
+}
+
+@media screen and (max-width: 992px) {
+  .title {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 26px;
+  }
+}
+
+.divider {
+  margin: 5px 0px 10px 0px !important;
+}
+
+.about-game {
+  margin: 0px;
+  padding: 0px 10px;
+  font-size: 22px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.game-menu {
+  padding: 0px 20px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 10px;
+}
+
+.game-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.game {
+  height: calc(100% - 85px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.btns {
+  padding: 0px 20px;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  column-gap: 20px;
+  row-gap: 20px;
+  flex-wrap: wrap;
+  z-index: 3;
+}

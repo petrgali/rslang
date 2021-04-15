@@ -1,0 +1,41 @@
+@import "../../styles/pages.css";
+
+.sprint {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background: white;
+  background-image: url("../../assets/figures-yellow.png"), url("../../assets/quarter-circle-yellow.png");
+  background-position: right center, bottom left;
+  background-repeat: no-repeat, no-repeat;
+}
+
+.sprint .game {
+  position: relative;
+  overflow: hidden;
+}
+
+.sprint .game .fade {
+  position: absolute;
+}
+
+.sprint .game .correct-background {
+  height: 100%;
+  width: 100%;
+  background: #4CAF50;
+  opacity: 0.3;
+  z-index: 100;
+}
+
+.sprint .game .incorrect-background {
+  height: 100%;
+  width: 100%;
+  background: #F44336;
+  opacity: 0.3;
+  z-index: 100;
+}
+
+.sprint .progress {
+  width: 100px;
+  display: inline-block;
+}

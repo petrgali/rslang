@@ -1,0 +1,14 @@
+.menu {
+  height: 100%;
+}
+
+.rs-sidenav-inverse {
+  background-color: #272C36;
+}
+
+.menu .menu-header {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,12 @@
+.form-button {
+    height: 35px;
+    width: 150px
+}
+
+.form-field {
+    margin: 15px 0 0 0;
+}
+
+.form-avatar {
+    max-width: 40%;
+}

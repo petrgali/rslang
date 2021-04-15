@@ -1,0 +1,1 @@
+export const CRED_ACTION = "GET_CREDENTIALS"
